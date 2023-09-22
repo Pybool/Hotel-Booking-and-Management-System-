@@ -1,0 +1,264 @@
+.description{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.zc-label-text{
+    margin-top:20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+input, select{
+    font-size: 17px;
+}
+
+.mutiple-select{
+    height:20vh;
+}
+
+header{
+    display:none!important;
+}
+
+form{
+    margin:20px;
+}
+
+h4{
+    color:rgb(225 31 64);
+    font-size: 25px;
+    margin-top: 40px;
+}
+/* 
+label{
+    margin-top:20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+} */
+
+.forgot{
+    margin-top: 10px;
+}
+
+.form-group-x{
+    margin-top: 14px;
+}
+
+.or{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.fingerprint{
+    border: rgb(225 31 64) 1px solid;
+    width:70%;
+    height: 50px;
+    
+}
+
+.forgot-pass{
+    color:rgb(225 31 64);
+}
+
+.margin-30{
+    margin:30px;
+}
+
+.flex-row-90 {
+    display: flex!important;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+}
+
+.parent{
+    width:500vh;
+    background: whitesmoke;
+    margin-top: 120px;
+    margin-bottom: 60px!important;
+    border-radius: 7px;
+    border: 1px solid rgb(225 31 64);
+}
+
+.lower-auth{
+    margin-top: 60px;
+}
+
+.round-social{
+    width:60px;
+    height:60px;
+    border-radius: 50%;
+}
+
+.twitter{
+    background: rgb(81, 126, 222);
+}
+
+.google{
+    background: orange;
+}
+
+.fingerprint-text{
+    padding-top:15px;
+    color:rgb(225 31 64);
+    text-align:center;
+}
+
+input{
+    height:50px;
+}
+
+.hr{
+    width: 38%!important;
+    height:1px;
+    background:rgb(209, 207, 207);
+}
+
+.flex-row-40{
+    display: inline-flex!important;
+    flex-direction: row!important;
+    justify-content: center!important;
+    align-items: center!important;
+    gap:40px!important;
+}
+
+.signup{
+    text-align: center;
+    margin-top:20px;
+    margin-bottom: 40px;
+}
+
+.submit{
+    color:white;
+    background: rgb(225 31 64)!important;
+    width: 20%!important;
+    margin-right: 50px;
+    margin-top: 30px;
+    height:50px;
+}
+
+.parent {
+    position: relative; /* Ensure the overlay is positioned relative to this container */
+  }
+  
+  .overlay {
+    position: absolute; /* Position the overlay absolutely within the parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure the overlay is above other content */
+  }
+  
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Light white border for the spinner */
+    border-top: 4px solid #ffffff; /* White top border for the spinner */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
+  input::placeholder {
+    font-size: 13px; /* Replace with your desired font size */
+  }
+  
+  .max-errors{
+    color:rgb(223, 79, 79);
+    width:80%;
+    white-space: normal;
+  }
+
+  .spinner-label {
+    position: relative;
+    font-size: 14px;
+  }
+  
+  .tiny-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #333;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  
+
+  
+  /* Rest of your CSS styles... */
+   /* Styles for the overlay */
+.modal-overlay {
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index:4000!important;
+  }
+  
+  /* Styles for the modal */
+  .modal {
+    width:70%!important;
+    display: flex!important;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    height:60%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-left: 16%;
+    margin-top: 120px;
+    
+  }
+  
+  /* Button to close the modal */
+  .close-modal {
+    margin-top: 10px;
+    font-size: 30px;
+    color:red;
+    background: transparent;
+    margin-left: 30px;
+  }
+  
+
+  .pill{
+    width:150px;
+    height:45px;
+    border-radius: 40px;
+    background: rgb(236, 166, 177);
+    color:white;
+  }
+
+  .pill-text{
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 0px!important;
+  }
+
+  
+
+  .description{
+    margin-top:10px;
+  }

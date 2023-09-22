@@ -1,0 +1,70 @@
+
+<div elname="zc-component-Reservation" class="parent container zcform_Reservation zc-form-fullheight ">
+    <div>
+        <!-- <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert> -->
+    <div id="Reservation_ZC_LRKT9Y" class="form-outer-wrapper Reservation_ZC_LRKT9Y">
+        <div class="row">
+           <form action="" class="form-table  label-left " name="Staff">
+              <div class="form-header flex-end">
+                <span style="text-align: left;" class="form-title col-3" id="formTitleElem">Room Amenities</span>
+                <input type="text" placeholder="Enter either a name, email or phone number to search" class="form-control search-input"/>
+                <a id="Staffs" class="create-staff btn btn-outline-primary col-2" href="/root/rooms/create-amenities">Create Amenity</a>
+              </div>
+              <div class="table-wrapper" style="max-height: 80vh;overflow-y: scroll;">
+                 <table style="background: white;" class="data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+                     <thead class="table-light">
+                         <th class="nk-tb-col">Amenity Name</th>
+                         <th class="nk-tb-col">Charge</th>
+                         <th class="nk-tb-col">Last Updated</th>
+                         <th class="nk-tb-col">Created At</th>
+                         <th class="nk-tb-col"></th>
+                     </thead>
+                     <tbody>
+                         <tr class="nk-tb-item" *ngFor="let amenity of amenities"> 
+                             <td class="nk-tb-col active-zone pointer"><b>{{amenity.amenity}}</b></td>
+                             <td class="nk-tb-col pointer"><b>NGN {{amenity.charge_amount}}</b></td>
+                             <td class="nk-tb-col">{{amenity.updated_at}}</td>
+                             <td class="nk-tb-col">{{amenity.created_at}}</td>
+                             <td style="width:30px;" class="nk-tb-col">
+                                <div class="nk-tb-col nk-tb-col-tools">
+                                    <ul class="nk-tb-actions gx-2">
+                                        <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit" aria-label="Wallet"><em class="icon ni ni-edit-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Commentary" aria-label="Wallet"><em class="icon ni ni-comments"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Send Email" aria-label="Send Email"><em class="icon ni ni-mail-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Suspend" aria-label="Suspend"><em class="icon ni ni-user-cross-fill"></em></a></li>
+                                       <li>
+                                          <div class="drodown">
+                                             <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                <ul class="link-list-opt no-bdr">
+                                                   <li><a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li class="divider"></li>
+                                                   <li><a href="#"><em class="icon ni ni-comments"></em><span>Show Commentary</span></a></li>
+                                                   
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </div>
+                             </td>
+                         </tr>
+                     </tbody>
+                 </table>
+             </div>
+             <!-- <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination> -->
+           </form>
+        </div>        
+     </div> 
+     <app-spinner *ngIf="showSpinner"></app-spinner>
+     <div class="overlay" *ngIf="showSpinner">
+        <div class="spinner"></div>
+    </div>
+    </div>
+ </div>

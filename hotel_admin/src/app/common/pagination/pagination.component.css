@@ -1,0 +1,16 @@
+.card-inner {
+    padding: 0px!important;
+    padding-bottom: 5px!important;
+}
+
+
+.flex-row{
+    display:flex;
+    flex-direction: row!important;
+    gap:5px;
+}
+
+li{
+    border: 1px solid rgb(241, 204, 204);
+    border-radius: 5px;
+}

@@ -1,0 +1,67 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <h4 style="width:100%;justify-content: center;">Create Room Type</h4>
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" #roomtypeForm="ngForm" novalidate>
+        <div class="col-12 flex-row-40">
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="name">Room Type <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="roomtype.name" name="name" type="text" class="form-control" />
+            </div>
+            <div class="text-controls">
+              <label for="no_adults">Max Adults<span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="roomtype.no_adults" name="no_adults" type="number" class="form-control" />
+            </div>
+            <div class="phone-controls">
+              <label for="no_children">Max Children<span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="roomtype.no_children" name="no_children" type="number" class="form-control" />
+            </div>
+            <div class="phone-controls">
+                <label for="advance_amount">Advance Amount<span class="fieldMandate">*</span></label>
+                <input [(ngModel)]="roomtype.advance_amount" name="advance_amount" type="number" class="form-control" />
+             </div>
+            <div class="text-controls">
+                <label for="profile_pics">Image (Optional)</label>
+                <input  type="file" name="image" (change)="handleImageUpload($event)" accept="image/*" required class="form-file form-select" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-controls">
+                <label for="no_xtra_adults">Max Extra Adults <span class="fieldMandate">*</span></label>
+                <input [(ngModel)]="roomtype.no_xtra_adults" name="no_xtra_adults" type="number" class="form-control" />
+              </div>
+              <div class="text-controls">
+                  <label for="bed_type">Bed Type <span class="fieldMandate">*</span></label>
+                  <select [(ngModel)]="roomtype.bed_type" name="bed_type" class="form-select">
+                      <option value="{{bedType.id}}" *ngFor="let bedType of bedTypes;">{{bedType.name}}</option>
+                  </select>
+              </div>
+              <div class="text-controls">
+                  <label for="amenities">Amenities <span class="fieldMandate">*</span></label>
+                  <select style="height:255px;" multiple [(ngModel)]="roomtype.amenities" name="amenities" class="form-select">
+                      <option value="{{amenity.id}}" *ngFor="let amenity of amenities;">{{amenity.amenity}}</option>
+                  </select>
+              </div>
+          </div>
+        </div>
+        
+        <div>
+          <button style="justify-content: center;" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
+      </form>
+      <p class="signup"><b>Already have an roomtypes? <a style="color:rgb(225 31 64);" href="/root/rooms/roomtypes">View roomtypes!</a></b></p>
+    </div>
+    <div class="overlay" *ngIf="showSpinner">
+        <div class="spinner"></div>
+    </div>
+  </div>
+
+  
+  

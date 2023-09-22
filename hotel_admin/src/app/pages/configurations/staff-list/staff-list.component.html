@@ -1,0 +1,289 @@
+
+<div elname="zc-component-Reservation" class="parent container zcform_Reservation zc-form-fullheight ">
+    <div>
+        <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <div id="Reservation_ZC_LRKT9Y" class="form-outer-wrapper Reservation_ZC_LRKT9Y">
+        <div class="row">
+           <form action="" class="form-table  label-left " name="Staff">
+              <div class="form-header flex-end">
+                <span style="text-align: left;" class="form-title col-3" id="formTitleElem">Roxandrea Staff</span>
+                <input type="text" placeholder="Enter either a name, email or phone number to search" class="form-control search-input"/>
+                <select (change)="filterStaff($event)" id="filter-select" style="margin-bottom: 10px; width:200px;" class="form-select col-3">
+                    <option>Staff Filter</option>
+                    <option value="is_archived">Archived Staff</option>
+                    <option value="is_sacked">Sacked Staff</option>
+                    <option value="is_suspended">Suspended Staff</option>
+                </select> 
+                <a id="Staffs" class="create-staff btn btn-outline-primary col-2" href="/root/configurations/create-staff">Create Staff</a>
+              </div>
+              <div class="table-wrapper" style="max-height: 80vh;overflow-y: scroll;">
+                 <table style="background: white;" class="data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+                     <thead class="table-light">
+                         <th class="nk-tb-col">First Name</th>
+                         <th class="nk-tb-col">Last Name</th>
+                         <th class="nk-tb-col">Phone</th>
+                         <th class="nk-tb-col">Email</th>
+                         <th class="nk-tb-col">Address</th>
+                         <th class="nk-tb-col">Role</th>
+                         <th class="nk-tb-col">Department</th>
+                         <th class="nk-tb-col"></th>
+                     </thead>
+                     <tbody>
+                        
+                         <tr class="nk-tb-item" *ngFor="let staff of staffs">
+                             <td id="{{staff.id}}" (click)="showStaffDetails($event)" class="nk-tb-col active-zone pointer"><b>{{staff.firstname}}</b></td>
+                             <td id="{{staff.id}}" (click)="showStaffDetails($event)" class="nk-tb-col active-zone pointer"><b>{{staff.surname}}</b></td>
+                             <td id="{{staff.id}}" (click)="showStaffDetails($event)" class="nk-tb-col pointer" style="white-space: nowrap; "><b>{{staff.phone}}</b></td>
+                             <td class="nk-tb-col" style="white-space: nowrap;">{{staff.email}}</td>
+                             <td class="nk-tb-col">{{staff.address1}}</td>
+                             <td class="nk-tb-col">{{staff.role?.role_name}}</td>
+                             <td class="nk-tb-col pointer">{{staff.department}}</td>
+                             <td>
+                                <div class="nk-tb-col nk-tb-col-tools">
+                                    <ul class="nk-tb-actions gx-2">
+                                        <li class="nk-tb-action-hidden"><a (click)="storeStaff(staff.id)" href="/root/configurations/edit-staff?uid={{staff.id}}" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit" aria-label="Wallet"><em class="icon ni ni-edit-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a (click)="staffCommentary(staff.id)" href="javascript:;" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Commentary" aria-label="Wallet"><em class="icon ni ni-comments"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="mailto:{{staff.email}}" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Send Email" aria-label="Send Email"><em class="icon ni ni-mail-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a (click)="suspendStaff(staff.id)" href="javascript:;" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Suspend" aria-label="Suspend"><em class="icon ni ni-user-cross-fill"></em></a></li>
+                                       <li>
+                                          <div class="drodown">
+                                             <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                <ul class="link-list-opt no-bdr">
+                                                   <li><a id="{{staff.id}}" href="javascript:;" (click)="showStaffDetails($event)"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                                   <li><a (click)="storeStaff(staff.id)" href="/root/configurations/edit-staff?uid={{staff.id}}"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li class="divider"></li>
+                                                   <li><a (click)="staffCommentary(staff.id)" href="javascript:;"><em class="icon ni ni-comments"></em><span>Show Commentary</span></a></li>
+                                                   <li>
+                                                      <!-- Not Working -->
+                                                      <a href="javascript:;" *ngIf="!loadedStaff.is_archived" (click)="archiveStaff(staff.id)"><em class="icon ni ni-archive-fill"></em><span>Archive Staff</span></a>
+                                                      <a href="javascript:;" *ngIf="loadedStaff.is_archived" (click)="archiveStaff(staff.id,true)"><em class="icon ni ni-archive-fill"></em><span>Unarchive Staff</span></a>
+                                                      
+                                                   </li>
+                                    
+                                                   <li><a (click)="patchStaffRecord({id:staff.id,is_sacked:!staff.is_sacked})" href="javascript:;"><em class="icon ni ni-cross"></em><span *ngIf="!staff.is_sacked">Mark Sacked</span><span *ngIf="staff.is_sacked">Mark Employed</span></a></li>
+
+                                                   <li><a (click)="patchStaffRecord({id:staff.id,is_suspended:!staff.is_suspended})" href="javascript:;"><em class="icon ni ni-na"></em><span *ngIf="!staff.is_suspended">Suspend user</span><span *ngIf="staff.is_suspended">Activate User</span></a></li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </div>
+                             </td>
+                         </tr>
+                     </tbody>
+                 </table>
+             </div>
+             <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination>
+           </form>
+        </div>        
+     </div> 
+     <div *ngIf="staffDetails" style="width:50%" class="zcpopup default slidescreen zc-popupBox-close">
+        <div class="popupbox-wrapper" style="visibility: visible;">
+           <div class="popupbox">
+              <span (click)="closeStaffDetails($event)" class="popupClose"><i class="fa fa-close"></i></span>
+              <div class="popupboxOuter show-view-record">
+                 <div class="popupConentContainer">
+                    <div elname="zc-view-component" isquickview="false" class="view-outer-wrapper" id="Staffs_ZC_Z5CN17">
+                       <div class="zc-dem-record-popup">
+                          <div class="row show-view-record-options">
+                             <div class="view-record-edit-options">
+                                <div elname="zc-dem-prev-next-element" class="zc-dem-prev-next"><a style="color:rgb(225 31 64)!important;" zc-tooltip="true" recordindex="-1" showpage="previous" href="javascript:;" reclinkid="4212638000000029006" elname="zc-pervious-record"><i class="fa fa-angle-left"></i></a><a style="color:rgb(225 31 64)!important;" zc-tooltip="true" recordindex="-1" showpage="next" href="javascript:;" reclinkid="4212638000000029006" elname="zc-next-record"><i class="fa fa-angle-right"></i></a></div>
+                                <ul class="zc-dem-report-actions view-options-detailview">
+                                   <li><a  class="zc-dem-edit-action" (click)="storeStaff()" href="/root/configurations/edit-staff?uid={{loadedStaff.id}}" zc-tooltip="true" reclinkid="4212638000000029006" elname="zc-showEditFormEl"><i class="fa fa-pencil"></i><span>Edit</span></a></li>
+                                   <li>
+                                    <a href="javascript:;" *ngIf="!loadedStaff.is_archived" (click)="archiveStaff()" zc-tooltip="true" class="zc-dem-edit-action" reclinkid="4212638000000029006" elname="zc-duplicateRecordEl"><i class="fa fa-copy"></i><span>Archive</span></a>
+                                    <a href="javascript:;" *ngIf="loadedStaff.is_archived" (click)="archiveStaff(true)" zc-tooltip="true" class="zc-dem-edit-action" reclinkid="4212638000000029006" elname="zc-duplicateRecordEl"><i class="fa fa-copy"></i><span>Unarchive</span></a>
+                                   </li>
+                                   <li>
+                                      <a zc-tooltip="true" (click)="staffCommentary()" href="javascript:;" elname="zc-showrecmenu" class="zc-dem-more-action">Commentary <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                      <ul class="hide" id="rec-summary-more">
+                                         <li><a zc-tooltip="true" href="javascript:;" class="zc-dem-moredelete-action" reclinkid="4212638000000029006" elname="zc-deleteRecordEl">Delete</a></li>
+                                         <li><a zc-tooltip="true" class="zc-dem-print-action" href="/ekoemmanueljavl/hotel-management/record-print/Staffs/4212638000000029006/" target="_blank">Print</a></li>
+                                         <li class="separator"></li>
+                                      </ul>
+                                   </li>
+                                </ul>
+                             </div>
+                          </div>
+                          <div class="zc-dem-record-popup-wrapper">
+                             <div class="zc-dem-record-popup-inner" elname="detailViewHolder" reclinkid="4212638000000029006">
+                                <div id="zc-overview-cont" class="zc-overview-cont-summary">
+                                   <div elname="zcrelated-sortGroupCont" id="zcrelated-sortGroupCont" style="position:fixed;display:none;z-index: 1;">
+                                      <div class="report_nav">
+                                         <div class="report_nav_menu accordion_menu sort-group" id="relatedreport_nav_menu">
+                                            <ul class="viewsettingsdrpdwn zc-sortgroup-option" elname="zcrelated-moreRecColheaderMenu">
+                                               <li class="view-settings-subgroup"><a href="javascript:;" isasc="true" elname="zcrelated-reportSortEl">Sort by Ascending</a></li>
+                                               <li class="view-settings-subgroup"><a href="javascript:;" isasc="false" elname="zcrelated-reportSortEl">Sort by Descending</a></li>
+                                            </ul>
+                                            <ul class="viewsettingsdrpdwn sub-menu-level-2 flRight" elname="zc-moreOpts" style="display:none;"></ul>
+                                         </div>
+                                      </div>
+                                   </div>
+                                   <div id="relatedDataWrapper" elname="zc-related-record-wrapper" layouttype="-2" relatedviewid="" baseidentifier="datablock1" blockidentifier="datablock1" formcomponentid="" reclinkid="4212638000000029006">
+                                      <div class="zc-related-record-header-wrapper">
+                                         <h2 elname="datablock-title" class="zc-h2-title ">Overview</h2>
+                                      </div>
+                                      <div id="relatedDataBody" relatedviewid="" blockidentifier="datablock1">
+                                         <div id="relatedDataSummary__datablock1">
+                                            <div class="record-summary" reclinkid="4212638000000029006">
+                                               
+                                               <div class="record-field">
+                                                  <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>First Name</label></div>
+                                                  <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.firstname}}</label></div>
+                                               </div>
+                                               <div class="record-field">
+                                                <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>Last Name</label></div>
+                                                <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.surname}}</label></div>
+                                             </div>
+                                               <div class="record-field">
+                                                  <div formcomptype="4" elname="zc-record-label-name" class=" record-label-name"><label>Email</label></div>
+                                                  <div elname="zc-record-summary-data" class="record-summary-data"><label><a elname="hreflink" class="view-alink" href="mailto:{{loadedStaff.surname}}">{{loadedStaff.email}}</a></label></div>
+                                               </div>
+                                               <div class="record-field">
+                                                  <div formcomptype="8" elname="zc-record-label-name" class=" record-label-name"><label>Phone</label></div>
+                                                  <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.phone}}</label></div>
+                                               </div>
+                                               <div class="record-field">
+                                                  <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>Address</label></div>
+                                                  <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.address1}}</label></div>
+                                               </div>
+                                               <div class="record-field">
+                                                <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Role</label></div>
+                                                <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.role?.role_name}}</label></div>
+                                             </div>
+                                             <div class="record-field">
+                                                <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Department</label></div>
+                                                <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedStaff.department}}</label></div>
+                                             </div>
+                                             <div class="record-field">
+                                                <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Basic Salary</label></div>
+                                                <div elname="zc-record-summary-data" class="record-summary-data"><label>NGN {{formatNumber(loadedStaff.role?.salary.salary_amount)}}</label></div>
+                                             </div>
+                                             <div class="record-field">
+                                                <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Salary TopUp</label></div>
+                                                <div elname="zc-record-summary-data" style="width: 100%!important;" class="col-12 record-summary-data flex-end">
+                                                    <div *ngIf="!editSalaryTopUp" class="col-9">NGN {{formatNumber(loadedStaff.salary_topup)}}</div>
+                                                    <input (keydown.enter)="editInlineSalaryTopUp($event,loadedStaff.id)" *ngIf="editSalaryTopUp" placeholder="Enter the new top up and press enter to save"  name="topup" type="text" class="form-control col-9" />
+                                                    <div class="drodown col-3">
+                                                        <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                           <ul class="link-list-opt no-bdr">
+                                                              <li><a href="javascript:void(0)" (click)="editInlineSalaryTopUp(false)"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                              <li class="divider"></li>
+                                                           </ul>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                             </div>
+                                               <div class="record-field">
+                                                  <div formcomptype="18" elname="zc-record-label-name" class=" record-label-name"><label>ID Proof</label></div>
+                                                  <div elname="zc-record-summary-data" class="record-summary-data"><label></label></div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                                <div id="zc-history-cont"></div>
+                                <div id="zc-pmt-status"></div>
+                                <div id="recordCommentsDV">
+                                   <div elname="addCommentLink" class="zc-add-a-comment"><span><a type="commentLink" class="zc-li-outline ui-3-chat-46 zc-add-a-comment-icon"></a><a elname="showAddComments" (click)="showCommentWidget()" type="commentLink" class="">Add a comment</a></span></div>
+                                   <script id="replyeditor-template" type="text/x-handlebars-template"><div elname="replyComposer" parentCommentId="{{parentCommentId}}" class="zc-comments-reply-wrapper form-group zc-dem-clearfix"><div elname="placeholder" class="zc-comments-reply-placeholder zc-add-comments-placeholder">Write your reply...</div><div elname="writeComment" isReply="true" class="zc-comments-reply-textarea form-control zc-add-comments-textarea form-control" contenteditable="true"></div><p class="zc-comments-tag">Type &#x40; to tag a user</p><div class="zc-comments-think-btn"><button elname="addReply" class="zc-comments-think-reply-btn">Reply</button><button elname="cancelReply" class="zc-comments-think-cancel-btn">Cancel</button></div></div></script><script id="usermention-template" type="text/x-handlebars-template"><div elname="userMentionsList" class="zc-users-suggestion"><ul elname="userList" class="zc-users-suggestion-list-wrapper">{{#each users}}<li elname="user" userId="{{this.userId}}" class="zc-users-suggestion-list clearfix"><span class="zc-users-suggestion-profile"><img src="https://contacts.zoho.com/file?fs=thumb&ID={{this.userZuid}}"/></span><div class="zc-users-suggestion-username"><a elname="userName" class="zc-users-suggestion-name">{{this.userEmail}}</a></div></li>{{/each}}</ul></div></script><script id="loadreply-template" type="text/x-handlebars-template"><a elname="loadReply" class="zc-view-more-replies" replyTo="{{parentCommentId}}">View more replies</a></script><script id="loadpreviousreply-template" type="text/x-handlebars-template"><a elname="loadPreviousReply" class="zc-view-more-replies" replyTo="{{parentCommentId}}">View previous replies</a></script><script id="loadcomments-template" type="text/x-handlebars-template"><div class="zc-view-cmts-container"><a href="javascript:;" elname="loadL1Comments" class="zc-view-more-comments">View more comments</a></div></script><script id="loadpreviouscomments-template" type="text/x-handlebars-template"><div class="zc-view-cmts-container"><a href="javascript:;" elname="loadPreviousL1Comments" class="zc-view-more-comments">View previous comments</a></div></script>
+                                   <div *ngIf="showComment" style="display:block" elname="commentsContainer" class="zc-comments-container">
+                                    
+                                    <div elname="commentsListWrapper" class="zc-view-comments-container">
+                                         <h2 elname="totalCommentCount" class=""></h2>
+                                         <div elname="commentsListContainer" class="zc-view-comments zc-dem-clearfix"></div>
+                                      </div>
+                                      <div elname="commentComposer" class="zc-add-comments zc-dem-clearfix">
+                                         <span class="zc-add-comments-profile"><img src="https://contacts.zoho.com/file?fs=thumb&amp;ID=824128396" class=""></span>
+                                         <div class="zc-add-comments-wrapper form-group">
+                                            <select id="comment-select" style="margin-bottom: 10px;" class="form-select">
+                                                <option disabled>Select Commentary Type</option>
+                                                <option value="Salary Deduction">Salary Deduction</option>
+                                                <option value="Appraisal">Appraisal</option>
+                                                <option value="Duty">Duty</option>
+                                              </select>  
+                                            <div *ngIf="commentText.trim().length == 0" elname="placeholder" class="zc-add-comments-placeholder">Write a comment...</div>
+                                            <div id="comment-text" elname="writeComment" class="zc-add-comments-textarea form-control" contenteditable="true"></div>
+                                            <button style="margin-top: 30px;" (click)="addComment()" class="pointer btn btn-primary">Comment</button>
+                                            <p class="zc-comments-tag">Type @ to tag a user</p>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+    <app-spinner *ngIf="showSpinner"></app-spinner>
+    </div>
+ </div>
+ 
+ <div *ngIf="showCommentary" class="modal-overlay">
+    <div class="modal col-12 flex-row-no-center-gap-10">
+      <h4 class="col-10">Staff Commentary</h4>
+      <button (click)="closeCommentary()" class="close-modal col-1">&times;</button>
+
+      <div style="width:100%">
+        <div class="table-wrapper" style="max-height: 80vh;overflow-y: scroll;">
+            <table style="background: white;" class="pointer data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+                <thead class="table-light">
+                    <th class="nk-tb-col">Comment Type</th>
+                    <th class="nk-tb-col">Comment</th>
+                    <th class="nk-tb-col">Comment By</th>
+                    <th class="nk-tb-col">Comment Date</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr class="nk-tb-item" *ngFor="let commentary of commentaries">
+                        <td class="nk-tb-col active-zone"><b>{{commentary.comment_type}}</b></td>
+                        <td class="nk-tb-col active-zone"><b>{{commentary.comment}}</b></td>
+                        <td class="nk-tb-col active-zone" style="white-space: nowrap; "><b>{{commentary.comment_by}}</b></td>
+                        <td class="nk-tb-col" style="white-space: nowrap;">{{commentary.comment_date}}</td>
+                        <td>
+                            <div class="nk-tb-col nk-tb-col-tools">
+                                <ul class="nk-tb-actions gx-2">
+                                   <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Wallet" aria-label="Wallet"><em class="icon ni ni-wallet-fill"></em></a></li>
+                                   <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Send Email" aria-label="Send Email"><em class="icon ni ni-mail-fill"></em></a></li>
+                                   <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Suspend" aria-label="Suspend"><em class="icon ni ni-user-cross-fill"></em></a></li>
+                                   <li>
+                                      <div class="drodown">
+                                         <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                         <div class="dropdown-menu dropdown-menu-end">
+                                            <ul class="link-list-opt no-bdr">
+                                               <li><a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                               <li><a href="#"><em class="icon ni ni-repeat"></em><span>Orders</span></a></li>
+                                               <li class="divider"></li>
+                                               <li><a href="#"><em class="icon ni ni-shield-star"></em><span>Reset Pass</span></a></li>
+                                               <li><a href="#"><em class="icon ni ni-shield-off"></em><span>Reset 2FA</span></a></li>
+                                               <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend User</span></a></li>
+                                            </ul>
+                                         </div>
+                                      </div>
+                                   </li>
+                                </ul>
+                             </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="no-commentary" *ngIf="commentaries.length==0">No commentary was found for this staff</p>
+
+        </div>
+      </div>
+    </div>
+ </div>
+  

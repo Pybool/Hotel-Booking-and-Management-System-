@@ -1,0 +1,327 @@
+
+<div style="margin-bottom: 20px;" elname="zc-component-Reservation" class="zcform_Reservation zc-form-fullheight ">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <div  id="Reservation_ZC_LRKT9Y" class="form-outer-wrapper Reservation_ZC_LRKT9Y">
+       <div class="row">
+          <form action="" class="form-table  label-left " name="Upcoming Checkings">
+             <div style="margin-top:5px;" class="form-header flex-end col-12">
+                <span class="form-title col-2" id="formTitleElem">Active Check-Ins</span>
+                <input style="width:40vw" type="text" placeholder="Enter either a name, email or phone number to search" class="form-control search-input col-6"/>
+                 <a style="width:150px;" id="Staffs" class="create-staff btn btn-outline-primary col-2" href="/root/frontdesk/reservation">Make Reservation</a>
+             </div>
+             <div class="table-wrapper" style="max-height: 60vh;overflow-y: scroll;">
+                <table style="max-height:10vh;background: white;" class="data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+                    <thead>
+                      <th class="nk-tb-col">Reservation ID</th>
+                        <th class="nk-tb-col">Client Name</th>
+                        <th class="nk-tb-col">Client Email</th>
+                        <th class="nk-tb-col">Check In</th>
+                        <th class="nk-tb-col">Check Out</th>
+                        <th class="nk-tb-col">Guest Type</th>
+                        <th class="nk-tb-col">Number of Rooms</th>
+                        <th class="nk-tb-col">Number of Adults</th>
+                        <th class="nk-tb-col">Number of Children</th>
+                        <th class="nk-tb-col">Number Checked In</th>
+                        <th class="nk-tb-col">Status</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr class="nk-tb-item" *ngFor="let reservation of reservations">
+                         <td id="{{reservation.id}}" (click)="showResrvationDetails($event)" style="white-space:nowrap;font-weight: 300;font-size:16px;color:black!important;" class="nk-tb-col active-zone pointer"><b>{{reservation.reservation_token}}</b></td>
+                            <td style="white-space:nowrap; font-weight: 300;font-size:16px;color:black!important;" class="nk-tb-col"><b>{{reservation.contact.firstname}} {{reservation.contact.middlename}} {{reservation.contact.lastname}}</b></td>
+                            <td style="font-weight: 500;font-size:17px;color:black!important;" class="nk-tb-col">{{reservation.contact.email}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_in}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_out}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.contact_type}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_rooms}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_adults}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_children}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.num_checked_in}}</td>
+ 
+                            <td style="font-weight: 400;font-size:16px;color:green!important;" class="nk-tb-col">CHECKED-IN</td>
+                            <td id="{{reservation.id}}">
+                                <div class="nk-tb-col nk-tb-col-tools">
+                                    <ul class="nk-tb-actions gx-2">
+                                        <li class="nk-tb-action-hidden"><a href="javascript:void(0)" (click)="showResrvationDetails($event)" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit" aria-label="Wallet"><em class="icon ni ni-edit-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Commentary" aria-label="Wallet"><em class="icon ni ni-comments"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Send Email" aria-label="Send Email"><em class="icon ni ni-mail-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Suspend" aria-label="Suspend"><em class="icon ni ni-user-cross-fill"></em></a></li>
+                                       <li>
+                                          <div class="drodown">
+                                             <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                <ul class="link-list-opt no-bdr">
+                                                   <li><a href="javascript:void(0)" (click)="showResrvationDetails($event)"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li class="divider"></li>
+                                                   <li><a href="#"><em class="icon ni ni-comments"></em><span>Show Commentary</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-archive-fill"></em><span>Archive User</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-cross"></em><span>Mark Sacked</span></a></li>
+ 
+                                                   <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend User</span></a></li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </div>
+                             </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="overlay" *ngIf="showSpinner">
+                   <div class="spinner"></div>
+               </div>
+               
+            </div>
+          </form>
+          <div *ngIf="reservationDetails" style="width:50%" class="zcpopup default slidescreen zc-popupBox-close">
+             <div class="popupbox-wrapper" style="visibility: visible;">
+                <div class="popupbox">
+                   <span (click)="closeReservationDetails($event)" class="popupClose"><i class="fa fa-close"></i></span>
+                   <div class="popupboxOuter show-view-record">
+                      <div class="popupConentContainer">
+                         <div elname="zc-view-component" isquickview="false" class="view-outer-wrapper" id="Staffs_ZC_Z5CN17">
+                            <div class="zc-dem-record-popup">
+                               <div class="row show-view-record-options">
+                                  <div class="view-record-edit-options">
+                                     <div elname="zc-dem-prev-next-element" class="zc-dem-prev-next"><a style="color:rgb(225 31 64)!important;" zc-tooltip="true" recordindex="-1" showpage="previous" href="javascript:;" reclinkid="4212638000000029006" elname="zc-pervious-record"><i class="fa fa-angle-left"></i></a><a style="color:rgb(225 31 64)!important;" zc-tooltip="true" recordindex="-1" showpage="next" href="javascript:;" reclinkid="4212638000000029006" elname="zc-next-record"><i class="fa fa-angle-right"></i></a></div>
+                                     <ul class="zc-dem-report-actions view-options-detailview">
+                                        <li><a  class="zc-dem-edit-action" href="/root/configurations/edit-staff?uid={{loadedReservation.id}}" zc-tooltip="true" reclinkid="4212638000000029006" elname="zc-showEditFormEl"><i class="fa fa-pencil"></i><span>Edit</span></a></li>
+                                        <li>
+                                         <a href="javascript:;" *ngIf="!loadedReservation.is_archived" (click)="archiveStaff()" zc-tooltip="true" class="zc-dem-edit-action" reclinkid="4212638000000029006" elname="zc-duplicateRecordEl"><i class="fa fa-copy"></i><span>Archive</span></a>
+                                         <a href="javascript:;" *ngIf="loadedReservation.is_archived" (click)="archiveStaff(true)" zc-tooltip="true" class="zc-dem-edit-action" reclinkid="4212638000000029006" elname="zc-duplicateRecordEl"><i class="fa fa-copy"></i><span>Unarchive</span></a>
+                                        </li>
+                                        <li>
+                                           <a zc-tooltip="true" (click)="staffCommentary()" href="javascript:;" elname="zc-showrecmenu" class="zc-dem-more-action">Commentary <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                           <ul class="hide" id="rec-summary-more">
+                                              <li><a zc-tooltip="true" href="javascript:;" class="zc-dem-moredelete-action" reclinkid="4212638000000029006" elname="zc-deleteRecordEl">Delete</a></li>
+                                              <li><a zc-tooltip="true" class="zc-dem-print-action" href="/ekoemmanueljavl/hotel-management/record-print/Staffs/4212638000000029006/" target="_blank">Print</a></li>
+                                              <li class="separator"></li>
+                                           </ul>
+                                        </li>
+                                     </ul>
+                                  </div>
+                               </div>
+                               <div class="zc-dem-record-popup-wrapper">
+                                  <div class="zc-dem-record-popup-inner" elname="detailViewHolder" reclinkid="4212638000000029006">
+                                     <div id="zc-overview-cont" class="zc-overview-cont-summary">
+                                        <div elname="zcrelated-sortGroupCont" id="zcrelated-sortGroupCont" style="position:fixed;display:none;z-index: 1;">
+                                           <div class="report_nav">
+                                              <div class="report_nav_menu accordion_menu sort-group" id="relatedreport_nav_menu">
+                                                 <ul class="viewsettingsdrpdwn zc-sortgroup-option" elname="zcrelated-moreRecColheaderMenu">
+                                                    <li class="view-settings-subgroup"><a href="javascript:;" isasc="true" elname="zcrelated-reportSortEl">Sort by Ascending</a></li>
+                                                    <li class="view-settings-subgroup"><a href="javascript:;" isasc="false" elname="zcrelated-reportSortEl">Sort by Descending</a></li>
+                                                 </ul>
+                                                 <ul class="viewsettingsdrpdwn sub-menu-level-2 flRight" elname="zc-moreOpts" style="display:none;"></ul>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div id="relatedDataWrapper" elname="zc-related-record-wrapper" layouttype="-2" relatedviewid="" baseidentifier="datablock1" blockidentifier="datablock1" formcomponentid="" reclinkid="4212638000000029006">
+                                           <div class="zc-related-record-header-wrapper">
+                                              <h2 elname="datablock-title" class="zc-h2-title ">Overview</h2>
+                                           </div>
+                                           <div id="relatedDataBody" relatedviewid="" blockidentifier="datablock1">
+                                              <div id="relatedDataSummary__datablock1">
+                                                 <div class="record-summary" reclinkid="4212638000000029006">
+                                                    <div class="record-field">
+                                                       <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>Resrvation ID</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.reservation_token}}</label></div>
+                                                    </div>
+                                                    <div class="record-field">
+                                                       <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>First Name</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.contact.firstname}}</label></div>
+                                                    </div>
+                                                    <div class="record-field">
+                                                     <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>Last Name</label></div>
+                                                     <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.contact.lastname}}</label></div>
+                                                  </div>
+                                                    <div class="record-field">
+                                                       <div formcomptype="4" elname="zc-record-label-name" class=" record-label-name"><label>Email</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label><a elname="hreflink" class="view-alink" href="mailto:{{loadedReservation.contact.email}}">{{loadedReservation.contact.email}}</a></label></div>
+                                                    </div>
+                                                    <div class="record-field">
+                                                       <div formcomptype="8" elname="zc-record-label-name" class=" record-label-name"><label>Phone</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.contact.phone}}</label></div>
+                                                    </div>
+                                                    <div class="record-field">
+                                                       <div formcomptype="1" elname="zc-record-label-name" class=" record-label-name"><label>Address</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.contact.address1}}</label></div>
+                                                    </div>
+                                                    
+                                                  <div class="record-field">
+                                                     <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Number Checked In</label></div>
+                                                     <div elname="zc-record-summary-data" class="record-summary-data"><label>{{loadedReservation.num_checked_in}}</label></div>
+                                                  </div>
+                                                  <div class="record-field">
+                                                     <div formcomptype="29" elname="zc-record-label-name" class=" record-label-name"><label>Rooms</label></div>
+                                                     <div style="margin-left: 47%;" *ngIf="showTinySpinner" class="tiny-spinner"></div>
+                                                     <div style="background:transparent;overflow-x: auto;overflow-y: hidden;flex-wrap:wrap;margin-right: 20px;justify-content:space-evenly;" class="description flex-row-gap-10">
+                                                       <ng-container *ngFor="let room of loadedReservation.rooms">
+                                                          <div style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                                             <div>
+                                                                <p  class="pill-text pointer">Room {{room.room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                                                <p (click)="startCheckOut('single',room)" *ngIf="loadedReservation.rooms.length > 1 && room.is_checked_in" class="pill-text"><a *ngIf="!room.disable" style="text-decoration: underline;color:white" href="javascript:void(0)">Check out</a></p>
+                                                                <p (click)="startCheckOut('single',room)" *ngIf="loadedReservation.rooms.length == 1 && loadedReservation.is_checked_in" class="pill-text"><a style="text-decoration: underline;color:white" href="javascript:void(0)">Check out</a></p>
+                                                             </div>
+                                                          </div>
+                                                       </ng-container>
+                                                       
+                                                    </div>
+                               
+                                                    <a (click)="startCheckOut('single','*')" class="pointer" *ngIf="loadedReservation.rooms.length > 1" style="margin-left: 35px;" >Check all Out</a>
+                                                  </div>
+                                                  
+                                                    <div class="record-field">
+                                                       <div formcomptype="18" elname="zc-record-label-name" class=" record-label-name"><label>ID Proof</label></div>
+                                                       <div elname="zc-record-summary-data" class="record-summary-data"><label></label></div>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     <div id="zc-history-cont"></div>
+                                     <div id="zc-pmt-status"></div>
+                                     <div id="recordCommentsDV">
+                                        <div elname="addCommentLink" class="zc-add-a-comment"><span><a type="commentLink" class="zc-li-outline ui-3-chat-46 zc-add-a-comment-icon"></a><a elname="showAddComments" (click)="showCommentWidget()" type="commentLink" class="">Add a comment</a></span></div>
+                                        <script id="replyeditor-template" type="text/x-handlebars-template"><div elname="replyComposer" parentCommentId="{{parentCommentId}}" class="zc-comments-reply-wrapper form-group zc-dem-clearfix"><div elname="placeholder" class="zc-comments-reply-placeholder zc-add-comments-placeholder">Write your reply...</div><div elname="writeComment" isReply="true" class="zc-comments-reply-textarea form-control zc-add-comments-textarea form-control" contenteditable="true"></div><p class="zc-comments-tag">Type &#x40; to tag a user</p><div class="zc-comments-think-btn"><button elname="addReply" class="zc-comments-think-reply-btn">Reply</button><button elname="cancelReply" class="zc-comments-think-cancel-btn">Cancel</button></div></div></script><script id="usermention-template" type="text/x-handlebars-template"><div elname="userMentionsList" class="zc-users-suggestion"><ul elname="userList" class="zc-users-suggestion-list-wrapper">{{#each users}}<li elname="user" userId="{{this.userId}}" class="zc-users-suggestion-list clearfix"><span class="zc-users-suggestion-profile"><img src="https://contacts.zoho.com/file?fs=thumb&ID={{this.userZuid}}"/></span><div class="zc-users-suggestion-username"><a elname="userName" class="zc-users-suggestion-name">{{this.userEmail}}</a></div></li>{{/each}}</ul></div></script><script id="loadreply-template" type="text/x-handlebars-template"><a elname="loadReply" class="zc-view-more-replies" replyTo="{{parentCommentId}}">View more replies</a></script><script id="loadpreviousreply-template" type="text/x-handlebars-template"><a elname="loadPreviousReply" class="zc-view-more-replies" replyTo="{{parentCommentId}}">View previous replies</a></script><script id="loadcomments-template" type="text/x-handlebars-template"><div class="zc-view-cmts-container"><a href="javascript:;" elname="loadL1Comments" class="zc-view-more-comments">View more comments</a></div></script><script id="loadpreviouscomments-template" type="text/x-handlebars-template"><div class="zc-view-cmts-container"><a href="javascript:;" elname="loadPreviousL1Comments" class="zc-view-more-comments">View previous comments</a></div></script>
+                                        <div *ngIf="showComment" style="display:block" elname="commentsContainer" class="zc-comments-container">
+                                         
+                                         <div elname="commentsListWrapper" class="zc-view-comments-container">
+                                              <h2 elname="totalCommentCount" class=""></h2>
+                                              <div elname="commentsListContainer" class="zc-view-comments zc-dem-clearfix"></div>
+                                           </div>
+                                           <div elname="commentComposer" class="zc-add-comments zc-dem-clearfix">
+                                              <span class="zc-add-comments-profile"><img src="https://contacts.zoho.com/file?fs=thumb&amp;ID=824128396" class=""></span>
+                                              <div class="zc-add-comments-wrapper form-group">
+                                                 <select id="comment-select" style="margin-bottom: 10px;" class="form-select">
+                                                     <option disabled>Select Commentary Type</option>
+                                                     <option value="Salary Deduction">Salary Deduction</option>
+                                                     <option value="Appraisal">Appraisal</option>
+                                                     <option value="Duty">Duty</option>
+                                                   </select>  
+                                                 <div *ngIf="commentText.trim().length == 0" elname="placeholder" class="zc-add-comments-placeholder">Write a comment...</div>
+                                                 <div id="comment-text" elname="writeComment" class="zc-add-comments-textarea form-control" contenteditable="true"></div>
+                                                 <button style="margin-top: 30px;" (click)="addComment()" class="pointer btn btn-primary">Comment</button>
+                                                 <p class="zc-comments-tag">Type @ to tag a user</p>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination>
+          <div id="map_canvas" class="map" style="display:none">
+             <div class="map search"><input type="text" name="searchmap" class="form-control"></div>
+             <div id="mapDiv" style="height:500px"></div>
+          </div>
+          <div id="form-overlay" class="form-overlay" style="display: none;"></div>
+       </div>
+ 
+    </div>
+ 
+ </div>
+
+ <div *ngIf="showCheckOutModal" class="modal-overlay">
+    <div style="width:100%" class="modal col-12 flex-col">
+        <div class="col-12 flex-end">
+            <h4 class="col-10">Roxandrea Checkout</h4>
+            <button (click)="toggleCheckOutModal()" class="close-modal col-1">&times;</button>
+        </div>
+        <div style="width:100%">
+            <div class="form-container">
+                <div style="justify-content: center!important;align-items: center!important;" class="col-12 flex-col">
+                    <div style="margin:10px;align-items: start!important;" class="transparent col-12 flex-row-gap-10">
+                        <div style="max-height:59vh;overflow-y:auto;align-items:start;border-radius:4px;font-weight:900!important;font-size: 18px;background: whitesmoke; height:60vh;padding-left:20px" class="col-2 flex-col">{{loadedReservation.reservation_token}}
+                            <ng-container *ngFor="let room of loadedReservation.rooms">
+                                <!-- <div style="font-weight: 500;font-size: 17px;">Room-{{room.room_no}}</div> -->
+                                <div class="flex-row-gap-10">
+                                    <div (click)="getRoomServiceBills(room.room_no)" style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                        <div>
+                                           <p style="font-weight:700!important;" class="pill-text pointer"><em class="icon ni ni-airbnb"></em>  Room-{{room.room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                           <p class="pill-text pointer">{{room.check_out_date}}</p>
+                                        </div>
+                                     </div>
+                                     <span *ngIf="loadedRoom==room.room_no" class="dot"></span>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-10">
+                            <div style="max-height: 59vh!important;overflow-y: auto;overflow-x: hidden;">
+                                <div  class="nk-block">
+                                        <div  id="accordion" class="accordion">
+                                            <div *ngIf="loadedRoom" style="gap:10px!important;" class="col-12 flex-end">
+                                                <h4 class="room-header col-10">Room {{loadedRoom}} Service Bills</h4>
+                                                <a href="javascript:print()" class="col-1 room-header">Print</a>
+                                                <a href="javascript:print()" class="col-1 room-header">Print All</a>
+                                            </div>
+                                           <ng-container *ngFor="let serviceRoomBill of serviceRoomBills">
+                                            <div class="accordion-item">
+                                                <a id="{{serviceRoomBill.id}}" href="javascript:void(0)" (click)="setActive($event)" class="accordion-head" data-bs-target="#accordion-item-{{serviceRoomBill.id}}">
+                                                   <h6 style="font-weight: 1000;font-size: 18px;" id="{{serviceRoomBill.id}}" class="title"><em class="icon ni ni-user-cross-fill"></em> {{serviceRoomBill.service.name}}</h6> 
+                                                   <span id="{{serviceRoomBill.id}}" class="accordion-icon"></span>      
+                                                </a>
+                                                <div class="accordion-body collapse" id="accordion-item-{{serviceRoomBill.id}}" data-bs-parent="#accordion">
+                                                   <div class="accordion-inner">
+                                                    <ul  style="max-height:50vh;overflow-y: auto;" class="link-list-opt">
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Contact Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.contact?.firstname}} {{serviceRoomBill.contact?.middlename }} {{serviceRoomBill.contact?.lastname || 'N/A'}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Contact Email</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.contact?.email || 'N/A'}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Occupant Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.room.occupant?.firstname}} {{serviceRoomBill.room.occupant?.middlename}} {{serviceRoomBill.room.occupant?.lastname}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Bill Date</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.bill_date}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Rate</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.rate}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Prepaid Amount</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.prepaid_amount}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Service Tax</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.tax_amount}}</span></a></div></li>
+                                                        <li ><div class="col-12 row g-3"><label class="col-6">Total</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.grand_total}}</span></a></div></li>
+                                                    </ul>
+                                                    
+                                                   </div>
+                                                </div>
+                                             </div>
+                                           </ng-container>
+                                           <h6 style="text-align: center;" *ngIf="serviceRoomBills.length == 0">No Bills were generated for this room</h6>
+                                           <br>
+                                        </div>
+                                </div>
+                            </div>
+                            <div *ngIf="grandTotal != 0 || prepaidTotal != 0">
+                                <h6 style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Grand Total: NGN {{grandTotal.toLocaleString()}}</h6>
+                                <hr>
+                                <h6 style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Prepaid Total: NGN {{prepaidTotal.toLocaleString()}}</h6>
+                                <hr>
+                                <h6  style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Pending Payment: NGN {{(grandTotal - prepaidTotal).toLocaleString()}}</h6>
+                            </div>
+                        </div>
+                        <div class="overlay" *ngIf="showModalSpinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="flex-row-gap-10">
+                  <button *ngIf="loadedRoom" class="btn btn-black" (click)="checkOutContacts()">Check Out {{loadedRoom}}</button>
+                  <button  class="btn btn-black" (click)="checkOutContacts('*')">Check All Out</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  </div>
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,80 @@
+
+<div elname="zc-component-Reservation" class="zcform_Reservation zc-form-fullheight ">
+    <div id="form-overlay-progress" class="form-overlay-progress hide">
+       <div id="splash-screen">
+          <div class="splash-screen-text">Loading</div>
+          <div class="splash-screen-circle-outer"></div>
+          <div class="splash-screen-circle-inner"></div>
+       </div>
+    </div>
+    <div id="Reservation_ZC_LRKT9Y" class="form-outer-wrapper Reservation_ZC_LRKT9Y">
+       <div class="row">
+          <form action="" class="form-table  label-left " name="Awaiting Confirmations">
+             <div class="form-header"><span class="form-title" id="formTitleElem">Awaiting Confirmations</span><span id="formCloseBtn" class="popupClose" style="display:none;"><i class="fa fa-close"></i></span></div>
+             <div style="max-height: 80vh;overflow-y: scroll;">
+                <table style="max-height:10vh;background: white;" class="data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+                    <thead class="table-light">
+                        <th class="nk-tb-col">Client Name</th>
+                        <th class="nk-tb-col">Client Email</th>
+                        <th class="nk-tb-col">Check In</th>
+                        <th class="nk-tb-col">Check Out</th>
+                        <th class="nk-tb-col">Guest Type</th>
+                        <th class="nk-tb-col">Number of Rooms</th>
+                        <th class="nk-tb-col">Number of Adults</th>
+                        <th class="nk-tb-col">Number of Children</th>
+                        <th class="nk-tb-col">Added User</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr class="nk-tb-item" *ngFor="let reservation of reservations">
+                            
+                            <td style="font-weight: 500;font-size:17px;color:black!important;" class="nk-tb-col"><b>{{reservation.contact.firstname}} {{reservation.contact.lastname}}</b></td>
+                            <td style="font-weight: 500;font-size:17px;color:black!important;" class="nk-tb-col">{{reservation.contact.email}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_in}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_out}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.contact_type}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_rooms}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_adults}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_children}}</td>
+                            <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">dev.plexada@psi.com</td>
+                            <td>
+                                <div class="nk-tb-col nk-tb-col-tools">
+                                    <ul class="nk-tb-actions gx-2">
+                                        <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit" aria-label="Wallet"><em class="icon ni ni-edit-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Commentary" aria-label="Wallet"><em class="icon ni ni-comments"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Send Email" aria-label="Send Email"><em class="icon ni ni-mail-fill"></em></a></li>
+                                       <li class="nk-tb-action-hidden"><a href="#" class="btn btn-sm btn-icon btn-trigger" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Suspend" aria-label="Suspend"><em class="icon ni ni-user-cross-fill"></em></a></li>
+                                       <li>
+                                          <div class="drodown">
+                                             <a href="#" class="btn btn-sm btn-icon btn-trigger dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                <ul class="link-list-opt no-bdr">
+                                                   <li><a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li class="divider"></li>
+                                                   <li><a href="#"><em class="icon ni ni-comments"></em><span>Show Commentary</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-archive-fill"></em><span>Archive User</span></a></li>
+                                                   <li><a href="#"><em class="icon ni ni-cross"></em><span>Mark Sacked</span></a></li>
+
+                                                   <li><a href="#"><em class="icon ni ni-na"></em><span>Suspend User</span></a></li>
+                                                </ul>
+                                             </div>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </div>
+                             </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </form>
+          <div id="map_canvas" class="map" style="display:none">
+             <div class="map search"><input type="text" name="searchmap" class="form-control"></div>
+             <div id="mapDiv" style="height:500px"></div>
+          </div>
+          <div id="form-overlay" class="form-overlay" style="display: none;"></div>
+       </div>
+    </div>
+ </div>
+

@@ -1,0 +1,126 @@
+<div class="col-12" style="max-height: 90vh!important;overflow-y: auto;overflow-x: hidden;">
+    <div style="margin:40px;" class="nk-block col10">
+            <div  id="accordion" class="accordion">
+                <div style="gap:10px!important;" class="col-12 flex-end">
+                    <h4 class="room-header col-10">Client UI Configurations</h4>
+                </div>
+                <div class="accordion-item">
+                    <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
+                       <h6 style="font-weight: 1000;font-size: 18px;" class="title"><em class="icon ni ni-cart"></em>  Features</h6> 
+                       <span class="accordion-icon"></span>      
+                    </a>
+                    <div class="accordion-body" id="accordion-item-1" data-bs-parent="#accordion">
+                       <div class="accordion-inner flex-end">
+                            <div class="flex-col col-4">
+                                <label for="name">Name</label>
+                                <input (keyup)="inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
+                                <label for="order">Order</label>
+                                <select (change)="inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="feature.order_index" id="order_index" class="form-select">
+                                    <option value="0">1</option>
+                                    <option value="1">2</option>
+                                    <option value="2">3</option>
+                                    <option value="3">4</option>
+                                    <option value="4">5</option>
+                                    <option value="5">6</option>
+                                </select>
+                                <label for="image">Image</label>
+                                <input (change)="handleImageUpload($event)" name="image" [(ngModel)]="feature.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
+                                <div class="row">
+                                    <button [(disabled)]="activateButtons" (click)="addFeature()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
+                                    <button [(disabled)]="submitButtonDisabled" (click)="onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
+                                </div>
+                            </div>
+                            <div class="col-8 flex-col">
+                                <div class="row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
+                                    <div id="cube-{{feature.id}}" class="cube zoom" *ngFor="let feature of features" [draggable]="true" (dragstart)="onDragStart($event, feature.name)" ><button (click)="removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
+                                </div>
+                                <small>Drag and drop the cards to configure the display order in the client app</small>
+                            </div>
+                            
+                       </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
+                        <h6 style="font-weight: 1000;font-size: 18px;" class="title"><em class="icon ni ni-cart"></em>  Services</h6> 
+                        <span class="accordion-icon"></span>      
+                     </a>
+                     <div class="accordion-body" id="accordion-item-1" data-bs-parent="#accordion">
+                        <div class="accordion-inner flex-end">
+                             <div class="flex-col col-4">
+                                 <label for="name">Name</label>
+                                 <input (keyup)="inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
+                                 <label for="order">Order</label>
+                                 <select (change)="inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="feature.order_index" id="order_index" class="form-select">
+                                     <option value="0">1</option>
+                                     <option value="1">2</option>
+                                     <option value="2">3</option>
+                                     <option value="3">4</option>
+                                     <option value="4">5</option>
+                                     <option value="5">6</option>
+                                 </select>
+                                 <label for="image">Image</label>
+                                 <input (change)="handleImageUpload($event)" name="image" [(ngModel)]="feature.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
+                                 <div class="row">
+                                     <button [(disabled)]="activateButtons" (click)="addFeature()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
+                                     <button [(disabled)]="submitButtonDisabled" (click)="onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
+                                 </div>
+                             </div>
+                             <div class="col-8 flex-col">
+                                 <div class="row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
+                                     <div id="cube-{{feature.id}}" class="cube zoom" *ngFor="let feature of features" [draggable]="true" (dragstart)="onDragStart($event, feature.name)" ><button (click)="removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
+                                 </div>
+                                 <small>Drag and drop the cards to configure the display order in the client app</small>
+                             </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="accordion-item">
+                    <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
+                       <h6 style="font-weight: 1000;font-size: 18px;" class="title"><em class="icon ni ni-cart"></em>  Hotel Master's Rooms</h6> 
+                       <span class="accordion-icon"></span>      
+                    </a>
+                    <div class="accordion-body collapse" id="accordion-item-1" data-bs-parent="#accordion">
+                       <div class="accordion-inner">
+                        <ul  style="max-height:50vh;overflow-y: auto;" class="link-list-opt">
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Email</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+                        </ul>
+                       </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
+                       <h6 style="font-weight: 1000;font-size: 18px;" class="title"><em class="icon ni ni-cart"></em>  Hotel Intro Video</h6> 
+                       <span class="accordion-icon"></span>      
+                    </a>
+                    <div class="accordion-body collapse" id="accordion-item-1" data-bs-parent="#accordion">
+                       <div class="accordion-inner">
+                        <ul  style="max-height:50vh;overflow-y: auto;" class="link-list-opt">
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Email</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+                        </ul>
+                       </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
+                       <h6 style="font-weight: 1000;font-size: 18px;" class="title"><em class="icon ni ni-cart"></em>  Restaurant Featured Meals</h6> 
+                       <span class="accordion-icon"></span>      
+                    </a>
+                    <div class="accordion-body collapse" id="accordion-item-1" data-bs-parent="#accordion">
+                       <div class="accordion-inner">
+                        <ul  style="max-height:50vh;overflow-y: auto;" class="link-list-opt">
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+                            <li ><div class="col-12 row g-3"><label class="col-6">Contact Email</label><a class="col-6" href="javascript:void(0)" ><span class="cap">----</span></a></div></li>
+
+                        </ul>
+                        
+                       </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+                          

@@ -1,0 +1,110 @@
+header{
+    display:none!important;
+}
+
+form{
+    margin:20px;
+}
+
+.parent{
+    width:1000px;
+    background: whitesmoke;
+    margin-top: 60px;
+    border-radius: 7px;
+    border: 1px solid rgb(225 31 64);
+}
+
+h4{
+    margin-left: 20px;
+    color:rgb(225 31 64);
+    font-size: 25px;
+    margin-top: 40px;
+}
+
+label{
+    margin-top:20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.forgot{
+    margin-top: 10px;
+}
+
+.or{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.fingerprint{
+    border: rgb(225 31 64) 1px solid;
+    width:70%;
+    height: 50px;
+    
+}
+
+.forgot-pass{
+    color:rgb(225 31 64);
+}
+
+.margin-30{
+    margin:30px;
+}
+
+.flex-row-90 {
+    display: flex!important;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+}
+
+.lower-auth{
+    margin-top: 60px;
+}
+
+.round-social{
+    width:60px;
+    height:60px;
+    border-radius: 50%;
+}
+
+.twitter{
+    background: rgb(81, 126, 222);
+}
+
+.google{
+    background: orange;
+}
+
+.fingerprint-text{
+    padding-top:15px;
+    color:rgb(225 31 64);
+    text-align:center;
+}
+
+input{
+    height:50px;
+}
+
+.hr{
+    width: 38%!important;
+    height:1px;
+    background:rgb(209, 207, 207);
+}
+
+.signup{
+    text-align: center;
+    margin-top:20px;
+    margin-bottom: 40px;
+
+}
+
+.submit{
+    color:white;
+    background: rgb(225 31 64)!important;
+    width: 40%!important;
+    margin-right: 50px;
+    margin-top: 30px;
+    height:50px;
+}

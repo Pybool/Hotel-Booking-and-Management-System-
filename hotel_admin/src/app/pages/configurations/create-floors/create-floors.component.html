@@ -1,0 +1,38 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <h4 style="width:100%;justify-content: center;margin-left: 15.5vw;">Create Floor</h4>
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" #floorForm="ngForm" novalidate>
+        <div class="col-12 flex-row-40">
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="floor">Floor Name <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="floor.floor_name" name="floor" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="floor">Floor Number <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="floor.floor_no" name="floor" type="text" class="form-control" />
+            </div>
+          </div>
+          
+        </div>
+        <div>
+          <button style="justify-content: center;margin-left: 14.6vw;" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
+      </form>
+      <p class="signup"><b>Already have an floors? <a style="color:rgb(225 31 64);" href="/root/configurations/hotel-floors">View Floors!</a></b></p>
+    </div>
+    <app-spinner *ngIf="showSpinner"></app-spinner>
+  </div>
+
+  
+  

@@ -1,0 +1,12 @@
+delete from reservations_reservations_rooms;
+delete from reservations_reservations;
+update rooms_rooms set no_children=NULL;
+update rooms_rooms set no_adults=NULL;
+update rooms_rooms set dead_reservation_token=NULL;
+update rooms_rooms set is_ready=1;
+update rooms_rooms set occupant_id=NULL;
+update rooms_rooms set check_out_date=NULL;
+update rooms_rooms set check_in_date=NULL;
+update rooms_rooms set is_occupied=0;
+update rooms_rooms set is_available=1;
+update rooms_rooms set is_checked_in=0;

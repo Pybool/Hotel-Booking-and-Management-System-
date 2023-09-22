@@ -1,0 +1,49 @@
+.btn.btn-black {
+    background: #000000;
+    border: 1px solid #000000;
+    padding-left:6%;
+    min-height:30px!important;
+    font-size:15px;
+    text-transform: uppercase;
+    color: #fff; }
+    
+  .btn.btn-black:hover {
+    border: 1px solid #000000;
+    background: #000000;
+    color: #b69100; }
+
+.cube{
+    margin: 10px;
+    width:200px;
+    height: 200px;
+    border-radius: 10px;
+    background: grey;
+    background-size: cover; /* Adjust as needed */
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.times-button{
+    color: white;
+    font-size: 25px;
+    outline: none;
+    border: none;
+    position: absolute;
+    top: 0px;
+    right: 18px;
+    background: transparent;
+    display: none;
+  }
+
+  .cube:hover .times-button {
+    display: block;
+    cursor: pointer;
+  }
+
+  .feature-name{
+    padding: 3px;
+    background: #000000;
+    color: white!important;
+    border-radius: 8px;
+    font-weight: 500;
+  }

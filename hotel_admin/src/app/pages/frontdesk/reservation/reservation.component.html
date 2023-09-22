@@ -1,0 +1,205 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+   <app-custom-alert
+   [show]="showAlert"
+   [message]="alertMessage"
+   [duration]="alertDuration"
+   [backgroundColor]="alertBackgroundColor"
+   ></app-custom-alert>
+   <h4 style="width:80%;justify-content: center;margin-left: 1.2vw;">Create Reservation</h4>
+   <div class="form-container">
+      <hr>
+      <form (ngSubmit)="onSubmit()" #reservationForm="ngForm" novalidate>
+            <div class="zc-form-scroll-wrapper">
+               <div style="overflow-x: hidden; overflow-y: auto; max-height:60vh" elname="formRow" class="dual-column column-block">
+                  
+                       <div style="margin:20px; " elname="columnLayoutOne" class="col-12 flex-end">
+                        <div class="col-6">
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Check In<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                 <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_in" name="check_in" style="width:80%;" autocomplete="off"  class="form-control" type="datetime-local">
+                              </div>
+                           </div>
+                           <div class="form-group-x zc-Check_Out-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_Out-label  zc_date_label col-3"><span class="zc-label-text">Check Out<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                 <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_out" name="check_out" style="width:80%;" autocomplete="off"  class="form-control" type="datetime-local">
+                              </div>
+                           </div>
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="spinner-label form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Room Type<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                  <select [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type" style="width:80%;" id="guestType" class="form-select col-6">
+                                    <option value="{{roomType.id}}" *ngFor="let roomType of roomTypes;">{{roomType.name}}</option>
+                                  </select>
+                                  <div *ngIf="showRoomTypeSpinner" class="tiny-spinner"></div>
+                               </div>
+                           </div>
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="spinner-label form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Rooms<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                   <select (change)="choseRooms()" [(disabled)]="roomSelectDisabled" multiple [(ngModel)]="reservation.rooms" name="rooms" style="width:80%;" id="guestType" class="form-select col-6 mutiple-select">
+                                     <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
+                                   </select>
+                                   <div *ngIf="showRoomSpinner" class="tiny-spinner"></div>
+                               </div>
+                               
+                           </div>
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                            <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Adults<span class="fieldMandate">*</span></span></label>
+                            <div class="col-9 flex-col">
+                               <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_adults" name="no_adults" style="width:80%;" autocomplete="off"  class="form-control" type="text">
+                               <!-- <span *ngIf="maxAdults !=0" class="max-errors">The maximum allowed adults for this selection is {{maxAdults}}</span> -->
+                               <span *ngIf="formErrors.maxExceeded.includes('no_adults')" class="max-errors">{{maxExceeded.text}}</span>
+                            </div>
+                         </div> 
+                      
+                         <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                            <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Children<span class="fieldMandate">*</span></span></label>
+                            <div class="col-9 flex-col">
+                               <input placeholder="The maximum allowed children for this selection is {{maxChildren}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_children" name="no_children" style="width:80%;" autocomplete="off"  class="form-control" type="text">
+                               <!-- <span *ngIf="maxChildren !=0" class="max-errors">The maximum allowed children for this selection is {{maxChildren}}</span> -->
+                               <span *ngIf="formErrors.maxExceeded.includes('no_children')" class="max-errors">{{maxExceeded.text}}</span>
+                            </div>
+                         </div>
+ 
+                         <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                            <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Extra Adults<span class="fieldMandate">*</span></span></label>
+                            <div class="col-9 flex-col">
+                               <input placeholder="The maximum allowed Extra for this selection is {{maxXtraAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_xtra_adults" max="{{2}}" name="no_xtra_adults" style="width:80%;" autocomplete="off"  class="form-control" type="text">
+                               <!-- <span *ngIf="maxXtraAdults !=0" class="max-errors">The maximum allowed children for this selection is {{maxXtraAdults}}</span> -->
+                               <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="max-errors">{{maxExceeded.text}}</span>
+                            </div>
+                         </div>
+                         
+                        </div>
+
+                        <div class="col-6">
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="spinner-label form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Contact Type<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                  <select (change)="filterContactByType($event)" [(ngModel)] ="reservation.contact_type" style="width:80%;" name="contact_type" id="guestType" class="form-select col-6">
+                                    <option value="{{contactType.id}}" *ngFor="let contactType of contactTypes;">{{contactType.name}}</option>
+                                  </select>
+                                  <div *ngIf="showContactTypeSpinner" class="tiny-spinner"></div>
+                               </div>
+                           </div>
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="spinner-label form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Contact<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                  <select [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" style="width:80%;" name="contact" id="contact" class="form-select col-6">
+                                    <option value="{{contact.email}}" *ngFor="let contact of contacts;">{{contact.email}}</option>
+                                  </select>
+                                  <div *ngIf="showContactSpinner" class="tiny-spinner"></div>
+                               </div>
+                           </div> 
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Select Rate<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9 flex-col">
+                                 <select (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" style="width:80%;" id="rate" class="form-select col-6">
+                                    <option value="{{undefined}}">Choose a rate to apply</option>
+                                    <option value="{{rate.id}}" *ngFor="let rate of rates;">{{rate.rate_name}}</option>
+                                </select>
+                                <div *ngIf="showRatesSpinner" class="tiny-spinner"></div>
+                                <span class="max-errors">If left blank, rates for the individual rooms will be used for computation or <a style="color:slategrey; text-decoration: underline;" (click)="showManualRate()" href="javascript:void(0)">Specify rate manually</a></span>
+                              </div>
+                           </div>
+
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Tax Amount<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                 <input [(ngModel)] ="reservation.tax_amount"  style="width:80%;" autocomplete="off"  class="form-control" name="tax_amount" type="text">
+                              </div>
+                           </div>
+                           <!-- <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Total Payable<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                 <input [(ngModel)] ="reservation.total_payable"  style="width:80%;" autocomplete="off" name="total_payable"  class="form-control" type="text">
+                              </div>
+                           </div> -->
+                           <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
+                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Advance Amount<span class="fieldMandate">*</span></span></label>
+                              <div class="col-9">
+                                 <input [(ngModel)] ="reservation.advance_amount"  style="width:80%;" autocomplete="off" name="advance_amount" class="form-control" type="text">
+                              </div>
+                           </div>
+                           <div style="margin-left: 10vw; margin-top: 30px;" elname="columnLayoutOne" class="formColumn second-column ">
+                              <div class="form-group-x clearfix zc-addnote-fld">
+                                 <div name="Rate_Details" class="notes-field   mediumSizeLive ">
+                                    <p class="description">Rooms and Rates</p>
+                                    <div style="background:transparent;overflow-x: auto;overflow-y: hidden;flex-wrap:wrap;margin-right: 20px;justify-content:space-evenly;" class="description flex-row-gap-10">
+                                       <ng-container *ngFor="let room of reservation.rooms">
+                                          <div style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                             <div>
+                                                <p (click)="editRoomReservation(getObjectFromArrayByRoomNo(rooms,room).room_no)" class="pill-text pointer">Room {{getObjectFromArrayByRoomNo(rooms,room).room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                                <p class="pill-text">NGN {{getObjectFromArrayByRoomNo(rooms,room).room_rate?.toLocaleString() || '0.00'}}</p>
+                                             </div>
+                                          </div>
+                                       </ng-container>
+                                    </div>
+                                    <p class="description">{{reservation.rooms?.length}} rooms * {{differenceInDays}}  nights :  NGN {{amountTotal.toLocaleString()}}</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                  
+                  
+               </div>
+               
+            </div>
+         
+         <hr>
+            <div class="form-action-container">
+                 <button style="width:140px;border-radius: 5px;height:40px;" type="submit" class="zc-live-primary-btn" name="submit" value="Submit" title="">Submit</button>
+            </div>
+      </form>
+     <p class="signup"><b>Already have reservations? <a style="color:rgb(225 31 64);" href="/root/frontdesk/upcoming-checkins">View upcoming checkins!</a></b></p>
+   </div>
+   <div class="overlay" *ngIf="showSpinner">
+       <div class="spinner"></div>
+   </div>
+ </div>
+
+ <div *ngIf="showManualRoomRates" class="modal-overlay">
+   <div class="modal col-12 flex-col">
+     <div class="col-12 flex-end">
+         <h4 class="col-10">Manual Room Rates</h4>
+         <button (click)="closeManualRoomRates()" class="close-modal col-1">&times;</button>
+     </div>
+
+     <div style="width:100%">
+       <div class="table-wrapper" style="max-height: 80vh;overflow-y: scroll;">
+           <table style="background: white;" class="pointer data-table-init is-seperate table-dark table-striped nk-tb-list transparent">
+               <thead class="table-light">
+                   <th class="nk-tb-col">Room No</th>
+                   <th class="nk-tb-col">Rate</th>
+                   <th></th>
+               </thead>
+               <tbody>
+                   <tr class="nk-tb-item" *ngFor="let room of reservation.rooms">
+                       <td style="font-weight: 600;font-size:17px;color:black!important;" class="nk-tb-col"><b>{{getObjectFromArrayByRoomNo(rooms,room).room_no}}</b></td>
+                       <td class="nk-tb-col"><b><input (keyup)="cloneRoomRates()" id="room-{{room}}" type="number" class="form-control" value="{{getObjectFromArrayByRoomNo(rooms,room).room_rate}}"/></b></td>
+                   </tr>
+               </tbody>
+               <div class="overlay" *ngIf="showManualRatesSpinner">
+                  <div class="spinner"></div>
+              </div>
+               <p>Note that the rates prefilled are the rates existing on the rooms, edit to specify new rate for this reservation by clicking apply button or click update and apply new rate for this and further reservations</p>
+           </table>
+           <div *ngIf="reservation.rooms.length > 0" class="col-6 flex-row">
+               <button (click)="applyManualRates()" style="margin-top:30px;" type="button" class="btn btn-primary">Apply</button>
+               <button style="margin-top:30px;" type="button" class="btn btn-primary">Update & Apply</button>
+               <button (click)="resetManualRates()" style="margin-top:30px;" type="button" class="btn btn-primary">Reset</button>
+            </div>
+            
+           
+       </div>
+     </div>
+   </div>
+ </div>
+ 
+ 
+ 

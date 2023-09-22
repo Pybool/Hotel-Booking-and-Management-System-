@@ -1,0 +1,50 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <h4 style="width:100%;justify-content: center;margin-left: 15.5vw;">Create Department</h4>
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" #departmentForm="ngForm" novalidate>
+        <div class="col-12 flex-row-40">
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="department_name">Department Name <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="department.department_name" name="department_name" type="text" class="form-control" />
+              <!-- <div *ngIf="!validateRequired(department.firstname)" class="error">
+                First Name is required.
+              </div> -->
+            </div>
+            <div class="text-controls">
+              <label for="director">Director <span class="fieldMandate">*</span></label>
+              <select [(ngModel)]="department.director" name="director" class="form-select">
+                <option value="{{directorOption.id}}" *ngFor="let directorOption of directorOptions;">{{directorOption.firstname}} {{directorOption.surname}} Email: {{directorOption.email}}</option>
+              </select>
+            </div>
+            <div class="phone-controls">
+              <label for="phone">Landline<span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="department.phone" name="phone" type="tel" class="form-control" />
+            </div>
+            <div class="text-controls">
+              <label for="description">Description <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="department.description" name="description" type="text" class="form-control" />
+            </div>
+          </div>
+          
+        </div>
+        <div>
+          <button style="justify-content: center;margin-left: 14.6vw;" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
+      </form>
+      <p class="signup"><b>Already have an departments? <a style="color:rgb(225 31 64);" href="/root/configurations/hotel-departments">View Departments!</a></b></p>
+    </div>
+    <div class="overlay" *ngIf="showSpinner">
+        <div class="spinner"></div>
+    </div>
+  </div>
+
+  
+  

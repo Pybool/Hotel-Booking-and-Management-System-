@@ -1,0 +1,30 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <h4 style="width:100%;justify-content: center;margin-left: 15.5vw;">Create BedType</h4>
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" #bedtypeForm="ngForm" novalidate>
+        <div class="col-12 flex-row-40">
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="floor">Bed Type <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="bedtype.name" name="floor" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <button style="justify-content: center;margin-left: 14.6vw;" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
+      </form>
+      <p class="signup"><b>Already have an bedtypes? <a style="color:rgb(225 31 64);" href="/root/rooms/bedtypes">View BedTypes!</a></b></p>
+    </div>
+    <app-spinner *ngIf="showSpinner"></app-spinner>
+  </div>
+
+  
+  

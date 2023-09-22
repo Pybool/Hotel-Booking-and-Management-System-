@@ -1,0 +1,84 @@
+
+<div class="parent container flex-row-wrap-gap-10">
+    <app-custom-alert
+    [show]="showAlert"
+    [message]="alertMessage"
+    [duration]="alertDuration"
+    [backgroundColor]="alertBackgroundColor"
+    ></app-custom-alert>
+    <h4>Create Staff</h4>
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" #userForm="ngForm" novalidate>
+        <div class="col-12 flex-row-40">
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="firstname">First Name <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.firstname" name="firstname" type="text" class="form-control" />
+              <!-- <div *ngIf="!validateRequired(user.firstname)" class="error">
+                First Name is required.
+              </div> -->
+            </div>
+            <div class="text-controls">
+              <label for="lastName">Last Name <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.surname" name="surname" type="text" class="form-control" />
+            </div>
+            <div class="email-controls">
+              <label for="email">Email Address <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.email" name="email" type="email" class="form-control" />
+            </div>
+            <div class="phone-controls">
+              <label for="phone">Phone Number <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.phone" name="phone" type="tel" class="form-control" />
+            </div>
+            <div class="text-controls">
+              <label for="address1">Address1 <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.address1" name="address1" type="text" class="form-control" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-controls">
+              <label for="address2">Address2 (Optional)</label>
+              <input [(ngModel)]="user.address2" name="address2" type="text" class="form-control" />
+            </div>
+            <div class="text-controls">
+              <label for="role">Role <span class="fieldMandate">*</span></label>
+              <select (change)="selectStaffRole($event)" [(ngModel)]="user.role" name="role" class="form-select">
+                <option *ngFor="let role of staffRoles;" value="{{role.id}}">{{role.role_name}}</option>
+              </select>
+            </div>
+            <div class="text-controls">
+              <label for="department">Department <span class="fieldMandate">*</span></label>
+              <select [(ngModel)]="user.department" name="department" class="form-select">
+                <option value="{{department.department_name}}" *ngFor="let department of departments;">{{department.department_name}}</option>
+              </select>
+            </div>
+            <div class="text-controls">
+              <label for="department">Basic Salary <span class="fieldMandate">*</span></label>
+              <select disabled [(ngModel)]="user.basic_salary" name="basic_salary" class="form-select">
+                <option>Choose Salary</option>
+                <option *ngFor="let salary of salaries;" value="{{salary.id}}">NGN {{formatNumber(salary.salary_amount)}}</option>
+              </select>
+            </div>
+            <!-- <div class="password-controls">
+              <label for="password">Password <span class="fieldMandate">*</span></label>
+              <input [(ngModel)]="user.password" name="password" type="password" class="form-control" />
+            </div> -->
+            <div class="text-controls">
+              <label for="profile_pics">Profile Picture (Optional)</label>
+              <input  name="profile_pics" type="file" class="form-file form-select" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <button style="padding-left:70px" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
+      </form>
+      <p class="signup"><b>Already have an staff? <a style="color:rgb(225 31 64);" href="/root/configurations/staff-list">View Staff!</a></b></p>
+    </div>
+    <div class="overlay" *ngIf="showSpinner">
+        <div class="spinner"></div>
+    </div>
+  </div>
+
+  
+  
