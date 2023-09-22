@@ -15,7 +15,6 @@ def custom_paginate(APIVIEW,metadata):
             q_offset = int(request.GET.get('offset', 1))
             APIVIEW.custom_paginator = custom_paginator_class(APIVIEW.pagination_class,request)
             is_search = True if q else None
-            print(_filter)
                 
             model_instances = model.objects.filter(_filter).order_by('-id')
             model_instances_count = model_instances.count()
