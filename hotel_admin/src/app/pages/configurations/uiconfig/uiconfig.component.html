@@ -13,9 +13,9 @@
                        <div class="accordion-inner flex-end">
                             <div class="flex-col col-4">
                                 <label for="name">Name</label>
-                                <input (keyup)="inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
+                                <input (keyup)="featureCls.inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="featureCls.feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
                                 <label for="order">Order</label>
-                                <select (change)="inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="feature.order_index" id="order_index" class="form-select">
+                                <select (change)="featureCls.inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="featureCls.feature.order_index" id="order_index" class="form-select">
                                     <option value="0">1</option>
                                     <option value="1">2</option>
                                     <option value="2">3</option>
@@ -24,15 +24,15 @@
                                     <option value="5">6</option>
                                 </select>
                                 <label for="image">Image</label>
-                                <input (change)="handleImageUpload($event)" name="image" [(ngModel)]="feature.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
+                                <input (change)="featureCls.handleImageUpload($event)" name="image" [(ngModel)]="featureCls.feature.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
                                 <div class="row">
-                                    <button [(disabled)]="activateButtons" (click)="addFeature()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
-                                    <button [(disabled)]="submitButtonDisabled" (click)="onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
+                                    <button [(disabled)]="featureCls.activateButtons" (click)="featureCls.addFeature()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
+                                    <button [(disabled)]="featureCls.submitButtonDisabled" (click)="featureCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                 </div>
                             </div>
                             <div class="col-8 flex-col">
-                                <div class="row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
-                                    <div id="cube-{{feature.id}}" class="cube zoom" *ngFor="let feature of features" [draggable]="true" (dragstart)="onDragStart($event, feature.name)" ><button (click)="removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
+                                <div class="row" (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
+                                    <div id="feature-cube-{{feature.id}}" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
                                 </div>
                                 <small>Drag and drop the cards to configure the display order in the client app</small>
                             </div>
@@ -49,9 +49,9 @@
                         <div class="accordion-inner flex-end">
                              <div class="flex-col col-4">
                                  <label for="name">Name</label>
-                                 <input (keyup)="inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
+                                 <input (keyup)="serviceCls.inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="serviceCls.service.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
                                  <label for="order">Order</label>
-                                 <select (change)="inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="feature.order_index" id="order_index" class="form-select">
+                                 <select (change)="serviceCls.inputKeyupButtonsActivator()" name="order_index" [(ngModel)]="serviceCls.service.order_index" id="order_index" class="form-select">
                                      <option value="0">1</option>
                                      <option value="1">2</option>
                                      <option value="2">3</option>
@@ -60,18 +60,19 @@
                                      <option value="5">6</option>
                                  </select>
                                  <label for="image">Image</label>
-                                 <input (change)="handleImageUpload($event)" name="image" [(ngModel)]="feature.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
+                                 <input (change)="serviceCls.handleImageUpload($event)" name="image" [(ngModel)]="serviceCls.service.image" id="image" type="file" class="form-file" placeholder="Select Image"/>
                                  <div class="row">
-                                     <button [(disabled)]="activateButtons" (click)="addFeature()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
-                                     <button [(disabled)]="submitButtonDisabled" (click)="onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
+                                     <button  (click)="serviceCls.addService()" style="width:120px!important;min-width:120px!important; margin-right: 10px;" type="button" class="btn btn-black">Add</button>
+                                     <button [(disabled)]="serviceCls.submitButtonDisabled" (click)="serviceCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                  </div>
                              </div>
                              <div class="col-8 flex-col">
-                                 <div class="row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
-                                     <div id="cube-{{feature.id}}" class="cube zoom" *ngFor="let feature of features" [draggable]="true" (dragstart)="onDragStart($event, feature.name)" ><button (click)="removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
+                                 <div class="row" (dragover)="serviceCls.onDragOver($event)" (drop)="serviceCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
+                                     <div id="service-cube-{{service.id}}" class="cube zoom service-cube" *ngFor="let service of serviceCls.services" [draggable]="true" (dragstart)="serviceCls.onDragStart($event, service.name)" ><button (click)="serviceCls.removeService(service.id)" class="times-button">&times;</button><span class="feature-name">{{ service.name }}</span> </div>
                                  </div>
                                  <small>Drag and drop the cards to configure the display order in the client app</small>
                              </div>
+                             
                         </div>
                      </div>
                 </div>
