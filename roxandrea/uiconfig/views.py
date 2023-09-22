@@ -1,9 +1,12 @@
 import json
 import time
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from middlewares.middleware import JWTAuthenticationMiddleWare
+from rooms.models import Rooms
+from uiconfig.models import UIMasterRooms
 from uiconfig.models import Features
 from uiconfig.models import Services as UIServices
 from services.models import Services
@@ -92,3 +95,21 @@ class LandingPageServicesView(APIView):
         
     def reconstruct_form_data(self,form_data):
         return [{'data': value[0], 'image': form_data[f'image-{key.split("-")[1]}'][0]} for key, value in form_data.items() if 'service-' in key]
+
+class LandingPageFeaturedRoomsView(APIView):
+    authentication_classes = [JWTAuthenticationMiddleWare]
+    
+    def get(self, request):
+        time.sleep(2)
+        room_instances = UIMasterRooms.objects.all().values()
+        return Response({"status":True,"message":"Master rooms were fetched",'data':room_instances}, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        time.sleep(2)
+        data = request.data
+        data['room'] = get_object_or_404(Rooms,id=int(data['room_id']))
+        ui_master_room_instance = UIMasterRooms(**data)
+        ui_master_room_instance.save()
+        
+        return Response({'status':True,'message':"New ui master room added"})
+        
