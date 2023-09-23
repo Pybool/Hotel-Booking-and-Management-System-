@@ -94,12 +94,11 @@ class ReservationValid(object):
         except:
             errors.append("One or more rooms selected are unavailable at the moment")
             
-        # try:
-        result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_adults')
-        print(result,int(reservation['no_adults']))
-        assert(result >= int(reservation['no_adults']))
-        # except:
-        #     errors.append(f"The number of adults allowed for this room type has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_adults}' Adults are allowed")
+        try:
+            result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_adults')
+            assert(result >= int(reservation['no_adults']))
+        except:
+            errors.append(f"The number of adults allowed for this room type has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_adults}' Adults are allowed")
         try:
             result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_children')
             assert(result >= int(reservation['no_children']))
@@ -117,53 +116,3 @@ class ReservationValid(object):
             errors.append(f"An advance payment is required for this room type and the payment has not yet been verified")
         return errors
     
-
-# class ReservationValid(object):
-    
-    # def __init__(self,is_availability_check=False, rooms=[]):
-    #     self.rooms = rooms
-    #     self.is_availability_check = is_availability_check
-    
-    # def is_date_available(self,checkin_date_str, checkout_date_str):
-    #     # Calculate today's date
-    #     today = datetime.now()
-    #     # Parse the check-in and check-out dates to datetime objects
-    #     checkin_date = datetime.strptime(checkin_date_str, "%Y-%m-%d %H:%M")
-    #     checkout_date = datetime.strptime(checkout_date_str, "%Y-%m-%d %H:%M")
-
-    #     # Check if the reservation check-in date is today or in the future
-    #     if checkin_date <= today:
-    #         return False, "Check-in date should be in the future or today."
-
-    #     # Query reservations for conflicts
-    #     print(checkin_date)
-    #     print(checkout_date)
-        
-    #     self.date_conflicting_reservations = Reservations.objects.filter(
-    #         check_in__lte=checkout_date,
-    #         check_out__gte=checkin_date,
-    #     )
-    #     self.unavailable_buffer = []
-    #     self.aggregate_reserved_rooms = []
-    #     for conflict in self.date_conflicting_reservations:
-    #         print("Conflict ====> ", conflict)
-    #         self.reservation_rooms = conflict.rooms.all().values_list('id',flat=True)
-    #         print("Self.rooms ===> ", self.rooms)
-    #         print("Reservation rooms ", list(self.reservation_rooms))
-    #         self.aggregate_reserved_rooms = self.aggregate_reserved_rooms + list(self.reservation_rooms)
-    #         print("Aggregate rooms ====> ", self.aggregate_reserved_rooms)
-        
-        
-    #     for room in self.rooms:
-    #         if room.id in self.aggregate_reserved_rooms:
-    #             print(f"Room {room.room_no} was found in a earlier reservation")
-    #             self.unavailable_buffer.append(room.room_no)
-    #         else:
-    #             pass
-    #         # Check for conflicting reservations
-    #     if len(self.unavailable_buffer) > 0:
-    #         return False, "The timeframe selected will not be available for reservations"
-        
-    #     # Reservation is valid
-    #     elif len(self.unavailable_buffer) == 0:
-    #         return True, "Reservation is available for this timeframe"
