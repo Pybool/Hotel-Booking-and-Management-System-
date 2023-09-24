@@ -60,7 +60,6 @@ class LandingPageServicesView(APIView):
     authentication_classes = [JWTAuthenticationMiddleWare]
     
     def get(self, request):
-        time.sleep(2)
         services_instances = UIServices.objects.all().values().order_by('-order_index')
         return Response({"status":True,"message":"Services were fetched",'data':services_instances}, status=status.HTTP_200_OK)
     
