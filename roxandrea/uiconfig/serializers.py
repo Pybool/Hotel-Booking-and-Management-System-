@@ -1,11 +1,11 @@
 from rest_framework import serializers
-
 from rooms.models import RoomType
 from rooms.models import Rooms
 from rooms.models import Floors
 from rooms.models import BedType
 from contacts.models import ContactType, Contacts
 from rooms.models import Amenities
+
 class ImageUploadSerializer(serializers.Serializer):
     image = serializers.ImageField()
 

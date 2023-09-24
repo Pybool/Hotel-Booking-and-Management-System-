@@ -207,9 +207,7 @@ class ReservationAPIView(APIView):
                                      'is_ready':False,'check_in_date':None,'check_out_date':None,
                                      'active_reservation_token':None, 'dead_reservation_token':data['reservation_token']
                                      }
-            print("Checking out ===> ", room_instances, check_out_initializer)
             affected_rows = room_instances.update(**check_out_initializer)
-            print("Affected rows ", affected_rows)
             self.ensure_update(affected_rows)
             reservation_instance = Reservations.objects.filter(reservation_token = data['reservation_token'])
             reservation_checkout_initializer = {'is_checked_in':False,'num_checked_in': 0,'has_checked_out': True,'is_history':True}
@@ -267,7 +265,6 @@ class CheckAvailableAPIView(APIView):
         print(is_reservation_valid_errors)
         msg = is_reservation_valid_errors[0] if len(is_reservation_valid_errors) > 0 else msg
         response = {"status":True,"message":msg,'data':RoomSerializer(rooms_instance_object,many=True).data} if status and len(is_reservation_valid_errors) == 0 else {"status":False,"message":msg}      
-        print(response)      
         return Response(response)
    
 class AddonsAPIView(APIView):

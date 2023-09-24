@@ -179,8 +179,6 @@ class Services{
   public serviceImageUrl:any = ''
   public activateButtons:boolean = true;
   public submitButtonDisabled:boolean = true
-  // public hotelservices:any[] = []
-  // public hotelservice:any = {}
 
   constructor(public uiconfigService: UiconfigService){}  
 
@@ -215,7 +213,7 @@ class Services{
     let newObj:any = []
     arr.forEach((arrObj)=>{
       console.log()
-      if (arrObj.id != id){
+      if (arrObj.id != obj.id){
         newObj.push(arrObj)
       }
     })
@@ -263,14 +261,13 @@ class Services{
 
   onSubmit(){
     const formData = new FormData();
-    // Append card data and images for each card
     console.log(this.services)
     this.services.forEach((service, index) => {
       console.log(service)
       formData.append(`service-${index}`, JSON.stringify({name:service.name,order_index:service.order_index}));
       formData.append(`image-${index}`, service.image, service.image.name);
     });
-    this.uiconfigService.createFeatures(formData)
+    this.uiconfigService.createServices(formData)
   }
 
   handleImageUpload(event: any) {

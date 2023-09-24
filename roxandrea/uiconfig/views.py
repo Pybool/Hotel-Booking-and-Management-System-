@@ -9,7 +9,6 @@ from rooms.models import Rooms
 from uiconfig.models import UIMasterRooms
 from uiconfig.models import Features
 from uiconfig.models import Services as UIServices
-from services.models import Services
 from .serializers import ImageUploadSerializer
 from django.db import transaction
 from django.conf import settings
@@ -23,7 +22,7 @@ class LandingPageFeaturesView(APIView):
     
     def get(self, request):
         time.sleep(2)
-        features_instances = Features.objects.all().values()
+        features_instances = Features.objects.all().values().order_by('-order_index')
         return Response({"status":True,"message":"Features were fetched",'data':features_instances}, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -62,11 +61,10 @@ class LandingPageServicesView(APIView):
     
     def get(self, request):
         time.sleep(2)
-        services_instances = UIServices.objects.all().values()
+        services_instances = UIServices.objects.all().values().order_by('-order_index')
         return Response({"status":True,"message":"Services were fetched",'data':services_instances}, status=status.HTTP_200_OK)
     
     def post(self, request):
-        time.sleep(2)
         data_object = dict(request.data)
         form_data_list = self.reconstruct_form_data(data_object)
         with transaction.atomic():
@@ -86,7 +84,7 @@ class LandingPageServicesView(APIView):
                                 service_instance.image = image
                                 service_instance.save() 
                             else:
-                                return Response({"status":False,"message":f"This feature already exists!"})
+                                return Response({"status":False,"message":f"This service already exists!"})
                         else:
                             return Response({"status":False,"message":f"You have reached the maximum number of allowable services"})
                 else:
