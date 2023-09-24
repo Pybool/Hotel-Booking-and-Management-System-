@@ -219,7 +219,7 @@ footer {
   }
   
 .zoom:hover {
-    transform: scale(1.0); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
     border: 1px;
     border-color: steelblue;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.9), 0 7px 23px 0 rgba(0, 0, 0, 0.3);

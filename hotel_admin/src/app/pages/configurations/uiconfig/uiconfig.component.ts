@@ -186,6 +186,13 @@ class Feature{
     );
   }
 
+  saveFeaturesUpdate(){
+    this.showFeatureUpdateSpinner = true
+    setTimeout(()=>{
+      this.showFeatureUpdateSpinner = false
+    },3000)
+  }
+
 }
 
 class Services{

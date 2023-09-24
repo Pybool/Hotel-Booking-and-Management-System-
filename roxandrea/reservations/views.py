@@ -143,7 +143,7 @@ class ReservationAPIView(APIView):
             metadata['model'] = Reservations
             metadata['request'] = request
             if is_client:
-                metadata['_filter'] =  (Q(contact_id__exact=request.user.id))
+                metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
             else:
                 
                 if is_checkedout:

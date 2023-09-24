@@ -2,7 +2,7 @@
     <div style="margin:40px;" class="nk-block col10">
             <div  id="accordion" class="accordion">
                 <div style="gap:10px!important;" class="col-12 flex-end">
-                    <h4 class="room-header col-10">Client UI Configurations</h4>
+                    <h4 style="margin-left:20px;" class="room-header col-10">Client UI Configurations</h4>
                 </div>
                 <div class="accordion-item">
                     <a href="javascript:void(0)" class="accordion-head" data-bs-target="#accordion-item-1">
@@ -10,8 +10,8 @@
                        <span class="accordion-icon"></span>      
                     </a>
                     <div class="accordion-body" id="accordion-item-1" data-bs-parent="#accordion">
-                       <div class="accordion-inner flex-end">
-                            <div class="flex-col col-4">
+                       <div style="background: whitesmoke;" class="accordion-inner flex-end">
+                            <div class="flex-col col-3">
                                 <label for="name">Name</label>
                                 <input (keyup)="featureCls.inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="featureCls.feature.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
                                 <label for="order">Order</label>
@@ -30,8 +30,8 @@
                                     <button [(disabled)]="featureCls.submitButtonDisabled" (click)="featureCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                 </div>
                             </div>
-                            <div class="col-8 flex-col parent">
-                                <div class="row " (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;align-items: center;">
+                            <div class="col-9 flex-col parent">
+                                <div class="row " (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: white; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;align-items: center;">
                                     <div class="overlay" *ngIf="featureCls.showFeatureSpinner">
                                         <div class="spinner"></div>
                                     </div>
@@ -41,10 +41,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-left: 10px;" class="flex-end">
+                                <div style="margin-left: 10px;gap:10px" class="flex-end">
                                     <small>Drag and drop the cards to configure the display order in the client app</small>
-                                    <span (click)="featureCls.editFeatures()">Edit</span>
-                                    <!-- <span>Update</span> -->
+                                    <span style="padding-left: 14%;width:150px" class="btn btn-black" (click)="featureCls.editFeatures()">Edit</span>
+                                    <span style="padding-left: 14%;width:150px" class="btn btn-black" (click)="featureCls.saveFeaturesUpdate()" >Update</span>
                                  </div>
                             </div>
                             
@@ -57,8 +57,8 @@
                         <span class="accordion-icon"></span>      
                      </a>
                      <div class="accordion-body" id="accordion-item-1" data-bs-parent="#accordion">
-                        <div class="accordion-inner flex-end">
-                             <div class="flex-col col-4">
+                        <div style="background: whitesmoke;" class="accordion-inner flex-end">
+                             <div  class="flex-col col-3">
                                  <label for="name">Name</label>
                                  <input (keyup)="serviceCls.inputKeyupButtonsActivator()" id="name" name="name" [(ngModel)]="serviceCls.service.name" type="text" class="form-control" placeholder="Enter the name of the Feature"/>
                                  <label for="order">Order</label>
@@ -77,8 +77,8 @@
                                      <button [(disabled)]="serviceCls.submitButtonDisabled" (click)="serviceCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                  </div>
                              </div>
-                             <div class="col-8 flex-col parent">
-                                 <div class="row" (dragover)="serviceCls.onDragOver($event)" (drop)="serviceCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
+                             <div class="col-9 flex-col parent">
+                                 <div class="row" (dragover)="serviceCls.onDragOver($event)" (drop)="serviceCls.onDrop($event)" style="background: white; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
                                     <div class="overlay" *ngIf="serviceCls.showServiceSpinner">
                                         <div class="spinner"></div>
                                     </div>
