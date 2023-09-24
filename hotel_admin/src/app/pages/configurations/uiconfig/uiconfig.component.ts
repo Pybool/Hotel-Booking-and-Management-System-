@@ -55,6 +55,8 @@ class Feature{
   public submitButtonDisabled:boolean = true
   public hotelservices:any[] = []
   public hotelservice:any = {}
+  public showFeatureSpinner:boolean = false;
+  public showFeatureUpdateSpinner:boolean = false;
 
   constructor(public uiconfigService: UiconfigService){}  
 
@@ -117,7 +119,7 @@ class Feature{
       this.features.splice(dropIndex, 0, {name:data,id:targetIdDrag,image:img,imgUrl:targetObj.imgUrl});
       setTimeout(()=>{
         const target:any = document.getElementById(`feature-cube-${targetIdDrag}`)
-        target.style.backgroundImage = `url(${targetObj.imgUrl})`;
+        target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
       },50)
     }
   }
@@ -170,6 +172,19 @@ class Feature{
     return this.feature?.name?.trim() == '' && this.feature?.name.length == 0 && isNaN(this.feature.order_index) == true && this.feature.image == null;
   }
 
+  editFeatures(){
+    this.showFeatureSpinner = true;
+    this.uiconfigService.getFeatures().subscribe(
+      (response:any) => {
+        this.showFeatureSpinner = false;
+        this.features = response.data
+        console.log('Features fetched successfully:', response);
+      },
+      (error) => {
+        console.error('Error sending data:', error);
+      }
+    );
+  }
 
 }
 
@@ -179,6 +194,8 @@ class Services{
   public serviceImageUrl:any = ''
   public activateButtons:boolean = true;
   public submitButtonDisabled:boolean = true
+  public showServiceSpinner:boolean = false;
+  public showServiceUpdateSpinner:boolean = false;
 
   constructor(public uiconfigService: UiconfigService){}  
 
@@ -243,7 +260,7 @@ class Services{
       this.services.splice(dropIndex, 0, {name:data,id:targetIdDrag,image:img,imgUrl:targetObj.imgUrl});
       setTimeout(()=>{
         const target:any = document.getElementById(`service-cube-${targetIdDrag}`)
-        target.style.backgroundImage = `url(${targetObj.imgUrl})`;
+        target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
       },50)
     }
   }
@@ -294,6 +311,20 @@ class Services{
   submitActivate(){
     return this.service?.name?.trim() == '' && this.service?.name.length == 0 && isNaN(this.service.order_index) == true && this.service.image == null;
   }
+
+  editServices(){
+    this.showServiceSpinner = true;
+    this.uiconfigService.getServices().subscribe(
+      (response:any) => {
+        this.showServiceSpinner = false;
+        this.services = response.data
+        console.log('Services fetched successfully:', response);
+      },
+      (error) => {
+        console.error('Error sending data:', error);
+      }
+    );
+  }
 }
 
 @Component({
@@ -314,4 +345,6 @@ export class UiconfigComponent {
   ngOnInit(){
     
   }
+
+  
 }

@@ -21,8 +21,8 @@ class LandingPageFeaturesView(APIView):
     authentication_classes = [JWTAuthenticationMiddleWare]
     
     def get(self, request):
-        time.sleep(2)
-        features_instances = Features.objects.all().values().order_by('-order_index')
+        time.sleep(3)
+        features_instances = Features.objects.all().values().order_by('order_index')
         return Response({"status":True,"message":"Features were fetched",'data':features_instances}, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -60,7 +60,8 @@ class LandingPageServicesView(APIView):
     authentication_classes = [JWTAuthenticationMiddleWare]
     
     def get(self, request):
-        services_instances = UIServices.objects.all().values().order_by('-order_index')
+        time.sleep(3)
+        services_instances = UIServices.objects.all().values().order_by('order_index')
         return Response({"status":True,"message":"Services were fetched",'data':services_instances}, status=status.HTTP_200_OK)
     
     def post(self, request):

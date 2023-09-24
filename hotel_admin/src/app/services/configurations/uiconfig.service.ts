@@ -10,26 +10,18 @@ export class UiconfigService {
   constructor(private http: HttpClient) { }
 
   createFeatures(features:any){
-    this.http.post(`${environment.api}/uiconfig-features`, features).subscribe(
-      (response:any) => {
-        alert(response.message)
-        console.log('Data sent successfully:', response);
-      },
-      (error) => {
-        console.error('Error sending data:', error);
-      }
-    );
+    return this.http.post(`${environment.api}/uiconfig-features`, features)
+  }
+
+  getFeatures(){
+   return this.http.get(`${environment.api}/uiconfig-features`)
   }
 
   createServices(services:any){
-    this.http.post(`${environment.api}/uiconfig-services`, services).subscribe(
-      (response:any) => {
-        alert(response.message)
-        console.log('Data sent successfully:', response);
-      },
-      (error) => {
-        console.error('Error sending data:', error);
-      }
-    );
+    return this.http.post(`${environment.api}/uiconfig-services`, services)
   }
+
+  getServices(){
+    return this.http.get(`${environment.api}/uiconfig-services`)
+   }
 }

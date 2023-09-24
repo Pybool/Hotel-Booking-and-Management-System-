@@ -30,11 +30,22 @@
                                     <button [(disabled)]="featureCls.submitButtonDisabled" (click)="featureCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                 </div>
                             </div>
-                            <div class="col-8 flex-col">
-                                <div class="row" (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
-                                    <div id="feature-cube-{{feature.id}}" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> </div>
+                            <div class="col-8 flex-col parent">
+                                <div class="row " (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;align-items: center;">
+                                    <div class="overlay" *ngIf="featureCls.showFeatureSpinner">
+                                        <div class="spinner"></div>
+                                    </div>
+                                    <div id="feature-cube-{{feature.id}}" style="background-image: url('http://127.0.0.1:8080/media/{{feature.image}}');" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> 
+                                        <div class="overlay" *ngIf="featureCls.showFeatureUpdateSpinner">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small>Drag and drop the cards to configure the display order in the client app</small>
+                                <div style="margin-left: 10px;" class="flex-end">
+                                    <small>Drag and drop the cards to configure the display order in the client app</small>
+                                    <span (click)="featureCls.editFeatures()">Edit</span>
+                                    <!-- <span>Update</span> -->
+                                 </div>
                             </div>
                             
                        </div>
@@ -66,11 +77,24 @@
                                      <button [(disabled)]="serviceCls.submitButtonDisabled" (click)="serviceCls.onSubmit()" style="width:150px!important;min-width:150px!important;" type="button" class="btn btn-black">Save All</button>
                                  </div>
                              </div>
-                             <div class="col-8 flex-col">
+                             <div class="col-8 flex-col parent">
                                  <div class="row" (dragover)="serviceCls.onDragOver($event)" (drop)="serviceCls.onDrop($event)" style="background: whitesmoke; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;">
-                                     <div id="service-cube-{{service.id}}" class="cube zoom service-cube" *ngFor="let service of serviceCls.services" [draggable]="true" (dragstart)="serviceCls.onDragStart($event, service.name)" ><button (click)="serviceCls.removeService(service.id)" class="times-button">&times;</button><span class="feature-name">{{ service.name }}</span> </div>
+                                    <div class="overlay" *ngIf="serviceCls.showServiceSpinner">
+                                        <div class="spinner"></div>
+                                    </div>
+                                     <div id="service-cube-{{service.id}}" style="background-image: url('http://127.0.0.1:8080/media/{{service.image}}');" class="cube zoom service-cube" *ngFor="let service of serviceCls.services" [draggable]="true" (dragstart)="serviceCls.onDragStart($event, service.name)" ><button (click)="serviceCls.removeService(service.id)" class="times-button">&times;</button><span class="feature-name">{{ service.name }}</span> 
+                                        <div class="overlay" *ngIf="featureCls.showServiceUpdateSpinner">
+                                            <div class="spinner"></div>
+                                        </div>
+                                    </div>
+                                     
+                                    </div>
+                                 
+                                 <div style="margin-left: 10px;" class="flex-end">
+                                    <small>Drag and drop the cards to configure the display order in the client app</small>
+                                    <span (click)="serviceCls.editServices()">Edit</span>
+                                    <!-- <span>Update</span> -->
                                  </div>
-                                 <small>Drag and drop the cards to configure the display order in the client app</small>
                              </div>
                              
                         </div>
