@@ -32,12 +32,14 @@
                             </div>
                             <div class="col-9 flex-col parent">
                                 <div class="row " (dragover)="featureCls.onDragOver($event)" (drop)="featureCls.onDrop($event)" style="background: white; border-radius: 6px;margin-left: 5px;max-height: 440px;overflow-y: auto;justify-content: center;align-items: center;">
-                                    <div class="overlay" *ngIf="featureCls.showFeatureSpinner">
+                                    <div class="overlay flex-col" *ngIf="featureCls.showFeatureSpinner">
                                         <div class="spinner"></div>
+                                        <div style="color:white">Fetching data...</div>
                                     </div>
                                     <div id="feature-cube-{{feature.id}}" style="background-image: url('http://127.0.0.1:8080/media/{{feature.image}}');" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> 
-                                        <div class="overlay" *ngIf="featureCls.showFeatureUpdateSpinner">
+                                        <div class="overlay flex-col" *ngIf="featureCls.showFeatureUpdateSpinner">
                                             <div class="spinner"></div>
+                                            <div>Updating...</div>
                                         </div>
                                     </div>
                                 </div>
@@ -85,6 +87,7 @@
                                      <div id="service-cube-{{service.id}}" style="background-image: url('http://127.0.0.1:8080/media/{{service.image}}');" class="cube zoom service-cube" *ngFor="let service of serviceCls.services" [draggable]="true" (dragstart)="serviceCls.onDragStart($event, service.name)" ><button (click)="serviceCls.removeService(service.id)" class="times-button">&times;</button><span class="feature-name">{{ service.name }}</span> 
                                         <div class="overlay" *ngIf="featureCls.showServiceUpdateSpinner">
                                             <div class="spinner"></div>
+                                            <p>Updating...</p>
                                         </div>
                                     </div>
                                      
