@@ -2,52 +2,6 @@ import { Component } from '@angular/core';
 import { UiconfigService } from 'src/app/services/configurations/uiconfig.service';
 import Swal from 'sweetalert2'
 
-// class IfeatureService{
-
-//   public addFeature(){
-//   }
-
-//   public getObjectFromArrayByName(arr:any[],name:string){
- 
-//   }
-
-//   public deleteObjectFromArray(arr:any[],id:number){
-   
-//   }
-
-//   onDragStart(event: DragEvent, card: string): void {
-//   }
-
-//   onDragOver(event: DragEvent): void {
-//   }
-//   onDrop(event: DragEvent): void {
-  
-//   }
-
-//   public getObjectIndex(id){
-  
-//   }
-
-//   onSubmit(){
-//   }
-
-//   handleImageUpload(event: any) {
-//   }
-
-//   inputKeyupButtonsActivator(){
-//   }
-  
-//   removeFeature(featureId:string){
-//   }
-
-//   featureActivateButtons(){
-//   }
-
-//   submitActivate(){
-//   }
-
-// }
-
 class Feature{
   public features:any[] = []
   public feature:any = {}
@@ -102,7 +56,6 @@ class Feature{
   public updateObjectInArray(array, idForUpdate, data) {
     return array.map((item) => {
       if (item.id === idForUpdate) {
-        // Update the properties of the matching object
         return { ...item, ...data };
       }
       return item;
@@ -132,7 +85,6 @@ class Feature{
       this.features.splice(dropIndex, 0, {name:data,id:targetIdDrag,image:img,imgUrl:targetObj.imgUrl || targetObj.image,order_index:dropIndex});
       setTimeout(()=>{
         this.updatePositions()
-        console.log(this.features)
         const target:any = document.getElementById(`feature-cube-${targetIdDrag}`)
         target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
       },50)
@@ -171,7 +123,6 @@ class Feature{
   onSubmit(){
     const formData = new FormData();
     this.features.forEach((feature, index) => {
-      console.log(feature)
       formData.append(`feature-${index}`, JSON.stringify({name:feature.name,order_index:feature.order_index}));
       formData.append(`image-${index}`, feature.image, feature.image.name);
     });
