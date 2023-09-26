@@ -86,7 +86,6 @@ class Feature{
       setTimeout(()=>{
         this.updatePositions()
         const target:any = document.getElementById(`feature-cube-${targetIdDrag}`)
-        console.log(targetObj.imgUrl)
         if(this.editMode){
           target.style.backgroundImage = `url(${'http://127.0.0.1:8080/media/'+targetObj.image})`;
         }
@@ -249,12 +248,10 @@ class Services{
     const obj:any = arr.find(x => x.id === id);
     let newObj:any = []
     arr.forEach((arrObj)=>{
-      console.log()
       if (arrObj.id != obj.id){
         newObj.push(arrObj)
       }
     })
-    console.log(newObj)
     return newObj
   }
 
@@ -298,9 +295,7 @@ class Services{
 
   onSubmit(){
     const formData = new FormData();
-    console.log(this.services)
     this.services.forEach((service, index) => {
-      console.log(service)
       formData.append(`service-${index}`, JSON.stringify({name:service.name,order_index:service.order_index}));
       formData.append(`image-${index}`, service.image, service.image.name);
     });
