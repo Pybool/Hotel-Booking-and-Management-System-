@@ -86,7 +86,13 @@ class Feature{
       setTimeout(()=>{
         this.updatePositions()
         const target:any = document.getElementById(`feature-cube-${targetIdDrag}`)
-        target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
+        console.log(targetObj.imgUrl)
+        if(this.editMode){
+          target.style.backgroundImage = `url(${'http://127.0.0.1:8080/media/'+targetObj.image})`;
+        }
+        else{
+          target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
+        }
       },50)
     }
   }
