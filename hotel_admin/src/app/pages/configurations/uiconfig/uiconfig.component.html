@@ -36,7 +36,7 @@
                                         <div class="spinner"></div>
                                         <div style="color:white">Fetching data...</div>
                                     </div>
-                                    <div id="feature-cube-{{feature.id}}" style="background-image: url('http://127.0.0.1:8080/media/{{feature.image}}');" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> 
+                                    <div id="feature-cube-{{feature.id}}" (click)="featureCls.loadFeature(feature.id)" style="background-image: url('http://127.0.0.1:8080/media/{{feature.image}}');" class="cube zoom feature-cube" *ngFor="let feature of featureCls.features" [draggable]="true" (dragstart)="featureCls.onDragStart($event, feature.name)" ><button (click)="featureCls.removeFeature(feature.id)" class="times-button">&times;</button><span class="feature-name">{{ feature.name }}</span> 
                                         <div class="overlay flex-col" *ngIf="featureCls.showFeatureUpdateSpinner">
                                             <div class="spinner"></div>
                                             <div>Updating...</div>

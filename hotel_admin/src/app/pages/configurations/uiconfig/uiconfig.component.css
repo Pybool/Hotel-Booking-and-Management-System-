@@ -21,6 +21,7 @@
     background-size: cover; /* Adjust as needed */
     background-repeat: no-repeat;
     color: white;
+    cursor: pointer;
 }
 
 .times-button{
@@ -37,7 +38,6 @@
 
   .cube:hover .times-button {
     display: block;
-    cursor: pointer;
   }
 
   .feature-name{

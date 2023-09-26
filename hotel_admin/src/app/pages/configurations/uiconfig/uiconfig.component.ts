@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UiconfigService } from 'src/app/services/configurations/uiconfig.service';
+import Swal from 'sweetalert2'
 
 // class IfeatureService{
 
@@ -57,6 +58,7 @@ class Feature{
   public hotelservice:any = {}
   public showFeatureSpinner:boolean = false;
   public showFeatureUpdateSpinner:boolean = false;
+  private editMode = false;
 
   constructor(public uiconfigService: UiconfigService){}  
 
@@ -97,6 +99,16 @@ class Feature{
     return newObj
   }
 
+  public updateObjectInArray(array, idForUpdate, data) {
+    return array.map((item) => {
+      if (item.id === idForUpdate) {
+        // Update the properties of the matching object
+        return { ...item, ...data };
+      }
+      return item;
+    });
+  }
+
   onDragStart(event: DragEvent, card: string): void {
     event.dataTransfer.setData('text/plain', card);
   }
@@ -106,9 +118,10 @@ class Feature{
   }
   onDrop(event: DragEvent): void {
     event.preventDefault();
+    const displacedCube = this.getObjectFromArrayByName(this.features,event.target['innerText'].replaceAll("'",""))
     const data = event.dataTransfer.getData('text/plain');
     const targetObj = this.getObjectFromArrayByName(this.features,data.replaceAll("'",""))
-    const targetId = this.getObjectFromArrayByName(this.features,event.target['innerText'].replaceAll("'","")).id
+    const targetId = displacedCube.id
     const targetIdDrag= targetObj.id
     const dropIndex = this.getObjectIndex(targetId)
     const dragIndex = this.getObjectIndex(targetIdDrag)
@@ -116,12 +129,32 @@ class Feature{
 
     if (dragIndex !== -1 && dropIndex !== -1) {
       this.features.splice(dragIndex, 1);
-      this.features.splice(dropIndex, 0, {name:data,id:targetIdDrag,image:img,imgUrl:targetObj.imgUrl});
+      this.features.splice(dropIndex, 0, {name:data,id:targetIdDrag,image:img,imgUrl:targetObj.imgUrl || targetObj.image,order_index:dropIndex});
       setTimeout(()=>{
+        this.updatePositions()
+        console.log(this.features)
         const target:any = document.getElementById(`feature-cube-${targetIdDrag}`)
         target.style.backgroundImage = `url(${targetObj.imgUrl || 'http://127.0.0.1:8080/media/'+targetObj.image})`;
       },50)
     }
+  }
+
+  updatePositions(){
+    let index = 0
+    this.features.forEach((feature)=>{
+      feature.order_index = index
+      index += 1
+    })
+  }
+
+  getObjectFromArrayById(arr,id){
+    const obj:any = arr.find(x => x.id === id);
+    return obj
+  }
+
+  loadFeature(id){
+    this.feature = this.getObjectFromArrayById(this.features,parseInt(id))
+    console.log(this.feature)
   }
 
   public getObjectIndex(id){
@@ -137,7 +170,6 @@ class Feature{
 
   onSubmit(){
     const formData = new FormData();
-    // Append card data and images for each card
     this.features.forEach((feature, index) => {
       console.log(feature)
       formData.append(`feature-${index}`, JSON.stringify({name:feature.name,order_index:feature.order_index}));
@@ -151,6 +183,10 @@ class Feature{
     this.feature.image = event.target.files[0];
     this.featureImageUrl = URL.createObjectURL(this.feature.image);
     this.activateButtons = !this.featureActivateButtons()
+
+    if(this.editMode){
+      // lastCube.style.backgroundImage = `url(${this.feature.imgUrl})`;
+    }
   }
 
   inputKeyupButtonsActivator(){
@@ -161,7 +197,25 @@ class Feature{
   }
   
   removeFeature(featureId:string){
-    this.features = this.deleteObjectFromArray(this.features,parseInt(featureId))
+    Swal.fire({
+      position: 'center',
+      icon: 'info',
+      title: `Remove a feature ?`,
+      text:`Which action will you like to perform`,
+      showConfirmButton: true, // Display the "OK" button
+      showCancelButton: true, // Display the "Cancel" button
+      confirmButtonText: 'Remove Option', // Text for the "OK" button
+      cancelButtonText: 'Delete', // Text for the "Cancel" button
+      allowOutsideClick: false,
+      timer: undefined
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        this.features = this.deleteObjectFromArray(this.features,parseInt(featureId))
+      } else if (result.isDismissed) {}
+      this.updatePositions()
+      console.log(this.features)
+    });
   }
 
   featureActivateButtons(){
@@ -174,6 +228,7 @@ class Feature{
 
   editFeatures(){
     this.showFeatureSpinner = true;
+    this.editMode = true
     this.uiconfigService.getFeatures().subscribe(
       (response:any) => {
         this.showFeatureSpinner = false;
@@ -190,6 +245,7 @@ class Feature{
     this.showFeatureUpdateSpinner = true
     setTimeout(()=>{
       this.showFeatureUpdateSpinner = false
+      this.editMode = false
     },3000)
   }
 
