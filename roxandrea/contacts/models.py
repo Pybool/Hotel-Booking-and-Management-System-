@@ -11,6 +11,7 @@ class Contacts(models.Model):
     firstname = models.CharField(max_length=255, null=False, default='')
     middlename = models.CharField(max_length=255, null=False, default='')
     lastname = models.CharField(max_length=255, null=False, default='')
+    gender = models.CharField(max_length=255, null=False, default='')
     age = models.IntegerField(default=18)
     phone = models.CharField(max_length=255, null=True)
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)

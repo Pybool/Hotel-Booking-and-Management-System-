@@ -1,10 +1,13 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { ContactService } from 'src/app/services/contacts/contact.service';
 import { RatesService } from 'src/app/services/finance/rates.service';
 import { ReservationService } from 'src/app/services/reservations/reservation.service';
 import { RoomXService } from 'src/app/services/rooms/room-x.service';
 
+const PORT = 4200
+const HOST = 'localhost'
 
 @Component({
   selector: 'app-reservation',
@@ -43,11 +46,36 @@ export class ReservationComponent {
   alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
+  private srcValues:string[] = []
 
-  constructor(private roomsXService: RoomXService,
+  constructor
+            (private roomsXService: RoomXService,
               private ratesService: RatesService, 
               private contactService: ContactService,
-              private reservationService: ReservationService){}
+              private reservationService: ReservationService,
+              private renderer: Renderer2, private router: Router){
+                this.srcValues = [
+                  `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
+                  `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
+                ]
+              }
+
+              
+
+             
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      this.srcValues.forEach((src)=>{
+        this.loadScript(src);
+      })
+    },500)
+  }
+  loadScript(src:string) {
+    const script = this.renderer.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    this.renderer.appendChild(document.querySelector('#reservation-root'), script);
+  }
 
   ngOnInit(){
     this.showSpinner = true
@@ -120,9 +148,7 @@ export class ReservationComponent {
   }
 
   clearRoomRelated(){
-    this.reservation.no_adults = ''
-    this.reservation.no_children = ''
-    this.reservation.no_xtra_adults = ''
+    this.reservation.no_occupants = ''
     this.rooms = []
   }
 
@@ -314,9 +340,7 @@ export class ReservationComponent {
     let roomTypeId:any;
     const selectedRooms = this.reservation.rooms
     this.roomChosen = this.reservation.rooms.length < 0
-    this.maxAdults = this.calculateMaxAllowed(selectedRooms,'no_adults')
-    this.maxChildren = this.calculateMaxAllowed(selectedRooms,'no_children')
-    this.maxXtraAdults = this.calculateMaxAllowed(selectedRooms,'no_xtra_adults')
+    this.maxAdults = this.calculateMaxAllowed(selectedRooms,'no_occupants')
     this.recalculate()
     this.updatePill(roomTypeId)
   }

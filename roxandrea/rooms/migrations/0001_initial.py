@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(default='', max_length=255)),
-                ('no_adults', models.IntegerField()),
+                ('no_occupants', models.IntegerField()),
                 ('no_children', models.IntegerField()),
                 ('no_xtra_adults', models.IntegerField()),
                 ('generic_type_image', models.ImageField(upload_to='images/generic_rooms')),

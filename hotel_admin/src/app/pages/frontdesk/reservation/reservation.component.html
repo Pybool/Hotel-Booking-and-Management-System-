@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="parent container flex-row-wrap-gap-10">
    <app-custom-alert
    [show]="showAlert"
@@ -49,9 +49,8 @@
                            <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
                             <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Adults<span class="fieldMandate">*</span></span></label>
                             <div class="col-9 flex-col">
-                               <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_adults" name="no_adults" style="width:80%;" autocomplete="off"  class="form-control" type="text">
-                               <!-- <span *ngIf="maxAdults !=0" class="max-errors">The maximum allowed adults for this selection is {{maxAdults}}</span> -->
-                               <span *ngIf="formErrors.maxExceeded.includes('no_adults')" class="max-errors">{{maxExceeded.text}}</span>
+                               <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_occupants" name="no_occupants" style="width:80%;" autocomplete="off"  class="form-control" type="text">
+                               <span *ngIf="formErrors.maxExceeded.includes('no_occupants')" class="max-errors">{{maxExceeded.text}}</span>
                             </div>
                          </div> 
                       
@@ -59,7 +58,6 @@
                             <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Children<span class="fieldMandate">*</span></span></label>
                             <div class="col-9 flex-col">
                                <input placeholder="The maximum allowed children for this selection is {{maxChildren}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_children" name="no_children" style="width:80%;" autocomplete="off"  class="form-control" type="text">
-                               <!-- <span *ngIf="maxChildren !=0" class="max-errors">The maximum allowed children for this selection is {{maxChildren}}</span> -->
                                <span *ngIf="formErrors.maxExceeded.includes('no_children')" class="max-errors">{{maxExceeded.text}}</span>
                             </div>
                          </div>
@@ -68,7 +66,6 @@
                             <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Number of Extra Adults<span class="fieldMandate">*</span></span></label>
                             <div class="col-9 flex-col">
                                <input placeholder="The maximum allowed Extra for this selection is {{maxXtraAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_xtra_adults" max="{{2}}" name="no_xtra_adults" style="width:80%;" autocomplete="off"  class="form-control" type="text">
-                               <!-- <span *ngIf="maxXtraAdults !=0" class="max-errors">The maximum allowed children for this selection is {{maxXtraAdults}}</span> -->
                                <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="max-errors">{{maxExceeded.text}}</span>
                             </div>
                          </div>
@@ -112,12 +109,6 @@
                                  <input [(ngModel)] ="reservation.tax_amount"  style="width:80%;" autocomplete="off"  class="form-control" name="tax_amount" type="text">
                               </div>
                            </div>
-                           <!-- <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
-                              <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Total Payable<span class="fieldMandate">*</span></span></label>
-                              <div class="col-9">
-                                 <input [(ngModel)] ="reservation.total_payable"  style="width:80%;" autocomplete="off" name="total_payable"  class="form-control" type="text">
-                              </div>
-                           </div> -->
                            <div class="form-group-x zc-Check_In-group clearfix flex-row-gap-10 col-12">
                               <label class="form-label zc-dem-clearfix zc-Check_In-label  zc_date_label col-3"><span class="zc-label-text">Advance Amount<span class="fieldMandate">*</span></span></label>
                               <div class="col-9">
@@ -200,6 +191,245 @@
      </div>
    </div>
  </div>
- 
- 
+ -->
+
+
+ <div id="reservation-root" class="nk-content ">
+   <div class="container-fluid">
+      <div class="nk-content-inner">
+         <div class="nk-content-body">
+            <div class="nk-block-head nk-block-head-sm">
+               <div class="nk-block-between">
+                  <div class="nk-block-head-content">
+                     <h3 class="nk-block-title page-title">Add Booking</h3>
+                  </div>
+               </div>
+            </div>
+               <div class="nk-block">
+                  <div class="card card-bordered">
+                     <div class="card-inner">
+                        <form (ngSubmit)="onSubmit()" #reservationForm="ngForm" novalidate>
+                           <div class="row gy-4">
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="first-name">First Name</label>
+                                    <input [(ngModel)] ="reservation.firstname" type="text" name="firstname" class="form-control" id="first-name" placeholder="First Name" required>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="last-name">Last Name</label>
+                                    <input [(ngModel)] ="reservation.surname" type="text" name="surname" class="form-control" id="last-name" placeholder="Last Name">
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Gender</label>
+                                    <div class="form-control-wrap">
+                                       <select [(ngModel)] ="reservation.gender" name="gender" class="form-select " data-placeholder="Select multiple options">
+                                          <option value="default_option">Select Gender</option>
+                                          <option value="option_select_gender">Male</option>
+                                          <option value="option_select_gender">Female</option>
+                                          <option value="option_select_gender">Other</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="phone-no">Phone</label>
+                                    <input [(ngModel)] ="reservation.phone" type="text" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="email">Email Address</label>
+                                    <input [(ngModel)] ="reservation.email" type="email" class="form-control" name="email" placeholder="Email Address">
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="address">Adddress</label>
+                                    <input [(ngModel)] ="reservation.address1" type="text" class="form-control" id="address1" placeholder="Address">
+                                 </div>
+                              </div>
+                             
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Advance paid</label>
+                                    <div class="form-control-wrap">
+                                       <div class="form-icon form-icon-right"></div>
+                                       <input [(ngModel)] ="reservation.advance_amount" autocomplete="off" name="advance_amount" class="form-control" type="text">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Arrived Date</label>
+                                    <div class="form-control-wrap">
+                                       <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
+                                       <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_in" name="check_in" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Depart Date</label>
+                                    <div class="form-control-wrap">
+                                       <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
+                                       <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_out" name="check_out" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group"><label class="form-label" for="total-person">Total Occupants</label>
+                                    <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_occupants" name="no_occupants" type="number" class="form-control" id="total-person" placeholder="Total Person">
+                                    <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="max-errors">{{maxExceeded.text}}</span>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Contact Type</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" (change)="filterContactByType($event)" [(ngModel)] ="reservation.contact_type" style="width:100%;" name="contact_type" class="form-select">
+                                          <option value="default_option">Select Contact Type</option>
+                                          <option value="{{contactType.id}}" *ngFor="let contactType of contactTypes;">{{contactType.name}}</option>
+                                       </select>
+                                       <div *ngIf="showContactTypeSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Contact</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" name="contact" id="contact" class="form-select ">
+                                          <option value="default_option">Select Contact</option>
+                                          <option value="{{contact.email}}" *ngFor="let contact of contacts;">{{contact.email}}</option>
+                                       </select>
+                                       <div *ngIf="showContactSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Choose a rate to apply</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" id="rate" class="form-select ">
+                                          <option value="{{undefined}}">Select Rate</option>
+                                          <option value="{{rate.id}}" *ngFor="let rate of rates;">{{rate.rate_name}}</option>
+                                       </select>
+                                       <div *ngIf="showContactSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select an package</label>
+                                    <div class="form-control-wrap">
+                                       <select [(ngModel)] ="reservation.package" name="package" style="width:100%" class="form-select " data-placeholder="Select multiple options">
+                                          <option value="Starter Package">Starter Package</option>
+                                          <option value="Honeymoon Package">Honeymoon Package</option>
+                                          <option value="Vacation Package">Vacation Package</option>
+                                          <option value="Spring Package">Spring Package</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Room Type</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type"  class="form-select">
+                                          <option value="default_option">Select Room Type</option>
+                                          <option value="{{roomType.id}}" *ngFor="let roomType of roomTypes;">{{roomType.name}}</option>
+                                       </select>
+                                       <div *ngIf="showRoomTypeSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-4">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Rooms</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
+                                          <option value="default_option">Select Rooms</option>
+                                          <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
+                                       </select>
+                                       <div *ngIf="showRoomSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-8">
+                                 <div class="form-group">
+                                    <label class="form-label">Rooms and Rates</label>
+                                    <div style="background:transparent;overflow-x: auto;overflow-y: hidden;flex-wrap:wrap;margin-right: 20px;justify-content:space-evenly;" class="description row g-3">
+                                       <ng-container *ngFor="let room of reservation.rooms">
+                                          <div style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                             <div>
+                                                <p (click)="editRoomReservation(getObjectFromArrayByRoomNo(rooms,room).room_no)" class="pill-text pointer">Room {{getObjectFromArrayByRoomNo(rooms,room).room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                                <p class="pill-text">NGN {{getObjectFromArrayByRoomNo(rooms,room).room_rate?.toLocaleString() || '0.00'}}</p>
+                                             </div>
+                                          </div>
+                                       </ng-container>
+                                    </div>
+                                    <p class="description">{{reservation.rooms?.length}} rooms * {{differenceInDays}}  nights :  NGN {{amountTotal.toLocaleString()}}</p>
+                                 </div>
+                              </div>
+                        
+                               <!--                         
+                              <div class="col-12">
+                                 <div class="form-group">
+                                    <label class="form-label" for="default-textarea">Note</label>
+                                    <div class="form-control-wrap"><textarea class="form-control no-resize" id="default-textarea">Large text area content</textarea></div>
+                                 </div>
+                                 
+                              </div> -->
+                              <div class="form-group">
+                                 <div class="form-group"><button type="submit" class="btn btn-primary">Add Booking</button></div>
+                                 
+                              </div>
+                              <div class="overlay" *ngIf="showSpinner">
+                                 <div class="spinner"></div>
+                             </div>
+                              <p>Note that the rates prefilled are the rates existing on the rooms, edit to specify new rate for this reservation by clicking apply button or click update and apply new rate for this and further reservations</p>
+                              
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>            
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  

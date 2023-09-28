@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AwaitingConfirmationComponent } from './pages/frontdesk/awaiting-confirmation/awaiting-confirmation.component';
 import { NoshowsComponent } from './pages/frontdesk/noshows/noshows.component';
-import { AllReservationsComponent } from './pages/frontdesk/all-reservations/all-reservations.component';
 import { CheckInComponent } from './pages/frontdesk/check-in/check-in.component';
 import { CheckInHistoryComponent } from './pages/frontdesk/check-in-history/check-in-history.component';
 import { NoRecordComponent } from './pages/frontdesk/no-record/no-record.component';
@@ -29,7 +28,6 @@ import { RoomShiftComponent } from './pages/requesthandling/room-shift/room-shif
     AppComponent,
     AwaitingConfirmationComponent,
     NoshowsComponent,
-    AllReservationsComponent,
     CheckInComponent,
     CheckInHistoryComponent,
     NoRecordComponent,

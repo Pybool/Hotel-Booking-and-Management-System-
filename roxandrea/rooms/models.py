@@ -22,9 +22,7 @@ class BedType(models.Model):
 class RoomType(models.Model):
     name = models.CharField(max_length=255, null=False, default='')
     bed_type = models.ForeignKey(BedType, on_delete=models.CASCADE)
-    no_adults = models.IntegerField(null=False,blank=False)
-    no_children = models.IntegerField(null=False,blank=False)
-    no_xtra_adults = models.IntegerField(null=False,blank=False)
+    no_occupants = models.IntegerField(null=False,blank=False)
     image = models.ImageField(upload_to='images/generic_rooms')
     amenities = models.ManyToManyField(Amenities, default=[])
     require_advance_payment = models.BooleanField(default=False)
@@ -48,9 +46,7 @@ class Rooms(models.Model):
     room_rate = models.DecimalField(default=2000.00, max_digits=20, decimal_places=2)
     """The followinf also overides the values set in room type if they are set"""
     amenities = models.ManyToManyField(Amenities, default=[])
-    no_adults = models.IntegerField(null=True,blank=True)
-    no_children = models.IntegerField(null=True,blank=True)
-    no_xtra_adults = models.IntegerField(null=True,blank=True)
+    no_occupants = models.IntegerField(null=True,blank=True)
     """End of overides"""
     is_checked_in = models.BooleanField(default=False)
     maintenance_block = models.BooleanField(default=False)

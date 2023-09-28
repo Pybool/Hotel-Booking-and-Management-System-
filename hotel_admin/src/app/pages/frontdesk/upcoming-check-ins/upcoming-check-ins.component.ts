@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { take } from 'rxjs';
 import { PaginationService } from 'src/app/services/common/pagination.service';
 import { SpinnerService } from 'src/app/services/common/spinner.service';
 import { ReservationService } from 'src/app/services/reservations/reservation.service';
+const PORT = 4200
+const HOST = 'localhost'
 
 @Component({
   selector: 'app-upcoming-check-ins',
@@ -24,10 +26,27 @@ export class UpcomingCheckInsComponent {
   showComment = false
   showTinySpinner = false
   disable = false
+  private srcValues:string[] = []
+
   constructor(
     private reservationService: ReservationService, 
     private paginationService: PaginationService,
-    private spinnerService: SpinnerService){}
+    private spinnerService: SpinnerService,private renderer: Renderer2){
+      this.srcValues = [
+        `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
+        `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
+      ]
+    }
+
+  
+    
+  
+  loadScript(src:string) {
+    const script = this.renderer.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    this.renderer.appendChild(document.querySelector('#pending-reservation-root'), script);
+  }
 
   ngOnInit(){
     this.showSpinner = true;
@@ -61,6 +80,12 @@ export class UpcomingCheckInsComponent {
   }
 
   ngAfterViewInit(){
+    setTimeout(()=>{
+      this.srcValues.forEach((src)=>{
+        this.loadScript(src);
+      })
+    },500)
+
     this.spinnerService.getSpinner().subscribe((status:any)=>{
       console.log(status)
       this.showSpinner = status
@@ -121,7 +146,7 @@ export class UpcomingCheckInsComponent {
 
   showResrvationDetails($event:any){
     this.reservationDetails = true
-    this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.closest('td').id))
+    this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.id))
   }
 
   checkInContacts(_type:string,room){

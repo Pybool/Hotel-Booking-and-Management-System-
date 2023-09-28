@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('check_in', models.DateTimeField(auto_now_add=True)),
                 ('check_out', models.DateTimeField(auto_now_add=True)),
                 ('no_rooms', models.IntegerField()),
-                ('no_adults', models.IntegerField()),
+                ('no_occupants', models.IntegerField()),
                 ('no_children', models.IntegerField()),
                 ('contact_type', models.CharField(max_length=255)),
                 ('room_tarrif', models.CharField(blank=True, max_length=255, null=True)),

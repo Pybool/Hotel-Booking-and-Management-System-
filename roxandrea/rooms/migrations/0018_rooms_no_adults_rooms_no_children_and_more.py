@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='rooms',
-            name='no_adults',
+            name='no_occupants',
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AddField(

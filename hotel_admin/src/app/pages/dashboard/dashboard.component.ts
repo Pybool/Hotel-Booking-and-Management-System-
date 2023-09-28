@@ -8,17 +8,18 @@ const PORT = 4200
 const HOST = 'localhost'
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './root.component.html',
-  styleUrls: ['./root.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class RootComponent {
+export class DashboardComponent {
   private srcValues:string[] = []
+
   constructor(private renderer: Renderer2, private router: Router,
     ) {
       this.srcValues = [
         `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
-        // `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
+        `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
         // `http://${HOST}:${PORT}/assets/js/demo-settingse5ca.js?ver=3.2.3`,
         `http://${HOST}:${PORT}/assets/js/charts/chart-hotele5ca.js?ver=3.2.3`,
       ]
@@ -35,8 +36,7 @@ export class RootComponent {
     const script = this.renderer.createElement('script');
     script.type = 'text/javascript';
     script.src = src;
-    this.renderer.appendChild(document.querySelector('#roots'), script);
+    this.renderer.appendChild(document.querySelector('#dashboard-root'), script);
   }
 
 }
-

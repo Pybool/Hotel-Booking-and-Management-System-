@@ -1,48 +1,4 @@
-td{
-    color:black!important;
-}
 
-th{
-    font-weight: 500;
-}
-
-.table-wrapper{
-    
-    min-height:70vh;
-    
-}
-
-td.active-zone{
-    background: rgb(232, 237, 239);
-}
-
-.form-header{
-    margin-bottom: 20px;
-    padding: 0 0 0 0!important;
-    height:50px;
-}
-
-.form-title{
-    padding-left: 0px!important;
-}
-
-.zc-add-comments-placeholder {
-    color: #8E97A0;
-    position: absolute;
-    left: 20px;
-    top: 70px;
-    pointer-events: none;
-    font-size: 13px;
-}
-
-.create-staff{
-    color:white!important;
-    background: rgb(225 31 64)!important;
-    width:120px;
-    margin-bottom: 0px;
-    margin-left:10px;
-    height:50px;
-}
 
 .parent {
     position: relative; /* Ensure the overlay is positioned relative to this container */
@@ -126,16 +82,16 @@ td.active-zone{
   
 
   .pill{
-    width:150px;
-    height:55px;
+    width:130px;
+    height:45px;
     border-radius: 40px;
-    background: rgb(236, 166, 177);
+    background: rgb(145, 166, 224);
     color:white;
   }
 
   .pill-text{
-    height:20px;
-    font-size: 13px;
+    /* height:20px; */
+    /* font-size: 13px; */
     text-align: center;
     margin-bottom: 0px!important;
   }

@@ -17,6 +17,7 @@ def custom_paginate(APIVIEW,metadata):
             is_search = True if q else None
                 
             model_instances = model.objects.filter(_filter).order_by('-id')
+            print(model_instances.values())
             model_instances_count = model_instances.count()
             if model_instances:
                 page_size = APIVIEW.pagination_class.default_limit
@@ -24,6 +25,7 @@ def custom_paginate(APIVIEW,metadata):
                 q_offset = max(1, min(q_offset, paginator.num_pages))
                 
                 model_instances = paginator.page(q_offset)
+                
                 serialized_model_instances = serializer(model_instances,many=True).data
                 model_instances_list_of_dicts = [dict(ordered_dict) for ordered_dict in serialized_model_instances]
                     

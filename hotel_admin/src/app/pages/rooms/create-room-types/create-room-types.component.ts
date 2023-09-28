@@ -86,4 +86,4 @@ export class CreateRoomTypesComponent {
 }
 
 
-// {    "name": "Deluxe",    "bed_type": 1,    "no_adults": 2,    "no_children": 2,    "no_xtra_adults": 1,    "amenities": 1}
+// {    "name": "Deluxe",    "bed_type": 1,    "no_occupants": 2,    "no_children": 2,    "no_xtra_adults": 1,    "amenities": 1}

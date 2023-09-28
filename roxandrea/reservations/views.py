@@ -2,7 +2,6 @@
        
 import random
 import string
-import json
 import time
 from datetime import datetime
 from django.contrib.auth import get_user_model
@@ -17,9 +16,6 @@ from contacts.models import ContactType
 from django.core.paginator import Paginator
 from rest_framework.pagination import LimitOffsetPagination
 from middlewares.middleware import JWTAuthenticationMiddleWare
-# from rooms.models import Floors
-# from rooms.models import BedType
-# from rooms.models import RoomType
 from rooms.models import Rooms
 from reservations.models import Reservations
 from finance.models import Rates
@@ -34,6 +30,7 @@ from helper import custom_paginate
 User = get_user_model()
 
 def generate_reservation_id():
+    
     prefix = "ROX-"
     characters = string.ascii_uppercase + string.digits
     random_part = ''.join(random.choice(characters) for _ in range(13))
@@ -93,16 +90,26 @@ class ReservationAPIView(APIView):
                             pass
                         
                     reservation['contact'],created = Contacts.objects.get_or_create(email=contact)
-                    if reservation.get('phone'):
-                        reservation['contact'].phone = reservation['phone']
+                    print("Created contact =====> ", created)
+                    if (reservation.get('phone') or reservation.get('firstname') or reservation.get('surname') or reservation.get('gender') or reservation.get('address1')) and created:
+                        reservation['contact'].phone = reservation.get('phone')
+                        reservation['contact'].firstname = reservation.get('firstname')
+                        reservation['contact'].surname = reservation.get('surname')
+                        reservation['contact'].gender = reservation.get('gender')
+                        reservation['contact'].address1 = reservation.get('address1')
                         reservation['contact'].save()
-                        reservation.pop('phone')
-                        reservation.pop('email')
+                        
+                    keys_to_remove = ['phone', 'email', 'firstname', 'surname', 'gender','address1']
+                    
+                    for key in keys_to_remove:
+                        reservation.pop(key, None)
+                        
                     try:
                         reservation['contact_type'] = ContactType.objects.get(id=int(contact_type)).name
                     except:
                         pass
                     
+                    print("---------", reservation)
                     reservation['no_rooms'] = len(rooms_instance_object)
                     reservation_instance = Reservations(**reservation)
                     reservation_token = generate_reservation_id()
@@ -137,31 +144,31 @@ class ReservationAPIView(APIView):
         is_checkedout = request.GET.get('is_checkedout', False)
         is_client = request.GET.get('is-client') == '1'
         time.sleep(2)
-        try:
-            metadata = {}
-            metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
-            metadata['model'] = Reservations
-            metadata['request'] = request
-            if is_client:
-                metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
-            else:
-                
-                if is_checkedout:
-                    metadata['_filter'] =  (Q(has_checked_out__exact=True))
-                else:
-                    metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
-            print( metadata['_filter'])
-            metadata['serializer'] = ReservationSerializer
-            metadata['custom_paginator_class'] = CustomPaginatorClass
+        # try:
+        metadata = {}
+        metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
+        metadata['model'] = Reservations
+        metadata['request'] = request
+        if is_client:
+            metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
+        else:
             
-            response = custom_paginate(self,metadata)
-            print("Paginator response ====> ", response)
-            if response:
-                return Response(response) 
+            if is_checkedout:
+                metadata['_filter'] =  (Q(has_checked_out__exact=True))
             else:
-                return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
-        except:
-            return Response({'status':False,'message':'Something went wrong'})
+                metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
+        print( metadata['_filter'])
+        metadata['serializer'] = ReservationSerializer
+        metadata['custom_paginator_class'] = CustomPaginatorClass
+        
+        response = custom_paginate(self,metadata)
+        print("Paginator response ====> ", response)
+        if response:
+            return Response(response) 
+        else:
+            return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
+        # except :
+        #     return Response({'status':False,'message':'Something went wrong'})
         
     def patch(self,request):
         time.sleep(2)
@@ -179,11 +186,12 @@ class ReservationAPIView(APIView):
         with transaction.atomic():
             room_instances.update(**{'is_checked_in':True,'is_occupied':True,'occupant':occupant_instance})
             reservation_instance = Reservations.objects.filter(reservation_token = data['reservation_token'])
+            
             if len(data['room']) > 1:
                 num_checked_in = len(data['room'])
                 affected_rows = reservation_instance.update(**{'is_checked_in':True})
-                if self.ensure_update(affected_rows):
-                    new_num_checked_in = num_checked_in
+                new_num_checked_in = num_checked_in if self.ensure_update(affected_rows) else None
+                
             else:
                 new_num_checked_in = reservation_instance.first().num_checked_in + 1
                 num_checked_in = new_num_checked_in
@@ -245,6 +253,7 @@ class ReservationAPIView(APIView):
         
 class CheckAvailableAPIView(APIView):
     """Checks if reservation date is available"""
+    
     def formatdate(self,date_str):
         date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
         formatted_date = date_obj
@@ -252,7 +261,8 @@ class CheckAvailableAPIView(APIView):
     
     def post(self,request):
         time.sleep(3)
-        data = request.data or {'check_in': '2023-09-16T23:24', 'check_out': '2023-09-21T09:39', 'room_type': '2', 'no_adults': '2', 'no_children': '1'}
+        data = request.data 
+        print("Booking data ===> ", data)
         data['check_in'] = data['check_in'].replace('T',' ')
         data['check_out'] = data['check_out'].replace('T',' ')
         _filter = {'room_type__id':int(data['room_type']),'is_available':True,'maintenance_block':False,'is_ready':True}

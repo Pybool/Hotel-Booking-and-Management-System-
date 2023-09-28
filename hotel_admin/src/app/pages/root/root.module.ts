@@ -66,16 +66,22 @@ import { AddonsComponent } from '../configurations/addons/addons.component';
 import { UIconfigModule } from '../configurations/uiconfig/uiconfig.module';
 import { UiconfigComponent } from '../configurations/uiconfig/uiconfig.component';
 import { UiconfigService } from 'src/app/services/configurations/uiconfig.service';
+import { DashboardModule } from '../dashboard/dashboard.module';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AllReservationsModule } from '../frontdesk/all-reservations/all-reservations.module';
+import { AllReservationsComponent } from '../frontdesk/all-reservations/all-reservations.component';
 // import { FeatureCardModule } from '../configurations/featurecard/featurecard.module';
 
 const routes: Routes = [{
                           path: 'frontdesk',
                           component: RootComponent,
                           children: [
+                              { path: 'all-reservation', component: AllReservationsComponent },
                               { path: 'reservation', component: ReservationComponent },
                               { path: 'awaiting-confirmation', component: AwaitingConfirmationComponent },
                               { path: 'upcoming-checkins', component: UpcomingCheckInsComponent },
                               { path: 'active-checkins', component: ActiveCheckInsComponent },
+                              { path: 'dashboard', component: DashboardComponent },
                           ],
                         },
                         {
@@ -86,6 +92,7 @@ const routes: Routes = [{
                               { path: 'service-bills-list', component: ServiceBillsComponent },
                           ],
                         },
+                       
                         {
                           path: 'request-handling', 
                           component: RootComponent,
@@ -158,6 +165,8 @@ const routes: Routes = [{
     RecentCheckoutModule,
     AddonsModule,
     UIconfigModule,
+    DashboardModule,
+    AllReservationsModule,
     // FeatureCardModule,
     RouterModule.forChild(routes),
   ],

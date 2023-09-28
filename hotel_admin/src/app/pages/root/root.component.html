@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
    <div id="zc_inner_nav_menu" class="pane_nav zc-dem-hide-pane full_pane_nav zc-dem-full-page-nav">
       <div class="pane_nav_menu accordion_menu zc-showAppIcons container-fixed 
          " id="pane_nav_menu">
@@ -23,48 +23,24 @@
                            <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Reservation</span></div>
                         </a>
                      </li>
-                     <!-- <li class="zc_nav_com ">
-                        <a id="Awaiting_Confirmations" href="/root/frontdesk/awaiting-confirmation">
-                           <i elname="componentIcon" class="zc-li-outline ui-2-hourglass" id="t4212638000000015355"></i>
-                           <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Awaiting Confirmations</span></div>
-                        </a>
-                     </li> -->
                      <li class="zc_nav_com ">
                         <a id="Upcoming_Check_Ins" href="/root/frontdesk/upcoming-checkins">
                            <i elname="componentIcon" class="zc-li-outline transportation-helicopter" id="t4212638000000015359"></i>
                            <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Upcoming Check Ins</span></div>
                         </a>
                      </li>
-                     <!-- <li class="zc_nav_com ">
-                        <a id="No_Shows" href="#Report:No_Shows">
-                           <i elname="componentIcon" class="zc-li-outline tech-2-wifi-off" id="t4212638000000015363"></i>
-                           <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">No Shows</span></div>
-                        </a>
-                     </li> -->
                      <li class="zc_nav_com ">
                         <a id="All_Reservations" href="#Report:All_Reservations">
                            <i elname="componentIcon" class="zc-li-outline travel-world" id="t4212638000000015367"></i>
                            <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">All Reservations</span></div>
                         </a>
                      </li>
-                     <!-- <li class="zc_nav_com ">
-                        <a id="Check_In" href="#Form:Check_In">
-                           <i elname="componentIcon" class="zc-li-outline ui-3-playlist" id="t4212638000000015371"></i>
-                           <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Check In</span></div>
-                        </a>
-                     </li> -->
                      <li class="zc_nav_com ">
                         <a id="Active_Check_Ins" href="/root/frontdesk/active-checkins">
                            <i elname="componentIcon" class="zc-li-outline tech-2-p-check" id="t4212638000000015391"></i>
                            <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Active Check Ins</span></div>
                         </a>
                      </li>
-                     <!-- <li class="zc_nav_com ">
-                        <a id="Check_In_History" href="#Report:Check_In_History">
-                           <i elname="componentIcon" class="zc-li-outline media-2-guitar" id="t4212638000000015393"></i>
-                           <div class="zc-nav-title" style="width: auto; height: auto;"><span class="title" style="left: 0px; position: relative; width: 100%;">Check In History</span></div>
-                        </a>
-                     </li> -->
                   </ul>
                </div>
             </li>
@@ -471,4 +447,201 @@
   </div>
 </div>
 
+ -->
 
+   
+      <div id="roots" class="nk-app-root">
+         <div class="nk-main ">
+            <div class="nk-sidebar nk-sidebar-fixed is-dark" data-content="sidebarMenu">
+               <div class="nk-sidebar-element nk-sidebar-head">
+                  <div class="nk-menu-trigger"><a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu"><em class="icon ni ni-arrow-left"></em></a><a href="#" class="nk-nav-compact nk-quick-nav-icon d-none d-xl-inline-flex" data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a></div>
+                  <div class="nk-sidebar-brand"><a href="index-2.html" class="logo-link nk-sidebar-logo"><img class="logo-light logo-img" src="../images/logo.png" srcset="/demo1/images/logo2x.png 2x" alt="logo"><img class="logo-dark logo-img" src="../images/logo-dark.png" srcset="/demo1/images/logo-dark2x.png 2x" alt="logo-dark"></a></div>
+               </div>
+               <div class="nk-sidebar-element nk-sidebar-body">
+                  <div class="nk-sidebar-content">
+                     <div class="nk-sidebar-menu" data-simplebar>
+                        <ul class="nk-menu">
+                           <li class="nk-menu-item"><a href="javascript:;" [routerLink]="['/root/frontdesk/dashboard']" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span class="nk-menu-text">Dashboard</span></a></li>
+                           <li class="nk-menu-item has-sub">
+                              <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em class="icon ni ni-calendar-booking-fill"></em></span><span class="nk-menu-text">Bookings</span></a>
+                              <ul class="nk-menu-sub">
+                                 <li class="nk-menu-item"><a href="javascript:;" [routerLink]="['/root/frontdesk/all-reservation']" class="nk-menu-link"><span class="nk-menu-text">All Bookings</span></a></li>
+                                 <li class="nk-menu-item"><a href="javascript:;" [routerLink]="['/root/frontdesk/upcoming-checkins']"  class="nk-menu-link"><span class="nk-menu-text">Pending Bookings</span></a></li>
+                                 <li class="nk-menu-item"><a href="javascript:;" [routerLink]="['/root/frontdesk/active-checkins']"  class="nk-menu-link"><span class="nk-menu-text">Checked-In Bookings</span></a></li>
+
+                                 <li class="nk-menu-item"><a href="javascript:;" [routerLink]="['/root/frontdesk/reservation']"  class="nk-menu-link"><span class="nk-menu-text">Add Booking</span></a></li>
+                                 <li class="nk-menu-item"><a href="booking-edit.html" class="nk-menu-link"><span class="nk-menu-text">Edit Booking</span></a></li>
+                              </ul>
+                           </li>
+                           <li class="nk-menu-item has-sub">
+                              <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em class="icon ni ni-home-fill"></em></span><span class="nk-menu-text">Room</span></a>
+                              <ul class="nk-menu-sub">
+                                 <li class="nk-menu-item"><a href="room-list.html" class="nk-menu-link"><span class="nk-menu-text">All Rooms</span></a></li>
+                                 <li class="nk-menu-item"><a href="room-type.html" class="nk-menu-link"><span class="nk-menu-text">Room Types</span></a></li>
+                              </ul>
+                           </li>
+                           <li class="nk-menu-item has-sub">
+                              <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em class="icon ni ni-reports"></em></span><span class="nk-menu-text">Reports</span></a>
+                              <ul class="nk-menu-sub">
+                                 <li class="nk-menu-item"><a href="report-stocks.html" class="nk-menu-link"><span class="nk-menu-text">Stocks</span></a></li>
+                                 <li class="nk-menu-item"><a href="report-expenses.html" class="nk-menu-link"><span class="nk-menu-text">Expenses</span></a></li>
+                                 <li class="nk-menu-item"><a href="report-booking.html" class="nk-menu-link"><span class="nk-menu-text">Booking</span></a></li>
+                              </ul>
+                           </li>
+                           <li class="nk-menu-item"><a href="customers.html" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span><span class="nk-menu-text">Customers</span></a></li>
+                           <li class="nk-menu-item has-sub">
+                              <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em class="icon ni ni-coins"></em></span><span class="nk-menu-text">Payment</span></a>
+                              <ul class="nk-menu-sub">
+                                 <li class="nk-menu-item"><a href="payment-methods.html" class="nk-menu-link"><span class="nk-menu-text">Payment Methods</span></a></li>
+                                 <li class="nk-menu-item"><a href="invoice-list.html" class="nk-menu-link"><span class="nk-menu-text">Invocie List</span></a></li>
+                                 <li class="nk-menu-item"><a href="invoice-details.html" class="nk-menu-link"><span class="nk-menu-text">Invocie Details</span></a></li>
+                              </ul>
+                           </li>
+                           <li class="nk-menu-item"><a href="support.html" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-chat-circle-fill"></em></span><span class="nk-menu-text">Support</span></a></li>
+                           <li class="nk-menu-item"><a href="settings.html" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-setting-alt-fill"></em></span><span class="nk-menu-text">Settings</span></a></li>
+                           <li class="nk-menu-heading">
+                              <h6 class="overline-title text-primary-alt">Return to</h6>
+                           </li>
+                           <li class="nk-menu-item"><a href="https://dashlite.net/demo1/index.html" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-dashlite-alt"></em></span><span class="nk-menu-text">Main Dashboard</span></a></li>
+                           <li class="nk-menu-item"><a href="https://dashlite.net/demo1/components.html" class="nk-menu-link"><span class="nk-menu-icon"><em class="icon ni ni-layers-fill"></em></span><span class="nk-menu-text">All Components</span></a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="nk-wrap ">
+               <div class="nk-header nk-header-fixed">
+                  <div class="container-fluid">
+                     <div class="nk-header-wrap">
+                        <div class="nk-menu-trigger d-xl-none ms-n1"><a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em class="icon ni ni-menu"></em></a></div>
+                        <div class="nk-header-brand d-xl-none"><a href="https://dashlite.net/demo1/index.html" class="logo-link"><img class="logo-light logo-img" src="../images/logo.png" srcset="/demo1/images/logo2x.png 2x" alt="logo"><img class="logo-dark logo-img" src="../images/logo-dark.png" srcset="/demo1/images/logo-dark2x.png 2x" alt="logo-dark"></a></div>
+                        <div class="nk-header-news d-none d-xl-block">
+                           <div class="nk-news-list">
+                              <a class="nk-news-item" href="#">
+                                 <div class="nk-news-icon"><em class="icon ni ni-card-view"></em></div>
+                                 <div class="nk-news-text">
+                                    <p>Do you know the latest update of 2022? <span> A overview of our is now available on YouTube</span></p>
+                                    <em class="icon ni ni-external"></em>
+                                 </div>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="nk-header-tools">
+                           <ul class="nk-quick-nav">
+                              <li class="dropdown language-dropdown d-none d-sm-block me-n1">
+                                 <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
+                                    <div class="quick-icon border border-light"><img class="icon" src="../images/flags/english-sq.png" alt=""></div>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-s1">
+                                    <ul class="language-list">
+                                       <li><a href="#" class="language-item"><img src="../images/flags/english.png" alt="" class="language-flag"><span class="language-name">English</span></a></li>
+                                       <li><a href="#" class="language-item"><img src="../images/flags/spanish.png" alt="" class="language-flag"><span class="language-name">Español</span></a></li>
+                                       <li><a href="#" class="language-item"><img src="../images/flags/french.png" alt="" class="language-flag"><span class="language-name">Français</span></a></li>
+                                       <li><a href="#" class="language-item"><img src="../images/flags/turkey.png" alt="" class="language-flag"><span class="language-name">Türkçe</span></a></li>
+                                    </ul>
+                                 </div>
+                              </li>
+                              <li class="dropdown user-dropdown">
+                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                                    <div class="user-toggle">
+                                       <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
+                                       <div class="user-info d-none d-md-block">
+                                          <div class="user-status">Administrator</div>
+                                          <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
+                                       </div>
+                                    </div>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
+                                    <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                       <div class="user-card">
+                                          <div class="user-avatar"><span>AB</span></div>
+                                          <div class="user-info"><span class="lead-text">Abu Bin Ishtiyak</span><span class="sub-text">info@softnio.com</span></div>
+                                       </div>
+                                    </div>
+                                    <div class="dropdown-inner">
+                                       <ul class="link-list">
+                                          <li><a href="#"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
+                                          <li><a href="settings.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
+                                          <li><a href="settings-activity-log.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li>
+                                       </ul>
+                                    </div>
+                                    <div class="dropdown-inner">
+                                       <ul class="link-list">
+                                          <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </li>
+                              <li class="dropdown notification-dropdown me-n1">
+                                 <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
+                                    <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em></div>
+                                 </a>
+                                 <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end dropdown-menu-s1">
+                                    <div class="dropdown-head"><span class="sub-title nk-dropdown-title">Notifications</span><a href="#">Mark All as Read</a></div>
+                                    <div class="dropdown-body">
+                                       <div class="nk-notification">
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">Your <span>Deposit Order</span> is placed</div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">Your <span>Deposit Order</span> is placed</div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                          <div class="nk-notification-item dropdown-inner">
+                                             <div class="nk-notification-icon"><em class="icon icon-circle bg-success-dim ni ni-curve-down-left"></em></div>
+                                             <div class="nk-notification-content">
+                                                <div class="nk-notification-text">Your <span>Deposit Order</span> is placed</div>
+                                                <div class="nk-notification-time">2 hrs ago</div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="dropdown-foot center"><a href="#">View All</a></div>
+                                 </div>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <router-outlet></router-outlet>
+            </div>
+         </div>
+      </div>
+      <ul class="nk-sticky-toolbar">
+         <li class="demo-layout"><a class="toggle tipinfo" data-target="demoML" href="#" title="Main Demo Preview"><em class="icon ni ni-dashlite"></em></a></li>
+         <li class="demo-thumb"><a class="toggle tipinfo" data-target="demoUC" href="#" title="Use Case Concept"><em class="icon ni ni-menu-squared"></em></a></li>
+         <li class="demo-settings"><a class="toggle tipinfo" data-target="settingPanel" href="#" title="Demo Settings"><em class="icon ni ni-setting-alt"></em></a></li>
+         <li class="demo-purchase"><a class="tipinfo" target="_blank" href="https://1.envato.market/e0y3g" title="Purchase"><em class="icon ni ni-cart"></em></a></li>
+      </ul>
+
+      
+      

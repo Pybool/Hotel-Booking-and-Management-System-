@@ -95,20 +95,10 @@ class ReservationValid(object):
             errors.append("One or more rooms selected are unavailable at the moment")
             
         try:
-            result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_adults')
-            assert(result >= int(reservation['no_adults']))
+            result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_occupants')
+            assert(result >= int(reservation['no_occupants']))
         except:
-            errors.append(f"The number of adults allowed for this room type has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_adults}' Adults are allowed")
-        try:
-            result = self.calculate_max_allowed(reservation.get('rooms'),rooms_instance_object,'no_children')
-            assert(result >= int(reservation['no_children']))
-        except:
-            errors.append(f"The number of children allowed for this room has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_children}' Children are allowed")
-        try:
-            if reservation.get('no_xtra_adults'):
-                assert(RoomType.objects.get(id=reservation['room_type']).no_xtra_adults >= int(reservation['no_xtra_adults']))
-        except:
-            errors.append(f"The number of Extra adults allowed for this room has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_xtra_adults}' Extra Adults are allowed")
+            errors.append(f"The number of occupants allowed for this room type has been exceeded only '{RoomType.objects.get(id=reservation['room_type']).no_occupants}' occupants are allowed")
         try:
             self.check_for_payment(reservation)
         except Exception as e:
