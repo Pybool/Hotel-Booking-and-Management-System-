@@ -143,6 +143,7 @@ class RoomAPIView(APIView):
             metadata['request'] = request
             metadata['serializer'] = RoomSerializer
             metadata['custom_paginator_class'] = CustomPaginatorClass
+            metadata['message'] = 'Rooms fetched successfully!'
             
             if query != '' and query != None:
                 if query == 'checkedIn':
@@ -152,7 +153,7 @@ class RoomAPIView(APIView):
                                             & Q(is_available__exact=True)
                                             & Q(maintenance_block__exact=False)
                                             & Q(is_ready__exact=True)
-                                          ) 
+                                           ) 
             else:
                 metadata['_filter'] = (Q())
                 

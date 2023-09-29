@@ -25,7 +25,7 @@ export class StaffListComponent {
   showingArchive:boolean = false
   showAlert:boolean = false;
   is_search:boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
 
@@ -54,7 +54,7 @@ export class StaffListComponent {
           this.staffs = response.data
           this.paginationService.setLinks(response.next,response.last,'staff-list','',this.is_search)
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -167,7 +167,7 @@ export class StaffListComponent {
         this.alertMessage = response?.message;
         if(response.status){
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -201,7 +201,7 @@ export class StaffListComponent {
           this.commentaries = response.data
           this.showCommentary = true
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -246,7 +246,7 @@ export class StaffListComponent {
           }
           this.commentaries = response.data
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -286,7 +286,7 @@ export class StaffListComponent {
         if(response.status){
           this.staffs = response.data
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -335,7 +335,7 @@ export class StaffListComponent {
         this.editSalaryTopUp = false
         this.showSpinner = false;
         this.alertDuration = 3000; // 5 seconds
-        this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+        this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         this.showAlert = true
       }
       else{

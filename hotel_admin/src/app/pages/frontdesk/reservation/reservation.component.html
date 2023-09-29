@@ -192,7 +192,12 @@
    </div>
  </div>
  -->
-
+ <app-custom-alert *ngIf="alertMessage != ''"
+ [show]="showAlert"
+ [message]="alertMessage"
+ [duration]="alertDuration"
+ [backgroundColor]="alertBackgroundColor"
+ ></app-custom-alert>
 
  <div id="reservation-root" class="nk-content ">
    <div class="container-fluid">
@@ -213,11 +218,17 @@
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="first-name">First Name</label>
                                     <input [(ngModel)] ="reservation.firstname" type="text" name="firstname" class="form-control" id="first-name" placeholder="First Name" required>
+                                    <div class="alert-danger error" *ngIf="requiredErrors('firstname')" >
+                                       <div class="error">No valid firstname was entered</div>
+                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="last-name">Last Name</label>
                                     <input [(ngModel)] ="reservation.surname" type="text" name="surname" class="form-control" id="last-name" placeholder="Last Name">
+                                    <div class="alert-danger error" *ngIf="requiredErrors('surname')" >
+                                       <div class="error">No valid surname was entered</div>
+                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
@@ -225,22 +236,30 @@
                                     <label class="form-label">Gender</label>
                                     <div class="form-control-wrap">
                                        <select [(ngModel)] ="reservation.gender" name="gender" class="form-select " data-placeholder="Select multiple options">
-                                          <option value="default_option">Select Gender</option>
-                                          <option value="option_select_gender">Male</option>
-                                          <option value="option_select_gender">Female</option>
-                                          <option value="option_select_gender">Other</option>
+                                          <option value="{{undefined}}">Select Gender</option>
+                                          <option value="Male">Male</option>
+                                          <option value="Female">Female</option>
                                        </select>
+                                       <div class="alert-danger error" *ngIf="requiredErrors('gender')" >
+                                          <div class="error">No valid gender was selected</div>
+                                        </div>
                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="phone-no">Phone</label>
                                     <input [(ngModel)] ="reservation.phone" type="text" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
+                                    <div class="alert-danger error" *ngIf="requiredErrors('phone')" >
+                                       <div class="error">No valid phone number was entered</div>
+                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="email">Email Address</label>
                                     <input [(ngModel)] ="reservation.email" type="email" class="form-control" name="email" placeholder="Email Address">
+                                    <!-- <div class="alert-danger error" *ngIf="requiredErrors('phone')" >
+                                       <div class="error">No valid phone number was entered</div>
+                                     </div> -->
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
@@ -264,6 +283,9 @@
                                     <div class="form-control-wrap">
                                        <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
                                        <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_in" name="check_in" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
+                                       <div class="alert-danger error" *ngIf="requiredErrors('check_in')" >
+                                          <div class="error">Please select a check-in date</div>
+                                        </div>
                                     </div>
                                  </div>
                               </div>
@@ -273,13 +295,47 @@
                                     <div class="form-control-wrap">
                                        <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
                                        <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_out" name="check_out" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
+                                       <div class="alert-danger error" *ngIf="requiredErrors('check_out')" >
+                                          <div class="error">Please select a check-out date</div>
+                                        </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Room Type</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type"  class="form-select">
+                                          <option value="default_option">Select Room Type</option>
+                                          <option value="{{roomType.id}}" *ngFor="let roomType of roomTypes;">{{roomType.name}}</option>
+                                       </select>
+                                       <div *ngIf="showRoomTypeSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-4">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Rooms</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
+                                          <option value="default_option">Select Rooms</option>
+                                          <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
+                                       </select>
+                                       <div class="alert-danger error" *ngIf="requiredRoomsErrors('rooms')" >
+                                          <div class="error">Please select atleast a room </div>
+                                        </div>
+                                       <div *ngIf="showRoomSpinner" class="tiny-spinner"></div>
                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="total-person">Total Occupants</label>
                                     <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_occupants" name="no_occupants" type="number" class="form-control" id="total-person" placeholder="Total Person">
-                                    <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="max-errors">{{maxExceeded.text}}</span>
+                                    <div class="alert-danger error" *ngIf="requiredErrors('no_occupants')" >
+                                       <div class="error">Please provide the number of occupants </div>
+                                     </div>
+                                    <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="alert-danger error">{{maxExceeded.text}}</span>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
@@ -328,30 +384,6 @@
                                           <option value="Vacation Package">Vacation Package</option>
                                           <option value="Spring Package">Spring Package</option>
                                        </select>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-md-6 col-lg-4 col-xxl-3">
-                                 <div class="form-group">
-                                    <label class="form-label">Select Room Type</label>
-                                    <div class="form-control-wrap">
-                                       <select style="width:100%" [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type"  class="form-select">
-                                          <option value="default_option">Select Room Type</option>
-                                          <option value="{{roomType.id}}" *ngFor="let roomType of roomTypes;">{{roomType.name}}</option>
-                                       </select>
-                                       <div *ngIf="showRoomTypeSpinner" class="tiny-spinner"></div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-4">
-                                 <div class="form-group">
-                                    <label class="form-label">Select Rooms</label>
-                                    <div class="form-control-wrap">
-                                       <select style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
-                                          <option value="default_option">Select Rooms</option>
-                                          <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
-                                       </select>
-                                       <div *ngIf="showRoomSpinner" class="tiny-spinner"></div>
                                     </div>
                                  </div>
                               </div>

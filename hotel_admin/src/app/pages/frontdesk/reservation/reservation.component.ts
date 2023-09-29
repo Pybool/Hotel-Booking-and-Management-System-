@@ -77,6 +77,20 @@ export class ReservationComponent {
     this.renderer.appendChild(document.querySelector('#reservation-root'), script);
   }
 
+  requiredErrors(field:any){
+    try{
+      if(this.reservation[field].length == 0){
+        return true;
+      }
+      return false;
+    }
+    catch(err){console.log(err);return false}
+  }
+
+  requiredRoomsErrors(field:any){
+    return false
+  }
+
   ngOnInit(){
     this.showSpinner = true
     this.showRoomTypeSpinner = true
@@ -129,7 +143,7 @@ export class ReservationComponent {
         this.alertMessage = response?.message;
         if(response.status){
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -139,6 +153,7 @@ export class ReservationComponent {
       },
       (error: any) => {
         console.error('An error occurred in the subscription:', error);
+        this.alertMessage = error
         this.showSpinner = false;
         this.alertDuration = 3000; // 5 seconds
         this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color

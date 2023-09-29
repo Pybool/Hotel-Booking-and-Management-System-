@@ -325,6 +325,12 @@
  
   -->
 
+  <app-custom-alert *ngIf="alertMessage != ''"
+  [show]="showAlert"
+  [message]="alertMessage"
+  [duration]="alertDuration"
+  [backgroundColor]="alertBackgroundColor"
+  ></app-custom-alert>
 
   <div class="nk-content ">
    <div class="container-fluid">
@@ -466,7 +472,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="card-inner p-0">
+                     <div style="max-height: 58vh;overflow-y: auto;" class="card-inner p-0">
                         <div class="nk-tb-list nk-tb-ulist">
                            <div class="nk-tb-item nk-tb-head">
                               <div class="nk-tb-col nk-tb-col-check">
@@ -498,21 +504,6 @@
                                  </div>
                               </div>
                            </div>
-
-                           <!-- <td </td>
-                           <td style="white-space:nowrap; font-weight: 300;font-size:16px;color:black!important;" class="nk-tb-col"><b>{{reservation.contact.firstname}} {{reservation.contact.middlename}} {{reservation.contact.lastname}}</b></td>
-                           <td style="font-weight: 500;font-size:17px;color:black!important;" class="nk-tb-col">{{reservation.contact.email}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_in}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.check_out}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.contact_type}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_rooms}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_occupants}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.no_children}}</td>
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">{{reservation.num_checked_in}}</td>
-
-                           <td style="font-weight: 400;font-size:16px;color:black!important;" class="nk-tb-col">RESERVED</td> -->
-                           
-                           
                            <ng-container *ngFor="let reservation of reservations">
                               <div id="{{reservation.id}}" (click)="showResrvationDetails($event)" style="white-space:nowrap;" class="active-zone pointer" class="nk-tb-item">
                                  <div class="nk-tb-col nk-tb-col-check">
@@ -532,7 +523,9 @@
                                  <div class="nk-tb-col tb-col-lg"><span class="tb-status text-success">{{reservation.contact.phone}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_in}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_out}}</span></div>
-                                 <div class="nk-tb-col tb-col-md"><span class="tb-status text-success">Paid</span></div>
+                                 <div *ngIf="reservation.advance_amount !=reservation.total_amount" class="nk-tb-col tb-col-md"><span class="tb-status text-warning">Partial</span></div>
+                                 <div *ngIf="reservation.advance_amount ==reservation.total_amount" class="nk-tb-col tb-col-md"><span class="tb-status text-success">Completed</span></div>
+
                                  <div class="nk-tb-col nk-tb-col-tools">
                                     <ul class="nk-tb-actions gx-1">
                                        <li>
@@ -555,15 +548,7 @@
                      <div class="card-inner">
                         <div class="nk-block-between-md g-3">
                            <div class="g">
-                              <ul class="pagination justify-content-center justify-content-md-start">
-                                 <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                 <li class="page-item"><span class="page-link"><em class="icon ni ni-more-h"></em></span></li>
-                                 <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                              </ul>
+                              <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination>
                            </div>
                            <div class="g">
                               <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
@@ -572,23 +557,6 @@
                                     <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
                                        <option value="page-1">1</option>
                                        <option value="page-2">2</option>
-                                       <option value="page-4">4</option>
-                                       <option value="page-5">5</option>
-                                       <option value="page-6">6</option>
-                                       <option value="page-7">7</option>
-                                       <option value="page-8">8</option>
-                                       <option value="page-9">9</option>
-                                       <option value="page-10">10</option>
-                                       <option value="page-11">11</option>
-                                       <option value="page-12">12</option>
-                                       <option value="page-13">13</option>
-                                       <option value="page-14">14</option>
-                                       <option value="page-15">15</option>
-                                       <option value="page-16">16</option>
-                                       <option value="page-17">17</option>
-                                       <option value="page-18">18</option>
-                                       <option value="page-19">19</option>
-                                       <option value="page-20">20</option>
                                     </select>
                                  </div>
                                  <div>OF 102</div>
@@ -596,6 +564,9 @@
                            </div>
                         </div>
                      </div>
+                  </div>
+                  <div class="overlay" *ngIf="showSpinner">
+                     <div class="spinner"></div>
                   </div>
                </div>
             </div>

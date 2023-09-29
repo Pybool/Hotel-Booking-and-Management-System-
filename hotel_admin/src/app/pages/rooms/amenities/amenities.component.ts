@@ -12,7 +12,7 @@ export class AmenitiesComponent {
   public amenities:any[] = []
   showSpinner:boolean = false;
   showAlert:Boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; 
   alertBackgroundColor: string = '#ffc107';
 
@@ -30,7 +30,7 @@ export class AmenitiesComponent {
         if(response.status){
           this.amenities = response.data
           this.alertDuration = 3000; 
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000; 

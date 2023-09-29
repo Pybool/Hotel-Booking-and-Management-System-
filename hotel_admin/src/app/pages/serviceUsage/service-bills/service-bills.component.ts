@@ -12,7 +12,7 @@ export class ServiceBillsComponent {
   public serviceBills = []
   loadedServiceBill:any = {}
   showAlert:Boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
   
@@ -30,7 +30,7 @@ export class ServiceBillsComponent {
         if(response.status){
           this.serviceBills = response.data
           this.alertDuration = 3000;
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000;

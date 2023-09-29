@@ -32,7 +32,7 @@ def custom_paginate(APIVIEW,metadata):
                 response = APIVIEW.custom_paginator.paginate_queryset(model_instances)
                 response = APIVIEW.custom_paginator.get_paginated_response(model_instances)
                 response.data["status"] = True
-                response.data["message"] = "model_instances fetched successfully."
+                response.data["message"] = metadata['message']
                 response.data["data"] = model_instances_list_of_dicts
                 response.data["count"] = model_instances_count
                 response.data["is_search"] = is_search

@@ -18,14 +18,16 @@ export class UpcomingCheckInsComponent {
   showingArchive:boolean = false
   showAlert:boolean = false;
   is_search:boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
-  alertDuration: number = 5000; // 5 seconds
-  alertBackgroundColor: string = '#ffc107'; // Alert yellow color
+  alertMessage: string = '';
+  alertDuration: number = 5000;
+  alertBackgroundColor: string = '#ffc107';
   reservationDetails = false
   loadedReservation:any = {}
   showComment = false
   showTinySpinner = false
   disable = false
+  reservationsTotal = 0
+  firstInit = true
   private srcValues:string[] = []
 
   constructor(
@@ -38,9 +40,6 @@ export class UpcomingCheckInsComponent {
       ]
     }
 
-  
-    
-  
   loadScript(src:string) {
     const script = this.renderer.createElement('script');
     script.type = 'text/javascript';
@@ -50,30 +49,30 @@ export class UpcomingCheckInsComponent {
 
   ngOnInit(){
     this.showSpinner = true;
-   
     this.reservationService.getReservations().pipe(take(1)).subscribe((response:any)=>{
-        console.log(response)
         this.alertMessage = response?.message;
         this.showSpinner = false;
         if(response.status){
           this.reservations = response.data
+          this.reservationsTotal = response?.count
           this.paginationService.setLinks(response.next,response.last,'reservations-list','',this.is_search)
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = '#423f3f'; 
+          this.firstInit = false
         }
         else{
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)';
         }
         this.showAlert = true
       },
       (error: any) => {
         console.error('An error occurred in the subscription:', error);
+        this.alertMessage = error
         this.showSpinner = false;
-        this.alertDuration = 3000; // 5 seconds
-        this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+        this.alertDuration = 3000;
+        this.alertBackgroundColor = 'rgb(225 31 64)';
         this.showAlert = true
-        // Handle the error here, if needed
       }
     );
     this.paginateSubscription()
@@ -87,7 +86,10 @@ export class UpcomingCheckInsComponent {
     },500)
 
     this.spinnerService.getSpinner().subscribe((status:any)=>{
-      console.log(status)
+      console.log(this.reservations.length, this.firstInit)
+      if(this.reservations.length == 0 && this.firstInit){
+        status = true
+      }
       this.showSpinner = status
     })
   }
@@ -107,6 +109,8 @@ export class UpcomingCheckInsComponent {
       else{}
     });
   }
+
+  
 
   receivePaginationData(response:any){
     // this.customers$ = of(response?.data) || []
@@ -181,14 +185,14 @@ export class UpcomingCheckInsComponent {
             })
             
             this.loadedReservation.num_checked_in = response['num_checked_in']
-            this.alertDuration = 3000; // 5 seconds
-            this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+            this.alertDuration = 3000;
+            this.alertBackgroundColor = '#423f3f';
           }
           else{
             try{room.disable = false}
             catch{}
-            this.alertDuration = 3000; // 5 seconds
-            this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+            this.alertDuration = 3000;
+            this.alertBackgroundColor = 'rgb(225 31 64)';
           }
           this.showAlert = true
         },
@@ -197,8 +201,8 @@ export class UpcomingCheckInsComponent {
           try{room.disable = false}
           catch{}
           this.showTinySpinner = false;
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)';
           this.showAlert = true
           // Handle the error here, if needed
         }

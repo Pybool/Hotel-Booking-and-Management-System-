@@ -13,7 +13,7 @@ export class AddonsComponent {
   public newReservationAddons:boolean = false;
   showAlert:boolean = false;
   is_search:boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
   public showSpinner:boolean = false;
@@ -28,7 +28,7 @@ export class AddonsComponent {
           this.addons = response.data
           // this.paginationService.setLinks(response.next,response.last,'staff-list','',this.is_search)
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds
@@ -55,7 +55,7 @@ export class AddonsComponent {
           this.addons.push(this.addon)
           // this.paginationService.setLinks(response.next,response.last,'staff-list','',this.is_search)
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds

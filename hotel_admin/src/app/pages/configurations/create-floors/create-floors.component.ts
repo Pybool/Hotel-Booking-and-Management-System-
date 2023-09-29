@@ -29,7 +29,7 @@ export class CreateFloorsComponent {
         this.alertMessage = response?.message;
         if(response.status){
           this.alertDuration = 3000;
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000;

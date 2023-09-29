@@ -14,7 +14,7 @@ export class RecentCheckoutComponent {
   is_search:any;
   showSpinner:boolean = false;
   showAlert:Boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; 
   alertBackgroundColor: string = '#ffc107';
 
@@ -39,7 +39,7 @@ export class RecentCheckoutComponent {
           }
           this.paginationService.setLinks(response.next,response.last,'rooms-list','',this.is_search)
           this.alertDuration = 3000; 
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000; 
@@ -117,7 +117,7 @@ export class RecentCheckoutComponent {
         if(response.status){
           this.rooms = this.deleteObjectFromArray(this.rooms,parseInt(roomId))
           this.alertDuration = 3000; 
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000; 

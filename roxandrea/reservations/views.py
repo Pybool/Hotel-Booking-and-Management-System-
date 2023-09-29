@@ -27,6 +27,7 @@ from reservations.errors import FailedUpdateError
 from reservations.models import Addons
 from sms_helper import send_sms
 from helper import custom_paginate
+from customresponses import *
 User = get_user_model()
 
 def generate_reservation_id():
@@ -56,7 +57,7 @@ class ReservationAPIView(APIView):
         #     return list()
     
     def post(self, request):
-        # try:
+        try:
             """If the is_reservation_valid method returns an empty list then reservation is valid """
             print("Reservation data ===> ", request.data)
             reservation = request.data
@@ -69,54 +70,43 @@ class ReservationAPIView(APIView):
             available_status, msg = self.reservation_valid.is_date_available(request.data['check_in'].replace('T',' '),request.data['check_out'].replace('T',' '))
             if available_status:
                 is_reservation_valid_errors = self.reservation_valid.is_reservation_valid(_filter,request.data,rooms_instance_object)
-                print(is_reservation_valid_errors)
             else:
-                print(msg)
-                return Response({"status":False,"message":msg})
+                return bad_request_error_response({"status":False,"message":msg})
             
             if len(is_reservation_valid_errors)==0:
                 with transaction.atomic():
                     
-                    for _ in ['rooms','room_type','no_xtra_adults']:
-                        if reservation.get(_):
-                            reservation.pop(_)
-                    
+                    for key in ['rooms','room_type','no_xtra_adults']:
+                        reservation.pop(key) if reservation.get(key) else None
                     if reservation.get('room_rate') and reservation.get('room_rate') != '':
                         reservation['room_rate'] = Rates.objects.get(id=int(reservation['room_rate']))
                     else:
-                        try:
-                            reservation.pop('room_rate')
-                        except:
-                            pass
-                        
+                        reservation.pop('room_rate') if reservation.get('room_rate') else None
+
                     reservation['contact'],created = Contacts.objects.get_or_create(email=contact)
-                    print("Created contact =====> ", created)
                     if (reservation.get('phone') or reservation.get('firstname') or reservation.get('surname') or reservation.get('gender') or reservation.get('address1')) and created:
                         reservation['contact'].phone = reservation.get('phone')
                         reservation['contact'].firstname = reservation.get('firstname')
                         reservation['contact'].surname = reservation.get('surname')
                         reservation['contact'].gender = reservation.get('gender')
                         reservation['contact'].address1 = reservation.get('address1')
+                        reservation['contact'].contact_type = ContactType.objects.get(name='Individual')
                         reservation['contact'].save()
                         
                     keys_to_remove = ['phone', 'email', 'firstname', 'surname', 'gender','address1']
+                    [reservation.pop(key, None) for key in keys_to_remove]
                     
-                    for key in keys_to_remove:
-                        reservation.pop(key, None)
-                        
                     try:
                         reservation['contact_type'] = ContactType.objects.get(id=int(contact_type)).name
                     except:
                         pass
                     
-                    print("---------", reservation)
                     reservation['no_rooms'] = len(rooms_instance_object)
                     reservation_instance = Reservations(**reservation)
                     reservation_token = generate_reservation_id()
                     reservation_instance.reservation_token = reservation_token
                     reservation_instance.save()                    
                     reservation_instance.rooms.add(*rooms_instance_object)
-                    print('Email ', reservation_instance.contact.email)
                     
                     mail_data = {"subject":"Roxandrea Hotel Reservation","recipient":[reservation_instance.contact.email],"room_no":rooms,"reservation_token":reservation_token,"ir_template":"new_reservation_template"}
                     """Set room to unavailable and tie reservation_token to the room"""
@@ -131,44 +121,46 @@ class ReservationAPIView(APIView):
                     Mailservice.send_outwards_mail(mail_data) 
                     sms_data = {'from': 'Roxandrea', 'to': Contacts.objects.get(email=reservation_instance.contact.email).phone, 'text': f'New Roxandrea Hotel reservation with token {reservation_token} and room number {rooms} was made with you as a occupant'}
                     send_sms(sms_data)
-                    
-                    return Response({'message': 'Reservation was made successfully.',"reservation_token":reservation_token,'status':True}, status=status.HTTP_201_CREATED)
-            
+                    response_payload = {'message': 'Booking was successfull!.',"reservation_token":reservation_token,'status':True}
+                    return record_created_response(response_payload)
             else:
-                return Response({"status":False,"message":"This reservation is invalid","errors":is_reservation_valid_errors})
-        # except Exception as e:
-        #     return Response({"status":False,"message":"Something went wrong!","error":str(e)})
+                response_payload = {"status":False,"message":"This reservation is invalid","errors":is_reservation_valid_errors}
+                return bad_request_error_response(response_payload)
+            
+        except TypeError as e:
+            return bad_request_error_response({'status':False,"message":'Missing keys in request'}) 
+        except KeyError:
+            return bad_request_error_response({'status':False,"message":'Missing keys in request'})   
         
     def get(self,request):
         active = request.GET.get('active', False)
         is_checkedout = request.GET.get('is_checkedout', False)
         is_client = request.GET.get('is-client') == '1'
         time.sleep(2)
-        # try:
-        metadata = {}
-        metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
-        metadata['model'] = Reservations
-        metadata['request'] = request
-        if is_client:
-            metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
-        else:
-            
-            if is_checkedout:
-                metadata['_filter'] =  (Q(has_checked_out__exact=True))
+        try:
+            metadata = {}
+            metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
+            metadata['model'] = Reservations
+            metadata['request'] = request
+            metadata['message'] = 'Reservations fetched successfully!'
+            if is_client:
+                metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
             else:
-                metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
-        print( metadata['_filter'])
-        metadata['serializer'] = ReservationSerializer
-        metadata['custom_paginator_class'] = CustomPaginatorClass
-        
-        response = custom_paginate(self,metadata)
-        print("Paginator response ====> ", response)
-        if response:
-            return Response(response) 
-        else:
-            return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
-        # except :
-        #     return Response({'status':False,'message':'Something went wrong'})
+                
+                if is_checkedout:
+                    metadata['_filter'] =  (Q(has_checked_out__exact=True))
+                else:
+                    metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
+            metadata['serializer'] = ReservationSerializer
+            metadata['custom_paginator_class'] = CustomPaginatorClass
+            
+            response = custom_paginate(self,metadata)
+            if response:
+                return Response(response) 
+            else:
+                return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
+        except :
+            return internal_server_error_response({'status':False,'message':'Sorry we could not process your request!'})
         
     def patch(self,request):
         time.sleep(2)
@@ -275,7 +267,7 @@ class CheckAvailableAPIView(APIView):
         print(is_reservation_valid_errors)
         msg = is_reservation_valid_errors[0] if len(is_reservation_valid_errors) > 0 else msg
         response = {"status":True,"message":msg,'data':RoomSerializer(rooms_instance_object,many=True).data} if status and len(is_reservation_valid_errors) == 0 else {"status":False,"message":msg}      
-        return Response(response)
+        return operation_ok_response(response)
    
 class AddonsAPIView(APIView):
     """Creates a new reservation"""

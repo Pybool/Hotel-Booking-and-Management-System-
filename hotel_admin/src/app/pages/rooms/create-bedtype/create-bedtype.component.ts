@@ -11,7 +11,7 @@ export class CreateBedtypeComponent {
   public bedtype:any = {}
   showSpinner:boolean = false;
   showAlert:Boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000;
   alertBackgroundColor: string = '#ffc107';
 
@@ -31,7 +31,7 @@ export class CreateBedtypeComponent {
         this.alertMessage = response?.message;
         if(response.status){
           this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#1aa51a'; // Alert yellow color
+          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
         }
         else{
           this.alertDuration = 3000; // 5 seconds

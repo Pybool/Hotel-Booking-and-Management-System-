@@ -12,7 +12,7 @@ export class ServicesComponent {
   showCreateService = false;
   showSpinner:boolean = false;
   showAlert:Boolean = false;
-  alertMessage: string = 'This is a custom alert message.';
+  alertMessage: string = '';
   alertDuration: number = 5000; 
   alertBackgroundColor: string = '#ffc107';
   public service:any = {}
@@ -35,7 +35,7 @@ export class ServicesComponent {
         if(response.status){
           this.services = response.data
           this.alertDuration = 3000;
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000;
@@ -66,7 +66,7 @@ export class ServicesComponent {
         if(response.status){
           this.services.push(this.service)
           this.alertDuration = 3000;
-          this.alertBackgroundColor = '#1aa51a';
+          this.alertBackgroundColor = '#423f3f';
         }
         else{
           this.alertDuration = 3000;
