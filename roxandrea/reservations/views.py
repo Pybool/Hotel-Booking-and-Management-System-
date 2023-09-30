@@ -25,6 +25,7 @@ from reservations.script import ReservationValid
 from rooms.serializers import RoomSerializer
 from reservations.errors import FailedUpdateError
 from reservations.models import Addons
+from sweeterror.crib.core import requests_sweet_error_handler, sweet_error_handler
 from sms_helper import send_sms
 from helper import custom_paginate
 from customresponses import *
@@ -42,20 +43,20 @@ class ReservationAPIView(APIView):
     """Creates a new reservation"""
     authentication_classes = [JWTAuthenticationMiddleWare]
     pagination_class = LimitOffsetPagination
+    get_err_response = {}
+    post_err_response = {}
+    
     def makeSearchParamString(self,obj):
         return '&'+str(obj).replace('{','').replace('}','').replace(':','=').replace("['",'').replace("']",'').replace("'",'').replace(",",'&').replace(" ",'')
 
     def get_rooms_objects(self,rooms): 
-        """Refactor this code"""
         rooms_instance_object = []
-        # try:
         for room in rooms:
             room_instance = Rooms.objects.get(room_no=room)
             rooms_instance_object.append(room_instance)
         return rooms_instance_object
-        # except:
-        #     return list()
-    
+        
+    @requests_sweet_error_handler(default=post_err_response)
     def post(self, request):
         try:
             """If the is_reservation_valid method returns an empty list then reservation is valid """
@@ -131,47 +132,49 @@ class ReservationAPIView(APIView):
             return bad_request_error_response({'status':False,"message":'Missing keys in request'}) 
         except KeyError:
             return bad_request_error_response({'status':False,"message":'Missing keys in request'})   
-        
+    
+    @requests_sweet_error_handler(default=get_err_response)
     def get(self,request):
+        
+        time.sleep(2)
         active = request.GET.get('active', False)
         is_checkedout = request.GET.get('is_checkedout', False)
         is_client = request.GET.get('is-client') == '1'
-        time.sleep(2)
-        try:
-            metadata = {}
-            metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
-            metadata['model'] = Reservations
-            metadata['request'] = request
-            metadata['message'] = 'Reservations fetched successfully!'
-            if is_client:
-                metadata['_filter'] =  (Q()) #or (Q(contact_id__exact=request.user.id))
+        metadata = {}
+        metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
+        metadata['model'] = Reservations
+        metadata['request'] = request
+        metadata['message'] = 'Reservations fetched successfully!'
+        if is_client:
+            metadata['_filter'] =  (Q(contact_id__exact=request.user.id))
+        else:
+            if is_checkedout:
+                metadata['_filter'] =  (Q(has_checked_out__exact=True))
             else:
-                
-                if is_checkedout:
-                    metadata['_filter'] =  (Q(has_checked_out__exact=True))
-                else:
-                    metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
-            metadata['serializer'] = ReservationSerializer
-            metadata['custom_paginator_class'] = CustomPaginatorClass
-            
-            response = custom_paginate(self,metadata)
-            if response:
-                return Response(response) 
-            else:
-                return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
-        except :
-            return internal_server_error_response({'status':False,'message':'Sorry we could not process your request!'})
+                metadata['_filter'] =  (Q(is_checked_in__exact = active == '1') & Q(has_checked_out__exact=False))
+        metadata['serializer'] = ReservationSerializer
+        metadata['custom_paginator_class'] = CustomPaginatorClass
+        
+        response = custom_paginate(self,metadata)
+        if response:
+            return Response(response) 
+        else:
+            return Response({'status':True, 'data':[],'message':'No reservations check-ins were found'})
         
     def patch(self,request):
         time.sleep(2)
         check_in_or_out =  request.GET.get('checkout', True)
-        data = request.data
+        data_obj = request.data
+        
         if check_in_or_out == True:
-            new_num_checked_in,msg = self.check_in_client(data)
+            for data in data_obj:
+                new_num_checked_in,msg = self.check_in_client(data)
         elif check_in_or_out == '1':
-            new_num_checked_in,msg = self.check_out_client(data)
+            for data in data_obj:
+                new_num_checked_in,msg = self.check_out_client(data)
         return Response({'status':True,'message':msg,'num_checked_in':new_num_checked_in})
     
+    @sweet_error_handler(default=(0,'Could not check in client'))
     def check_in_client(self,data):
         room_instances = Rooms.objects.filter(room_no__in = data['room'])
         occupant_instance = Contacts.objects.get(email=data['occupant'])
@@ -196,6 +199,7 @@ class ReservationAPIView(APIView):
             self.ensure_update(affected_rows)
             return new_num_checked_in ,'Client has been checked in'
     
+    @sweet_error_handler(default=(0,''))
     def check_out_client(self,data):
         room_instances = Rooms.objects.filter(room_no__in = data['room'])
         occupant_instance = None
@@ -234,7 +238,8 @@ class ReservationAPIView(APIView):
         if affected_rows < 1 :
             raise FailedUpdateError('Update was not applied to any rows')
         return True
-        
+    
+    @sweet_error_handler(default={})
     def deallocate_rooms(self,reservation_instance,room_instances,store=False):
         if store:
             existing_rooms = reservation_instance.first().history_rooms
@@ -245,12 +250,14 @@ class ReservationAPIView(APIView):
         
 class CheckAvailableAPIView(APIView):
     """Checks if reservation date is available"""
+    post_err_message = {"status":False,"message":"Something has gone wrong, could not check availabilty"}
     
     def formatdate(self,date_str):
         date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
         formatted_date = date_obj
         return formatted_date
     
+    @requests_sweet_error_handler(default=post_err_message)
     def post(self,request):
         time.sleep(3)
         data = request.data 
@@ -270,26 +277,24 @@ class CheckAvailableAPIView(APIView):
         return operation_ok_response(response)
    
 class AddonsAPIView(APIView):
-    """Creates a new reservation"""
+
     authentication_classes = [JWTAuthenticationMiddleWare]
     pagination_class = LimitOffsetPagination
+    get_err_response = {"status":False,"message":"Addon could not be fetched successfully"}
+    post_err_response = {"status":False,"message":"Addon could not be created successfully"}
     
+    @requests_sweet_error_handler(default=get_err_response)
     def get(self,request):
-        try:
-            addons = Addons.objects.all().values().order_by('-id')
-            response = {"status":True,"message":'Addons fetched successfully','data':addons}
-        except:
-            response = {"status":False,"message":"Addon could not be fetched successfully"}
+        addons = Addons.objects.all().values().order_by('-id')
+        response = {"status":True,"message":'Addons fetched successfully','data':addons}
         return Response(response)    
     
+    @requests_sweet_error_handler(default=post_err_response)
     def post(self,request):
         data = request.data
-        try:
-            addon_instance = Addons(**data)
-            addon_instance.save()
-            response = {"status":True,"message":'Addon was created successfully'}
-        except:
-            response = {"status":False,"message":"Addon could not be created successfully"}
+        addon_instance = Addons(**data)
+        addon_instance.save()
+        response = {"status":True,"message":'Addon was created successfully'}
         return Response(response)
         
         

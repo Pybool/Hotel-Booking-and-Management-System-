@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs';
+import { RecordService } from 'src/app/services/common/filtering.service';
 import { PaginationService } from 'src/app/services/common/pagination.service';
 import { SpinnerService } from 'src/app/services/common/spinner.service';
 import { HotelService } from 'src/app/services/hotel/hotel.service';
@@ -18,8 +19,8 @@ export class ActiveCheckInsComponent {
   showAlert:boolean = false;
   is_search:boolean = false;
   alertMessage: string = '';
-  alertDuration: number = 5000; // 5 seconds
-  alertBackgroundColor: string = '#ffc107'; // Alert yellow color
+  alertDuration: number = 5000;
+  alertBackgroundColor: string = '#ffc107'; 
   reservationDetails = false;
   loadedReservation:any = {}
   showComment = false;
@@ -34,12 +35,15 @@ export class ActiveCheckInsComponent {
   prepaidTotal = 0.00
   showModalSpinner = false
   firstInit = true
+  showSearchSpinner = false
+  reservationsTotal = 0
 
   constructor(
     private reservationService: ReservationService, 
     private paginationService: PaginationService,
     private spinnerService: SpinnerService,
-    private hotelService: HotelService){}
+    private hotelService: HotelService,
+    private recordService:RecordService){}
 
   ngOnInit(){
     this.showSpinner = true;
@@ -49,23 +53,23 @@ export class ActiveCheckInsComponent {
         this.showSpinner = false;
         if(response.status){
           this.reservations = response.data
-          console.log(this.reservations[0].rooms)
+          this.reservationsTotal = response?.count
           this.paginationService.setLinks(response.next,response.last,'reservations-list','',this.is_search)
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = '#423f3f'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = '#423f3f'; 
           this.firstInit = false;
         }
         else{
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)'; 
         }
         this.showAlert = true
       },
       (error: any) => {
         console.error('An error occurred in the subscription:', error);
         this.showSpinner = false;
-        this.alertDuration = 3000; // 5 seconds
-        this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+        this.alertDuration = 3000;
+        this.alertBackgroundColor = 'rgb(225 31 64)'; 
         this.showAlert = true
         // Handle the error here, if needed
       }
@@ -82,6 +86,39 @@ export class ActiveCheckInsComponent {
       this.showSpinner = status
     })
   }
+
+  searchbarFilter($event:any){
+    this.showSearchSpinner = true
+    this.recordService.filterRecords('filter-records',{q:$event.target.value,rec:'reservations',status:'checkedin'})
+    .pipe(take(1)).subscribe((response:any)=>{
+      console.log(response)
+      this.showSearchSpinner = false
+      this.alertMessage = response?.message;
+        this.showSpinner = false;
+        if(response.status){
+          this.reservations = response.data
+          this.reservationsTotal = response?.count
+          this.paginationService.setLinks(response.next,response.last,'reservations-list','',this.is_search)
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = '#423f3f'; 
+          this.firstInit = false
+        }
+        else{
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)';
+        }
+        this.showAlert = true
+      },
+      (error: any) => {
+        console.error('An error occurred in the subscription:', error);
+        this.alertMessage = error
+        this.showSpinner = false;
+        this.alertDuration = 3000;
+        this.alertBackgroundColor = 'rgb(225 31 64)';
+        this.showAlert = true
+      })
+  }
+  
 
   toggleCheckOutModal(){
     this.showCheckOutModal = !this.showCheckOutModal;
@@ -255,14 +292,14 @@ export class ActiveCheckInsComponent {
             try{this.loadedRoom.is_checked_in = false}
             catch{}
             this.loadedReservation.num_checked_in = response['num_checked_in']
-            this.alertDuration = 3000; // 5 seconds
-            this.alertBackgroundColor = '#423f3f'; // Alert yellow color
+            this.alertDuration = 3000;
+            this.alertBackgroundColor = '#423f3f'; 
           }
           else{
             // try{room.disable = false}
             // catch{}
-            this.alertDuration = 3000; // 5 seconds
-            this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+            this.alertDuration = 3000;
+            this.alertBackgroundColor = 'rgb(225 31 64)'; 
           }
           this.showAlert = true
         },
@@ -271,8 +308,8 @@ export class ActiveCheckInsComponent {
           // try{room.disable = false}
           // catch{}
           this.showTinySpinner = false;
-          this.alertDuration = 3000; // 5 seconds
-          this.alertBackgroundColor = 'rgb(225 31 64)'; // Alert yellow color
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)'; 
           this.showAlert = true
           // Handle the error here, if needed
         }

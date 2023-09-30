@@ -341,7 +341,7 @@
                   <div class="nk-block-head-content">
                      <h3 class="nk-block-title page-title">Checked-In Bookings</h3>
                      <div class="nk-block-des text-soft">
-                        <p>You have total 2,595 booking's.</p>
+                        <p>You have total {{reservationsTotal}} booking's.</p>
                      </div>
                   </div>
                   <div class="nk-block-head-content">
@@ -349,6 +349,7 @@
                         <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                         <div class="toggle-expand-content" data-content="pageMenu">
                            <ul class="nk-block-tools g-3">
+                              <li><input style="width:35vh" (keydown.enter)="searchbarFilter($event)" type="text" placeholder="Search for something" class="form-control"/><div *ngIf="showSearchSpinner" class="search-spinner"></div></li>
                               <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
                               <li class="nk-block-tools-opt">
                                  <div class="drodown">
@@ -519,7 +520,7 @@
                                     </a>
                                  </div>
                                  <div class="nk-tb-col tb-col-md"><span style="text-decoration: underline;" class="tb-status text-success pointer ">{{reservation.reservation_token}}</span></div>
-                                 <div class="nk-tb-col tb-col-mb"><span>Honeymoon</span></div>
+                                 <div class="nk-tb-col tb-col-mb"><span>{{reservation.package}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span class="tb-status text-success">{{reservation.contact.phone}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_in}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_out}}</span></div>

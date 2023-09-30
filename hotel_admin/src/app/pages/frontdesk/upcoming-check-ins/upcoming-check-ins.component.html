@@ -259,15 +259,15 @@
                         <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                         <div class="toggle-expand-content" data-content="pageMenu">
                            <ul class="nk-block-tools g-3">
-                              <li><input style="width:35vh" type="text" placeholder="Search for something" class="form-control"/></li>
+                              <li><input style="width:35vh" (keydown.enter)="searchbarFilter($event)" type="text" placeholder="Search for something" class="form-control"/><div *ngIf="showSearchSpinner" class="search-spinner"></div></li>
                               <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
                               <li class="nk-block-tools-opt">
                                  <div class="drodown">
                                     <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                     <div class="dropdown-menu dropdown-menu-end">
                                        <ul class="link-list-opt no-bdr">
-                                          <li><a href="booking-add.html"><span>Add Booking</span></a></li>
-                                          <li><a href="#"><span>Import Booking</span></a></li>
+                                          <li><a href="/root/frontdesk/reservation"><span>Add Booking</span></a></li>
+                                          <li><a aria-disabled="true" disabled style="opacity: 0.7;" href="javascript:;"><span>Import Booking</span></a></li>
                                        </ul>
                                     </div>
                                  </div>
@@ -286,13 +286,13 @@
                            <div class="card-tools">
                               <div class="form-inline flex-nowrap gx-3">
                                  <div class="form-wrap w-150px">
-                                    <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
-                                       <option value="">Bulk Action</option>
-                                       <option value="email">Send Email</option>
-                                       <option value="delete">Delete Booking</option>
+                                    <select (change)="setBulkAction()" [(ngModel)]="bulkAction" class="form-select" data-search="on" data-placeholder="Bulk Action">
+                                       <option value="{{undefined}}">Bulk Action</option>
+                                       <option value="checkin">Check In</option>
+                                       <option value="cancel">Cancel Booking</option>
                                     </select>
                                  </div>
-                                 <div class="btn-wrap"><span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span><span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span></div>
+                                 <div class="btn-wrap"><span class="d-none d-md-block"><button [(disabled)] ="applyButtonActive" (click)="apply()" class="btn btn-dim btn-outline-light">Apply</button></span><span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span></div>
                               </div>
                            </div>
                            <div class="card-tools me-n1">
@@ -305,71 +305,7 @@
                                        <div class="toggle-content" data-content="cardTools">
                                           <ul class="btn-toolbar gx-1">
                                              <li class="toggle-close"><a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a></li>
-                                             <li>
-                                                <div class="dropdown">
-                                                   <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                                      <div class="dot dot-primary"></div>
-                                                      <em class="icon ni ni-filter-alt"></em>
-                                                   </a>
-                                                   <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
-                                                      <div class="dropdown-head">
-                                                         <span class="sub-title dropdown-title">Filter Bookings</span>
-                                                         <div class="dropdown"><a href="#" class="btn btn-sm btn-icon"><em class="icon ni ni-more-h"></em></a></div>
-                                                      </div>
-                                                      <div class="dropdown-body dropdown-body-rg">
-                                                         <div class="row gx-6 gy-3">
-                                                            <div class="col-12">
-                                                               <div class="custom-control custom-control-sm custom-checkbox"><input type="checkbox" class="custom-control-input" id="hasEmail"><label class="custom-control-label" for="hasEmail"> Email Verified</label></div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                               <div class="form-group">
-                                                                  <label class="overline-title overline-title-alt">Status</label>
-                                                                  <select class="form-select js-select2 js-select2-sm">
-                                                                     <option value="any">Any Status</option>
-                                                                     <option value="paid">Paid</option>
-                                                                     <option value="due">Due</option>
-                                                                  </select>
-                                                               </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                               <div class="form-group">
-                                                                  <label class="overline-title overline-title-alt">Room Type</label>
-                                                                  <select class="form-select js-select2 js-select2-sm">
-                                                                     <option value="any">Any Type</option>
-                                                                     <option value="single">Single</option>
-                                                                     <option value="double">Double</option>
-                                                                     <option value="delux">Delux</option>
-                                                                     <option value="sdelux">Super Delux</option>
-                                                                  </select>
-                                                               </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                               <div class="form-group"><button type="button" class="btn btn-secondary">Filter</button></div>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                      <div class="dropdown-foot between"><a class="clickable" href="#">Reset Filter</a><a href="#">Save Filter</a></div>
-                                                   </div>
-                                                </div>
-                                             </li>
-                                             <li>
-                                                <div class="dropdown">
-                                                   <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-setting"></em></a>
-                                                   <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                      <ul class="link-check">
-                                                         <li><span>Show</span></li>
-                                                         <li class="active"><a href="#">10</a></li>
-                                                         <li><a href="#">20</a></li>
-                                                         <li><a href="#">50</a></li>
-                                                      </ul>
-                                                      <ul class="link-check">
-                                                         <li><span>Order</span></li>
-                                                         <li class="active"><a href="#">DESC</a></li>
-                                                         <li><a href="#">ASC</a></li>
-                                                      </ul>
-                                                   </div>
-                                                </div>
-                                             </li>
+                                            
                                           </ul>
                                        </div>
                                     </div>
@@ -378,12 +314,13 @@
                            </div>
                         </div>
                         <div class="card-search search-wrap" data-search="search">
-                           <div class="card-body">
-                              <div class="search-content"><a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a><input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by user or email"><button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button></div>
+                           <div class="card-body flex-end">
+                              <div class="search-content"><a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a><input type="text" (keydown.enter)="searchbarFilter($event)" class="form-control border-transparent form-focus-none" placeholder="Search by user or email"><button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button></div>
+                              <div *ngIf="showSearchSpinner" class="search-spinner"></div>
                            </div>
                         </div>
                      </div>
-                     <div style="max-height: 58vh;overflow-y: auto;" class="card-inner p-0">
+                     <div style="min-height:20vh;max-height: 58vh;overflow-y: auto;" class="card-inner p-0">
                         <div class="nk-tb-list nk-tb-ulist">
                            <div class="nk-tb-item nk-tb-head">
                               <div class="nk-tb-col nk-tb-col-check">
@@ -419,7 +356,7 @@
                            <ng-container *ngFor="let reservation of reservations">
                               <div style="white-space:nowrap;" class="active-zone pointer" class="nk-tb-item">
                                  <div class="nk-tb-col nk-tb-col-check">
-                                    <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid10"><label class="custom-control-label" for="uid10"></label></div>
+                                    <div class="custom-control custom-control-sm custom-checkbox notext"><input (change)="addToCheckInList($event)" type="checkbox" class="custom-control-input" id="{{reservation.id}}"><label class="custom-control-label" for="{{reservation.id}}"></label></div>
                                  </div>
                                  
                                  <div class="nk-tb-col">
@@ -445,8 +382,8 @@
                                              <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                              <div class="dropdown-menu dropdown-menu-end">
                                                 <ul class="link-list-opt no-bdr">
-                                                   <li><a href="#"><em class="icon ni ni-mail-fill"></em><span>Send Email</span></a></li>
-                                                   <li><a href="booking-edit.html"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li><a href="mailto:{{reservation.contact.email}}"><em class="icon ni ni-mail-fill"></em><span>Send Email</span></a></li>
+                                                   <li><a href="booking-edit.html"><em class="icon ni ni-edit-fill"></em><span>Cancel Booking</span></a></li>
                                                 </ul>
                                              </div>
                                           </div>
@@ -461,21 +398,6 @@
                         <div class="nk-block-between-md g-3">
                            <div class="g">
                               <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination>
-                           </div>
-                           <div class="g">
-                              <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                 <div>Page</div>
-                                 <div>
-                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                       <option value="page-1">1</option>
-                                       <option value="page-2">2</option>
-                                       <option value="page-4">4</option>
-                                       <option value="page-5">5</option>
-                                       <option value="page-6">6</option>
-                                    </select>
-                                 </div>
-                                 <div>OF 102</div>
-                              </div>
                            </div>
                         </div>
                      </div>
@@ -561,7 +483,7 @@
                                              </div>
                                           </div>
                                        </ng-container>
-                                       
+                                       <a (click)="checkInContacts('single','*')" class="pointer btn btn-black" *ngIf="loadedReservation.rooms.length > 1">Check In</a>
                                     </div>
                                  </div>
                               </li>

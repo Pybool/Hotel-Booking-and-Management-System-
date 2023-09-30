@@ -70,6 +70,7 @@ import { DashboardModule } from '../dashboard/dashboard.module';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AllReservationsModule } from '../frontdesk/all-reservations/all-reservations.module';
 import { AllReservationsComponent } from '../frontdesk/all-reservations/all-reservations.component';
+import { RecordService } from 'src/app/services/common/filtering.service';
 // import { FeatureCardModule } from '../configurations/featurecard/featurecard.module';
 
 const routes: Routes = [{
@@ -179,6 +180,7 @@ const routes: Routes = [{
               RatesService,
               ReservationService,
               UiconfigService,
+              RecordService,
 
 
   {

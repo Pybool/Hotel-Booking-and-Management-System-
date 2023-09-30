@@ -1,5 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { take } from 'rxjs';
+import { RecordService } from 'src/app/services/common/filtering.service';
 import { PaginationService } from 'src/app/services/common/pagination.service';
 import { SpinnerService } from 'src/app/services/common/spinner.service';
 import { ReservationService } from 'src/app/services/reservations/reservation.service';
@@ -28,11 +29,15 @@ export class UpcomingCheckInsComponent {
   disable = false
   reservationsTotal = 0
   firstInit = true
+  showSearchSpinner = false
   private srcValues:string[] = []
+  toCheckInList = []
+  bulkAction:any;
+  applyButtonActive = true
 
   constructor(
     private reservationService: ReservationService, 
-    private paginationService: PaginationService,
+    private paginationService: PaginationService,private recordService:RecordService,
     private spinnerService: SpinnerService,private renderer: Renderer2){
       this.srcValues = [
         `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
@@ -110,6 +115,37 @@ export class UpcomingCheckInsComponent {
     });
   }
 
+  searchbarFilter($event:any){
+    this.showSearchSpinner = true
+    this.recordService.filterRecords('filter-records',{q:$event.target.value,rec:'reservations',status:'pending'})
+    .pipe(take(1)).subscribe((response:any)=>{
+      console.log(response)
+      this.showSearchSpinner = false
+      this.alertMessage = response?.message;
+        this.showSpinner = false;
+        if(response.status){
+          this.reservations = response.data
+          this.reservationsTotal = response?.count
+          this.paginationService.setLinks(response.next,response.last,'reservations-list','',this.is_search)
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = '#423f3f'; 
+          this.firstInit = false
+        }
+        else{
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)';
+        }
+        this.showAlert = true
+      },
+      (error: any) => {
+        console.error('An error occurred in the subscription:', error);
+        this.alertMessage = error
+        this.showSpinner = false;
+        this.alertDuration = 3000;
+        this.alertBackgroundColor = 'rgb(225 31 64)';
+        this.showAlert = true
+      })
+  }
   
 
   receivePaginationData(response:any){
@@ -122,13 +158,28 @@ export class UpcomingCheckInsComponent {
     return obj
   }
 
+  private getObjectFromArrayByToken(arr:any[],reservation_token:number){
+    const obj:any = arr.find(x => x.reservation_token === reservation_token);
+    return obj
+  }
+
   private deleteObjectFromArray(arr:any[],id:number){
-    console.log(arr, id)
-    const obj:any = arr.find(x => x.id === id);
     let newObj:any = []
     arr.forEach((arrObj)=>{
       console.log()
       if (arrObj.id != id){
+        newObj.push(arrObj)
+      }
+    })
+    console.log(newObj)
+    return newObj
+  }
+
+  private deleteObjectFromArrayByToken(arr:any[],reservation_token:string){
+    let newObj:any = []
+    arr.forEach((arrObj)=>{
+      console.log()
+      if (arrObj.reservation_token != reservation_token){
         newObj.push(arrObj)
       }
     })
@@ -153,60 +204,86 @@ export class UpcomingCheckInsComponent {
     this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.id))
   }
 
-  checkInContacts(_type:string,room){
-    try{room.disable = true}
-    catch{}
-    
+  addToCheckInList($event){
     let rooms = []
-    if (room == '*'){
+    this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.id))
+    const exists = this.getObjectFromArrayByToken(this.toCheckInList,this.loadedReservation.reservation_token)
+    console.log(exists)
+    if(!exists){
       this.loadedReservation.rooms.forEach((room)=>{
         rooms.push(room.room_no)
       })
+      this.toCheckInList.push({'occupant':this.loadedReservation.contact.email,'room':rooms,'reservation_token':this.loadedReservation.reservation_token})
+      console.log(this.toCheckInList)
     }
     else{
-      rooms.push(room.room_no)
-    }
-
-    switch(_type){
-      case 'single':
-        const data =  {'occupant':this.loadedReservation.contact.email,
-                      'room':rooms,'reservation_token':this.loadedReservation.reservation_token
-                      }
-        this.showTinySpinner = true
-        this.reservationService.checkIn(data).subscribe((response:any)=>{
-          this.alertMessage = response?.message;
-          this.showTinySpinner = false;
-          if(response.status){
-            try{room.is_checked_in = true}
-            catch{}
-            rooms
-            this.loadedReservation.rooms.forEach((room)=>{
-              this.deleteObjectFromArray(this.loadedReservation.rooms,room.id)
-            })
-            
-            this.loadedReservation.num_checked_in = response['num_checked_in']
-            this.alertDuration = 3000;
-            this.alertBackgroundColor = '#423f3f';
-          }
-          else{
-            try{room.disable = false}
-            catch{}
-            this.alertDuration = 3000;
-            this.alertBackgroundColor = 'rgb(225 31 64)';
-          }
-          this.showAlert = true
-        },
-        (error: any) => {
-          console.error('An error occurred in the subscription:', error);
-          try{room.disable = false}
-          catch{}
-          this.showTinySpinner = false;
-          this.alertDuration = 3000;
-          this.alertBackgroundColor = 'rgb(225 31 64)';
-          this.showAlert = true
-          // Handle the error here, if needed
-        }
-      );
+      this.toCheckInList = this.deleteObjectFromArrayByToken(this.toCheckInList,this.loadedReservation.reservation_token)
     }
   }
+  
+  setBulkAction(){
+    this.applyButtonActive = this.bulkAction == undefined
+  }
+
+  apply(){
+    if(this.bulkAction=='checkin'){
+      this.checkInContacts('multiple','*')
+    }
+    else{
+      alert("Cancelling order")
+    }
+  }
+  
+  checkInContacts(_type:string,room){
+    this.showTinySpinner = true
+    if(_type=='single'){
+      try{room.disable = true}
+      catch{}
+      
+      let rooms = []
+      if (room == '*'){
+        this.loadedReservation.rooms.forEach((room)=>{
+          rooms.push(room.room_no)
+        })
+      }
+      else{rooms.push(room.room_no)}
+      this.toCheckInList = [{'occupant':this.loadedReservation.contact.email,'room':rooms,'reservation_token':this.loadedReservation.reservation_token}]
+    }
+        
+    this.reservationService.checkIn(this.toCheckInList).subscribe((response:any)=>{
+        this.alertMessage = response?.message;
+        this.showTinySpinner = false;
+        if(response.status){
+          try{room.is_checked_in = true}
+          catch{}
+          this.loadedReservation.rooms.forEach((room)=>{
+            this.deleteObjectFromArray(this.loadedReservation.rooms,room.id)
+          })
+          
+          this.loadedReservation.num_checked_in = response['num_checked_in']
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = '#423f3f';
+        }
+        else{
+          try{room.disable = false}
+          catch{}
+          this.alertDuration = 3000;
+          this.alertBackgroundColor = 'rgb(225 31 64)';
+        }
+        this.showAlert = true
+      },
+      (error: any) => {
+        console.error('An error occurred in the subscription:', error);
+        try{room.disable = false}
+        catch{}
+        this.showTinySpinner = false;
+        this.alertDuration = 3000;
+        this.alertBackgroundColor = 'rgb(225 31 64)';
+        this.showAlert = true
+        // Handle the error here, if needed
+      }
+    );
+  }
+
+
 }

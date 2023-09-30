@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'services',
     'tasks',
     'corsheaders',
-    'uiconfig'
+    'uiconfig',
+    'filters',
+    'sweeterror'
 ]
 
 REST_FRAMEWORK = {
@@ -182,3 +184,16 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 MAX_UI_FEATURES = 6
 MAX_UI_SERVICES = 8
+
+
+"""Sweet Err Handler configurations"""
+HANDLERS = {'open_ai':"open_ai_response",
+            'custom_nlp':"custom_nlp_response"
+           }
+
+CONFIG = {
+            "AUTO_GENERATE_ERROR_MESSAGE":False,
+            "USE_DATABASE":True,
+            "ALLOWED_ERROR_CODES":[500, 501],
+            "DEFAULT_HANDLER": "open_ai_response"
+         }
