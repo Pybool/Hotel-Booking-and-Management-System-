@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { HotelService } from 'src/app/services/hotel/hotel.service';
 
@@ -11,12 +12,13 @@ export class ServiceBillsComponent {
   public showSpinner:Boolean = false;
   public serviceBills = []
   loadedServiceBill:any = {}
+  rawInvoices = []
   showAlert:Boolean = false;
   alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
   
-  constructor(private hotelService : HotelService){}
+  constructor(private hotelService : HotelService,private router: Router){}
 
   ngOnInit(){
     this.showSpinner = true;
@@ -28,7 +30,9 @@ export class ServiceBillsComponent {
         this.showSpinner = false;
         this.alertMessage = response?.message;
         if(response.status){
-          this.serviceBills = response.data
+          this.rawInvoices = response.data
+
+          this.aggregateServiceBills(response.data)
           this.alertDuration = 3000;
           this.alertBackgroundColor = '#423f3f';
         }
@@ -46,5 +50,38 @@ export class ServiceBillsComponent {
         this.showAlert = true
       }
     );
+  }
+
+  aggregateServiceBills(serviceBills){
+    const reducedInvoices = serviceBills.reduce((acc,invoice)=>{
+      const {active_reservation_token,dead_reservation_token, bill_date, grand_total} = invoice
+
+      if (acc[active_reservation_token] || acc[dead_reservation_token]){
+        console.log(grand_total)
+        let previous = parseFloat(acc[active_reservation_token].grand_total)
+        let current = previous += parseFloat(grand_total)
+        acc[active_reservation_token].grand_total = current
+      }
+      else{
+        acc[active_reservation_token] = {active_reservation_token, bill_date, grand_total}
+      }
+
+      return acc;
+    },{})
+
+    const result = Object.values(reducedInvoices)
+    console.log(result)
+    this.serviceBills =  result
+  }
+
+  getObjectByBookingID(bookingID){
+    const obj:any = this.serviceBills.find(x => x.active_reservation_token === bookingID);
+    return obj
+  }
+
+  viewInvoiceDetails(bookingId:string){
+    window.localStorage.setItem('invoice',JSON.stringify(this.getObjectByBookingID(bookingId)))
+    const queryParams = {bookingId:bookingId}
+    this.router.navigate(['/root/service-usage/invoice-details'],{queryParams:queryParams})
   }
 }

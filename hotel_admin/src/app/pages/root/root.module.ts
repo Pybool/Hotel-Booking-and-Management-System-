@@ -71,6 +71,8 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AllReservationsModule } from '../frontdesk/all-reservations/all-reservations.module';
 import { AllReservationsComponent } from '../frontdesk/all-reservations/all-reservations.component';
 import { RecordService } from 'src/app/services/common/filtering.service';
+import { InvoiceDetailsModule } from '../serviceUsage/invoice-details/invoice-details.module';
+import { InvoiceDetailsComponent } from '../serviceUsage/invoice-details/invoice-details.component';
 // import { FeatureCardModule } from '../configurations/featurecard/featurecard.module';
 
 const routes: Routes = [{
@@ -91,6 +93,7 @@ const routes: Routes = [{
                           children: [
                               { path: 'new-service-bill', component: GenerateServiceBillComponent },
                               { path: 'service-bills-list', component: ServiceBillsComponent },
+                              { path: 'invoice-details', component: InvoiceDetailsComponent },
                           ],
                         },
                        
@@ -168,6 +171,7 @@ const routes: Routes = [{
     UIconfigModule,
     DashboardModule,
     AllReservationsModule,
+    InvoiceDetailsModule,
     // FeatureCardModule,
     RouterModule.forChild(routes),
   ],

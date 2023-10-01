@@ -97,7 +97,8 @@ td.active-zone{
   .modal {
     width: 90%!important;
     display: flex!important;
-    background-color: white;
+    /* background-color: white; */
+    background: #101924!important;
     padding: 20px;
     border-radius: 5px;
     height: 84%;
@@ -182,7 +183,6 @@ td.active-zone{
   }
 
   .room-header{
-    background:whitesmoke;
     height:50px;
     align-items:center;
     display:flex;

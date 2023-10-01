@@ -11,3 +11,4 @@ class SweetError(models.Model):
     is_resolved = models.BooleanField(default=False)
     is_permitted = models.BooleanField(default=False)
     is_legacy = models.BooleanField(default=False)
+    

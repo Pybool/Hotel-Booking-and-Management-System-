@@ -332,7 +332,7 @@
   [backgroundColor]="alertBackgroundColor"
   ></app-custom-alert>
 
-  <div class="nk-content ">
+  <div id="checkedin-reservation-root" class="nk-content ">
    <div class="container-fluid">
       <div class="nk-content-inner">
          <div class="nk-content-body">
@@ -369,20 +369,20 @@
                </div>
             </div>
             <div class="nk-block">
-               <div class="card card-bordered card-stretch">
+               <div  class="card card-bordered card-stretch">
                   <div class="card-inner-group">
                      <div class="card-inner position-relative card-tools-toggle">
                         <div class="card-title-group">
                            <div class="card-tools">
                               <div class="form-inline flex-nowrap gx-3">
                                  <div class="form-wrap w-150px">
-                                    <select class="form-select js-select2 js-select2-sm" data-search="off" data-placeholder="Bulk Action">
-                                       <option value="">Bulk Action</option>
-                                       <option value="email">Send Email</option>
-                                       <option value="delete">Delete Booking</option>
+                                    <select (change)="setBulkAction()" [(ngModel)]="bulkAction" class="form-select" data-search="on" data-placeholder="Bulk Action">
+                                       <option value="{{undefined}}">Bulk Action</option>
+                                       <option value="checkin">Check Out</option>
+                                       <option value="cancel">Cancel Booking</option>
                                     </select>
                                  </div>
-                                 <div class="btn-wrap"><span class="d-none d-md-block"><button class="btn btn-dim btn-outline-light disabled">Apply</button></span><span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span></div>
+                                 <div class="btn-wrap"><span class="d-none d-md-block"><button [(disabled)] ="applyButtonActive" (click)="apply()" class="btn btn-dim btn-outline-light">Apply</button></span><span class="d-md-none"><button class="btn btn-dim btn-outline-light btn-icon disabled"><em class="icon ni ni-arrow-right"></em></button></span></div>
                               </div>
                            </div>
                            <div class="card-tools me-n1">
@@ -395,71 +395,7 @@
                                        <div class="toggle-content" data-content="cardTools">
                                           <ul class="btn-toolbar gx-1">
                                              <li class="toggle-close"><a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools"><em class="icon ni ni-arrow-left"></em></a></li>
-                                             <li>
-                                                <div class="dropdown">
-                                                   <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                                      <div class="dot dot-primary"></div>
-                                                      <em class="icon ni ni-filter-alt"></em>
-                                                   </a>
-                                                   <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
-                                                      <div class="dropdown-head">
-                                                         <span class="sub-title dropdown-title">Filter Bookings</span>
-                                                         <div class="dropdown"><a href="#" class="btn btn-sm btn-icon"><em class="icon ni ni-more-h"></em></a></div>
-                                                      </div>
-                                                      <div class="dropdown-body dropdown-body-rg">
-                                                         <div class="row gx-6 gy-3">
-                                                            <div class="col-12">
-                                                               <div class="custom-control custom-control-sm custom-checkbox"><input type="checkbox" class="custom-control-input" id="hasEmail"><label class="custom-control-label" for="hasEmail"> Email Verified</label></div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                               <div class="form-group">
-                                                                  <label class="overline-title overline-title-alt">Status</label>
-                                                                  <select class="form-select js-select2 js-select2-sm">
-                                                                     <option value="any">Any Status</option>
-                                                                     <option value="paid">Paid</option>
-                                                                     <option value="due">Due</option>
-                                                                  </select>
-                                                               </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                               <div class="form-group">
-                                                                  <label class="overline-title overline-title-alt">Room Type</label>
-                                                                  <select class="form-select js-select2 js-select2-sm">
-                                                                     <option value="any">Any Type</option>
-                                                                     <option value="single">Single</option>
-                                                                     <option value="double">Double</option>
-                                                                     <option value="delux">Delux</option>
-                                                                     <option value="sdelux">Super Delux</option>
-                                                                  </select>
-                                                               </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                               <div class="form-group"><button type="button" class="btn btn-secondary">Filter</button></div>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                      <div class="dropdown-foot between"><a class="clickable" href="#">Reset Filter</a><a href="#">Save Filter</a></div>
-                                                   </div>
-                                                </div>
-                                             </li>
-                                             <li>
-                                                <div class="dropdown">
-                                                   <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown"><em class="icon ni ni-setting"></em></a>
-                                                   <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                                      <ul class="link-check">
-                                                         <li><span>Show</span></li>
-                                                         <li class="active"><a href="#">10</a></li>
-                                                         <li><a href="#">20</a></li>
-                                                         <li><a href="#">50</a></li>
-                                                      </ul>
-                                                      <ul class="link-check">
-                                                         <li><span>Order</span></li>
-                                                         <li class="active"><a href="#">DESC</a></li>
-                                                         <li><a href="#">ASC</a></li>
-                                                      </ul>
-                                                   </div>
-                                                </div>
-                                             </li>
+                                            
                                           </ul>
                                        </div>
                                     </div>
@@ -468,12 +404,13 @@
                            </div>
                         </div>
                         <div class="card-search search-wrap" data-search="search">
-                           <div class="card-body">
-                              <div class="search-content"><a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a><input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by user or email"><button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button></div>
+                           <div class="card-body flex-end">
+                              <div class="search-content"><a href="#" class="search-back btn btn-icon toggle-search" data-target="search"><em class="icon ni ni-arrow-left"></em></a><input type="text" (keydown.enter)="searchbarFilter($event)" class="form-control border-transparent form-focus-none" placeholder="Search by user or email"><button class="search-submit btn btn-icon"><em class="icon ni ni-search"></em></button></div>
+                              <div *ngIf="showSearchSpinner" class="search-spinner"></div>
                            </div>
                         </div>
                      </div>
-                     <div style="max-height: 58vh;overflow-y: auto;" class="card-inner p-0">
+                     <div style="min-height:20vh;max-height: 58vh;overflow-y: auto;" class="card-inner p-0">
                         <div class="nk-tb-list nk-tb-ulist">
                            <div class="nk-tb-item nk-tb-head">
                               <div class="nk-tb-col nk-tb-col-check">
@@ -505,10 +442,11 @@
                                  </div>
                               </div>
                            </div>
+
                            <ng-container *ngFor="let reservation of reservations">
-                              <div id="{{reservation.id}}" (click)="showResrvationDetails($event)" style="white-space:nowrap;" class="active-zone pointer" class="nk-tb-item">
+                              <div style="white-space:nowrap;" class="active-zone pointer" class="nk-tb-item">
                                  <div class="nk-tb-col nk-tb-col-check">
-                                    <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid10"><label class="custom-control-label" for="uid10"></label></div>
+                                    <div class="custom-control custom-control-sm custom-checkbox notext"><input (change)="addToCheckInList($event)" type="checkbox" class="custom-control-input" id="{{reservation.id}}"><label class="custom-control-label" for="{{reservation.id}}"></label></div>
                                  </div>
                                  
                                  <div class="nk-tb-col">
@@ -519,9 +457,9 @@
                                        </div>
                                     </a>
                                  </div>
-                                 <div class="nk-tb-col tb-col-md"><span style="text-decoration: underline;" class="tb-status text-success pointer ">{{reservation.reservation_token}}</span></div>
+                                 <div class="nk-tb-col tb-col-md"><span id="{{reservation.id}}" (click)="showResrvationDetails($event)" style="text-decoration: underline;" class="tb-status text-success pointer ">{{reservation.reservation_token}}</span></div>
                                  <div class="nk-tb-col tb-col-mb"><span>{{reservation.package}}</span></div>
-                                 <div class="nk-tb-col tb-col-lg"><span class="tb-status text-success">{{reservation.contact.phone}}</span></div>
+                                 <div class="nk-tb-col tb-col-md"><span class="tb-status text-primary">{{reservation.contact.phone}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_in}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_out}}</span></div>
                                  <div *ngIf="reservation.advance_amount !=reservation.total_amount" class="nk-tb-col tb-col-md"><span class="tb-status text-warning">Partial</span></div>
@@ -534,8 +472,8 @@
                                              <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                              <div class="dropdown-menu dropdown-menu-end">
                                                 <ul class="link-list-opt no-bdr">
-                                                   <li><a href="#"><em class="icon ni ni-mail-fill"></em><span>Send Email</span></a></li>
-                                                   <li><a href="booking-edit.html"><em class="icon ni ni-edit-fill"></em><span>Edit</span></a></li>
+                                                   <li><a href="mailto:{{reservation.contact.email}}"><em class="icon ni ni-mail-fill"></em><span>Send Email</span></a></li>
+                                                   <li><a href="booking-edit.html"><em class="icon ni ni-edit-fill"></em><span>Cancel Booking</span></a></li>
                                                 </ul>
                                              </div>
                                           </div>
@@ -550,18 +488,6 @@
                         <div class="nk-block-between-md g-3">
                            <div class="g">
                               <app-pagination (dataEvent)="receivePaginationData($event)"></app-pagination>
-                           </div>
-                           <div class="g">
-                              <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                                 <div>Page</div>
-                                 <div>
-                                    <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                       <option value="page-1">1</option>
-                                       <option value="page-2">2</option>
-                                    </select>
-                                 </div>
-                                 <div>OF 102</div>
-                              </div>
                            </div>
                         </div>
                      </div>
@@ -598,3 +524,159 @@
       </div>
    </div>
 </div>
+
+
+<div *ngIf="reservationDetails" style="width:600px" class="nk-add-product toggle-slide toggle-slide-right toggle-screen-any content-active" data-content="addProduct" data-toggle-screen="any" data-toggle-overlay="true" data-toggle-body="true" data-simplebar="init">
+   <div class="simplebar-wrapper" style="margin: -24px;">
+      <div class="simplebar-height-auto-observer-wrapper">
+         <div class="simplebar-height-auto-observer"></div>
+      </div>
+      <div class="simplebar-mask">
+         <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+            <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;">
+               <div class="simplebar-content" style="padding: 24px;">
+                  <div class="nk-block-head">
+                     <div class="nk-block-head-content">
+                        <h5 class="nk-block-title">Booking Details</h5>
+                        <div class="nk-block-des">
+                           <p>View more information about a booking.</p>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="nk-block">
+                     <div class="row g-3">
+                        <div class="col-12">
+                           <div class="form-group">
+                              <label class="form-label" for="product-title">Product Title</label>
+                              <div class="form-control-wrap"><input type="text" class="form-control" id="product-title"></div>
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <ul id="basic-info" style="max-height:50vh;overflow-y: auto;" class="link-list-opt">
+                              <li ><div class="col-12 row g-3"><label class="col-6">Booking ID</label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.reservation_token || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Firstname </label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.contact?.firstname || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Lastname </label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.contact?.lastname || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Email </label><a class="col-6" href="mailto:{{loadedReservation?.contact?.email}}" ><span>{{loadedReservation?.contact?.email || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Phone</label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.contact?.phone || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Address</label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.contact?.address1 || 'N/A'}}</span></a></div></li>
+                              <li ><div class="col-12 row g-3"><label class="col-6">Number of Check-Ins</label><a class="col-6" href="javascript:void(0)" ><span>{{loadedReservation?.num_checked_in || 'N/A'}}</span></a></div></li>
+                              <li >
+                                 <div class="col-12 row g-3"><label class="col-6">Rooms</label>
+                                    <div style="background:transparent;overflow-x: auto;overflow-y: hidden;flex-wrap:wrap;margin-right: 20px;justify-content:space-evenly;" class="description row g-3">
+                                       <ng-container *ngFor="let room of loadedReservation.rooms">
+                                          <div style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                             <div>
+                                                <p  class="pill-text pointer">Room {{room.room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                                <p (click)="startCheckOut('single',room)" *ngIf="loadedReservation.rooms.length > 1 && room.is_checked_in" class="pill-text pointer"><span class="pointer" *ngIf="!room.disable">Check out</span></p>
+                                                <p (click)="startCheckOut('single',room)" *ngIf="loadedReservation.rooms.length == 1 && loadedReservation.is_checked_in" class="pill-text pointer">Check out</p>
+                                             </div>
+                                          </div>
+                                       </ng-container>
+                                       <a (click)="checkOutContacts('single')" class="pointer btn btn-black" *ngIf="loadedReservation.rooms.length > 1">Check In</a>
+                                    </div>
+                                 </div>
+                              </li>
+                          </ul>
+                        </div>
+                        <div class="col-12"><button (click)="closeReservationDetails($event)" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Check-In</span></button></div>
+                     </div>
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="simplebar-placeholder" style="width: auto; height: 698px;"></div>
+   </div>
+   <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+      <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+   </div>
+   <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+      <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+   </div>
+
+</div>
+
+<div *ngIf="!showCheckOutModal" class="modal-overlay">
+   <div style="width:100%" class="modal col-12 flex-col dark-mode">
+       <div class="col-12 flex-end">
+           <h4 class="col-10">Roxandrea Checkout</h4>
+           <button (click)="toggleCheckOutModal()" class="close-modal col-1">&times;</button>
+       </div>
+       <div style="width:100%">
+           <div class="form-container">
+               <div style="justify-content: center!important;align-items: center!important;" class="col-12 flex-col">
+                   <div style="margin:10px;align-items: start!important;" class="col-12 flex-end">
+                       <div style="max-height:59vh;overflow-y:auto;align-items:start;border-radius:4px;font-weight:600!important;font-size: 17px;height:60vh;padding-left:20px" class="col-2 flex-col">{{loadedReservation.reservation_token}}
+                           <ng-container *ngFor="let room of loadedReservation.rooms">
+                               <div class="flex-row-gap-10">
+                                   <div (click)="getRoomServiceBills(room.room_no)" style="margin-top:5px; margin-bottom: 5px;" class="pill zoom">
+                                       <div>
+                                          <p style="font-weight:700!important;" class="pill-text pointer"><em class="icon ni ni-airbnb"></em>  Room-{{room.room_no}} <em class="icon ni ni-edit-fill pointer"></em></p>
+                                          <p class="pill-text pointer">{{room.check_out_date}}</p>
+                                       </div>
+                                    </div>
+                                    <span *ngIf="loadedRoom==room.room_no" class="dot"></span>
+                               </div>
+                           </ng-container>
+                       </div>
+                       <div class="col-10">
+                           <div style="max-height: 59vh!important;overflow-y: hidden;overflow-x: hidden;">
+                               <div  class="nk-block">
+                                       <div  id="accordion" class="accordion">
+                                           <div *ngIf="loadedRoom" style="gap:10px!important;" class="col-12 flex-end">
+                                               <h4 class="room-header col-10">Room {{loadedRoom}} Service Bills</h4>
+                                               <a href="javascript:print()" class="col-1 room-header">Print</a>
+                                               <a href="javascript:print()" class="col-1 room-header">Print All</a>
+                                           </div>
+                                           <hr>
+                                          <ng-container *ngFor="let serviceRoomBill of serviceRoomBills">
+                                           <div class="accordion-item">
+                                               <a id="{{serviceRoomBill.id}}" href="javascript:void(0)" (click)="setActive($event)" class="accordion-head" data-bs-target="#accordion-item-{{serviceRoomBill.id}}">
+                                                  <h6 style="font-weight: 1000;font-size: 18px;" id="{{serviceRoomBill.id}}" class="title"><em class="icon ni ni-user-cross-fill"></em> {{serviceRoomBill.service.name}}</h6> 
+                                                  <span id="{{serviceRoomBill.id}}" class="accordion-icon"></span>      
+                                               </a>
+                                               <div class="accordion-body collapse" id="accordion-item-{{serviceRoomBill.id}}" data-bs-parent="#accordion">
+                                                  <div class="accordion-inner">
+                                                   <ul  style="max-height:50vh;overflow-y: hidden!important;" class="link-list-opt">
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Contact Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.contact?.firstname}} {{serviceRoomBill.contact?.middlename }} {{serviceRoomBill.contact?.lastname || 'N/A'}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Contact Email</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.contact?.email || 'N/A'}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Occupant Names</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.room.occupant?.firstname}} {{serviceRoomBill.room.occupant?.middlename}} {{serviceRoomBill.room.occupant?.lastname}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Bill Date</label><a class="col-6" href="javascript:void(0)" ><span class="cap">{{serviceRoomBill.bill_date}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Rate</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.rate}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Prepaid Amount</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.prepaid_amount}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Service Tax</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.tax_amount}}</span></a></div></li>
+                                                       <li ><div class="col-12 row g-3"><label class="col-6">Total</label><a class="col-6" href="javascript:void(0)" ><span class="cap">NGN {{serviceRoomBill.grand_total}}</span></a></div></li>
+                                                   </ul>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                          </ng-container>
+                                          <h6 style="text-align: center;" *ngIf="serviceRoomBills.length == 0">No Bills were generated for this room</h6>
+                                          <br>
+                                       </div>
+                               </div>
+                           </div>
+                           <div *ngIf="grandTotal != 0 || prepaidTotal != 0">
+                               <h6 style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Grand Total: NGN {{grandTotal.toLocaleString()}}</h6>
+                               <hr>
+                               <h6 style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Prepaid Total: NGN {{prepaidTotal.toLocaleString()}}</h6>
+                               <hr>
+                               <h6  style="font-weight: 1000; font-size: 19px;margin-top: 10px;">Pending Payment: NGN {{(grandTotal - prepaidTotal).toLocaleString()}}</h6>
+                           </div>
+                       </div>
+                       <div class="overlay" *ngIf="showModalSpinner">
+                           <div class="spinner"></div>
+                       </div>
+                   </div>
+               </div>
+               <hr>
+               <div class="flex-row-gap-10">
+                 <button *ngIf="loadedRoom" class="btn btn-black" (click)="checkOutContacts()">Check Out {{loadedRoom}}</button>
+                 <button  class="btn btn-black" (click)="checkOutContacts('*')">Check All Out</button>
+               </div>
+               
+           </div>
+       </div>
+   </div>
+ </div>

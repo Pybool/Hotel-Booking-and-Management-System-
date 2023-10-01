@@ -1,5 +1,7 @@
 import json
 import time
+import datetime
+import random
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
@@ -17,7 +19,6 @@ class BillingView(APIView):
     
     def calculate_total(self,bill_data,_type):
         total_sum = 0
-
         for bill in bill_data:
             total = float(bill[_type])
             total_sum += total
@@ -46,12 +47,12 @@ class BillingView(APIView):
     def post(self,request):
         try:
             bill = request.data
-            print(bill)
             if(bill.get('contact',None)):
                 bill['contact'] = Contacts.objects.get(id=int(bill['contact']))
             bill['room'] = Rooms.objects.get(id=int(bill['room']))
             bill['service'] = Services.objects.get(id=int(bill['service']))
             bill['active_reservation_token'] = bill['room'].active_reservation_token
+            bill['itemid'] = self.generate_unique_number()
             bill_instance = Bill(**bill)
             bill_instance.save()
             
@@ -59,3 +60,15 @@ class BillingView(APIView):
                 return Response({'message': 'Bill created successfully.','status':True}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"status":False,"message":"Something went wrong!","error":str(e)})
+        
+    
+
+
+    def generate_unique_number(self):
+        current_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")  # Get current time as a string
+        random_number = str(random.randint(0, 9999)).zfill(4)  # Generate a random 4-digit number
+
+        # Combine the timestamp and random number to create an 8-digit number
+        unique_number = f"2{current_time}{random_number}"
+
+        return unique_number[:8]  # Return the first 8 digits (starting with "2")

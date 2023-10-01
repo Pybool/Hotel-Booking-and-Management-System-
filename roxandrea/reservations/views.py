@@ -1,5 +1,9 @@
+"""Sweet error handler is a custom module written to prevent the need for repetitive try catch blocks 
+    which adds more lines of code and also alerts a developer the most frequently reccuring errors
+    which may need fixing or to enforcing validations of data before usuage.
+    Decorate each route or function to catch errors 
 
-       
+"""  
 import random
 import string
 import time
@@ -8,6 +12,7 @@ from django.contrib.auth import get_user_model
 from mail_helper import Mailservice
 from rest_framework import status
 from django.db.models import Q
+from django.conf import settings
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -55,7 +60,7 @@ class ReservationAPIView(APIView):
             room_instance = Rooms.objects.get(room_no=room)
             rooms_instance_object.append(room_instance)
         return rooms_instance_object
-        
+    
     @requests_sweet_error_handler(default=post_err_response)
     def post(self, request):
         try:
@@ -141,7 +146,7 @@ class ReservationAPIView(APIView):
         is_checkedout = request.GET.get('is_checkedout', False)
         is_client = request.GET.get('is-client') == '1'
         metadata = {}
-        metadata['url'] = 'http://127.0.0.1:8000/api/v1/reservation'
+        metadata['url'] = f'{settings.SERVER_URL}/api/v1/reservation'
         metadata['model'] = Reservations
         metadata['request'] = request
         metadata['message'] = 'Reservations fetched successfully!'
@@ -257,11 +262,10 @@ class CheckAvailableAPIView(APIView):
         formatted_date = date_obj
         return formatted_date
     
-    @requests_sweet_error_handler(default=post_err_message)
+    # @requests_sweet_error_handler(default=post_err_message)
     def post(self,request):
         time.sleep(3)
         data = request.data 
-        print("Booking data ===> ", data)
         data['check_in'] = data['check_in'].replace('T',' ')
         data['check_out'] = data['check_out'].replace('T',' ')
         _filter = {'room_type__id':int(data['room_type']),'is_available':True,'maintenance_block':False,'is_ready':True}
@@ -296,5 +300,21 @@ class AddonsAPIView(APIView):
         addon_instance.save()
         response = {"status":True,"message":'Addon was created successfully'}
         return Response(response)
+    
+class SponsorAPIView(APIView):
+
+    authentication_classes = [JWTAuthenticationMiddleWare]
+    get_err_response = {"status":False,"message":"Could not get sponsorat the moment"}
+    
+    @requests_sweet_error_handler(default=get_err_response)
+    def get(self,request):
+        reservation_token = request.GET.get('sponsor')
+        reservation = Reservations.objects.get(reservation_token=reservation_token)
+        sponsor = Contacts.objects.filter(id=reservation.contact_id)
+        if sponsor:
+            response = {'status':True,'message':'Sponsor was found','data':sponsor.values().first()}
+        else:
+            response = {'status':False,'message':'Sponsor was not found'}
+        return operation_ok_response(response)
         
         

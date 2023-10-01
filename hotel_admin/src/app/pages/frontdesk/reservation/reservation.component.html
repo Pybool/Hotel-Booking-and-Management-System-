@@ -322,6 +322,7 @@
                                           <option value="default_option">Select Rooms</option>
                                           <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
                                        </select>
+                                       
                                        <div class="alert-danger error" *ngIf="requiredRoomsErrors('rooms')" >
                                           <div class="error">Please select atleast a room </div>
                                         </div>

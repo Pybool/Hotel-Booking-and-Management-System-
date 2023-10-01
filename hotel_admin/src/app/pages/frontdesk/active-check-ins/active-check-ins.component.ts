@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { take } from 'rxjs';
 import { RecordService } from 'src/app/services/common/filtering.service';
 import { PaginationService } from 'src/app/services/common/pagination.service';
 import { SpinnerService } from 'src/app/services/common/spinner.service';
 import { HotelService } from 'src/app/services/hotel/hotel.service';
 import { ReservationService } from 'src/app/services/reservations/reservation.service';
+const PORT = 4200
+const HOST = 'localhost'
 
 @Component({
   selector: 'app-active-check-ins',
@@ -37,13 +39,29 @@ export class ActiveCheckInsComponent {
   firstInit = true
   showSearchSpinner = false
   reservationsTotal = 0
+  bulkAction:any;
+  applyButtonActive = true
+  srcValues = []
 
   constructor(
     private reservationService: ReservationService, 
     private paginationService: PaginationService,
     private spinnerService: SpinnerService,
     private hotelService: HotelService,
-    private recordService:RecordService){}
+    private recordService:RecordService,private renderer: Renderer2){
+      this.srcValues = [
+        `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
+        `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
+      ]
+    }
+
+  
+  loadScript(src:string) {
+    const script = this.renderer.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    this.renderer.appendChild(document.querySelector('#checkedin-reservation-root'), script);
+  }
 
   ngOnInit(){
     this.showSpinner = true;
@@ -78,6 +96,11 @@ export class ActiveCheckInsComponent {
   }
 
   ngAfterViewInit(){
+    setTimeout(()=>{
+      this.srcValues.forEach((src)=>{
+        this.loadScript(src);
+      })
+    },500)
     this.spinnerService.getSpinner().subscribe((status:any)=>{
       if(this.reservations.length == 0 && this.firstInit){
         status = true
@@ -117,6 +140,19 @@ export class ActiveCheckInsComponent {
         this.alertBackgroundColor = 'rgb(225 31 64)';
         this.showAlert = true
       })
+  }
+
+  setBulkAction(){
+    this.applyButtonActive = this.bulkAction == undefined
+  }
+
+  apply(){
+    if(this.bulkAction=='checkin'){
+      this.checkOutContacts('multiple')
+    }
+    else{
+      alert("Cancelling order")
+    }
   }
   
 
@@ -183,7 +219,7 @@ export class ActiveCheckInsComponent {
 
   showResrvationDetails($event:any){
     this.reservationDetails = true
-    this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.closest('td').id))
+    this.loadedReservation = this.getObjectFromArray(this.reservations,parseInt($event.target.id))
   }
 
   startCheckOut(_type,room){

@@ -185,6 +185,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 MAX_UI_FEATURES = 6
 MAX_UI_SERVICES = 8
 
+SERVER_URL = 'http://127.0.0.1:8000'
 
 """Sweet Err Handler configurations"""
 HANDLERS = {'open_ai':"open_ai_response",

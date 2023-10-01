@@ -81,4 +81,14 @@ export class ReservationService {
       })
     );
   }
+
+  getSponsor(bookingID){
+    return this.http.get(`${environment.api}/reservation-sponsor?sponsor=${bookingID}`)
+    .pipe(
+      timeout(20000), 
+      catchError((error) => {
+        return throwError('An error occurred while making the request.');
+      })
+    );
+  }
 }
