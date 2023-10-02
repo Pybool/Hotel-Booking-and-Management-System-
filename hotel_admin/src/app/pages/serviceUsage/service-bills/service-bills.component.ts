@@ -8,7 +8,7 @@ import { HotelService } from 'src/app/services/hotel/hotel.service';
   templateUrl: './service-bills.component.html',
   styleUrls: ['./service-bills.component.css']
 })
-export class ServiceBillsComponent {
+export class InvoiceListComponent {
   public showSpinner:Boolean = false;
   public serviceBills = []
   loadedServiceBill:any = {}
@@ -17,6 +17,7 @@ export class ServiceBillsComponent {
   alertMessage: string = '';
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
+  searching:boolean = false;
   
   constructor(private hotelService : HotelService,private router: Router){}
 
@@ -31,7 +32,6 @@ export class ServiceBillsComponent {
         this.alertMessage = response?.message;
         if(response.status){
           this.rawInvoices = response.data
-
           this.aggregateServiceBills(response.data)
           this.alertDuration = 3000;
           this.alertBackgroundColor = '#423f3f';

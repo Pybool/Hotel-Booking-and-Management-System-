@@ -11,14 +11,13 @@ class Handlers(object):
     def _error_response(self, response):
         return internal_server_error_response(response)
     
-
     def open_ai_response(self,response,is_view=True):
         try:
             if(settings.CONFIG['USE_DATABASE']):
                 self.process = Process('OPEN_AI')
                 self.save_to_db = {"summary": f"An error occurred: {str(self.meta_data.get('summary'))}",
-                                "full_trace_back": self.meta_data.get('traceback', None),
-                                }
+                                   "full_trace_back": self.meta_data.get('traceback', None),
+                                    }
                 sweet_error_obj = self.process.error(self.save_to_db)
                 sweet_error_instance = SweetError(**sweet_error_obj)
                 sweet_error_instance.save()

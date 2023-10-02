@@ -50,7 +50,7 @@
                                      <th>Price</th>
                                      <th>Qty</th>
                                      <th>Prepaid</th>
-                                     <th>Amount</th>
+                                     <th>R-Amount</th>
                                   </tr>
                                </thead>
 
@@ -61,9 +61,9 @@
                                      <td>#{{bill.room.room_no}}</td>
                                      <td>{{bill.details}}</td>
                                      <td>${{bill.rate}}</td>
-                                     <td>1</td>
+                                     <td>x {{bill.qty}}</td>
                                      <td>${{bill.prepaid_amount}}</td>
-                                     <td>${{bill.grand_total}}</td>
+                                     <td>${{(bill.rate * bill.qty)-bill.prepaid_amount}}</td>
                                   </tr>
                                   
                                   

@@ -8,6 +8,7 @@ from services.models import Services
 class Bill(models.Model):
     bill_date = models.DateTimeField()
     itemid = models.IntegerField(null=True,blank=True)
+    qty = models.IntegerField(null=False,blank=False,default=1)
     contact = models.ForeignKey(Contacts, on_delete=models.CASCADE,null=True, blank=True)
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
     service = models.ForeignKey(Services, on_delete=models.CASCADE)

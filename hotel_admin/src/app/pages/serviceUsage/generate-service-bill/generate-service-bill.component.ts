@@ -9,8 +9,8 @@ import { RoomXService } from 'src/app/services/rooms/room-x.service';
   templateUrl: './generate-service-bill.component.html',
   styleUrls: ['./generate-service-bill.component.css']
 })
-export class GenerateServiceBillComponent {
-  public serviceBill:any = {}
+export class GenerateInvoiceComponent {
+  public serviceBill:any = {qty:1}
   public showSpinner:Boolean = false;
   public services = []
   public rooms = []
@@ -58,6 +58,16 @@ export class GenerateServiceBillComponent {
     console.log(arr, id)
     const obj:any = arr.find(x => x.id === id);
     return obj
+  }
+
+  requiredErrors(field:any){
+    try{
+      if(this.serviceBill[field].length == 0){
+        return true;
+      }
+      return false;
+    }
+    catch(err){console.log(err);return false}
   }
 
   loadService($event){

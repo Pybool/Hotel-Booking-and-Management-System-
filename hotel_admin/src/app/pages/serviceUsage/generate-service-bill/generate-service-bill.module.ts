@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import {  HttpClientModule } from '@angular/common/http';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { GenerateServiceBillComponent } from './generate-service-bill.component';
+import { GenerateInvoiceComponent } from './generate-service-bill.component';
 
 @NgModule({
-  declarations: [GenerateServiceBillComponent],
+  declarations: [GenerateInvoiceComponent],
   imports: [CommonModule, FormsModule,HttpClientModule, SharedModule],
   
 })

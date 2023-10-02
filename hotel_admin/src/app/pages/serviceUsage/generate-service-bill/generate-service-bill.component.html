@@ -1,83 +1,140 @@
+<app-custom-alert *ngIf="alertMessage != ''"
+[show]="showAlert"
+[message]="alertMessage"
+[duration]="alertDuration"
+[backgroundColor]="alertBackgroundColor"
+></app-custom-alert>
 
-<div class="parent container flex-row-wrap-gap-10">
-    <app-custom-alert
-    [show]="showAlert"
-    [message]="alertMessage"
-    [duration]="alertDuration"
-    [backgroundColor]="alertBackgroundColor"
-    ></app-custom-alert>
-    <h4>Generate Service Bill</h4>
-    <div class="form-container">
-      <form (ngSubmit)="onSubmit()" #serviceBillForm="ngForm" novalidate>
-        <div class="col-12 flex-row-40">
-          <div class="col-6">
-            <div class="text-controls">
-              <label for="check_in">Date <span class="fieldMandate">*</span></label>
-              <input  [(ngModel)] ="serviceBill.bill_date" name="bill_date" autocomplete="off"  class="form-control" type="datetime-local">
-            </div>
-            <div class="text-controls">
-              <label for="room">Room <span class="fieldMandate">*</span></label>
-              <select  [(ngModel)]="serviceBill.room" name="room" class="form-select">
-                <option  *ngFor="let room of rooms;" value="{{room.id}}">{{room.room_no}}</option>
-              </select>
-            </div>
-            <div class="controls">
-              <label for="service">Service <span class="fieldMandate">*</span></label>
-              <select (change)="loadService($event)" [(ngModel)]="serviceBill.service" name="service" class="form-select">
-                <option *ngFor="let service of services;" value="{{service.id}}">{{service.name}}</option>
-              </select>
-            </div>
-            <div class="text-controls">
-            <label for="charge">Rate <span class="fieldMandate">*</span></label>
-            <input [(ngModel)]="serviceBill.rate" value="{{loadedService.rate}}" name="charge" type="text" class="form-control" />
-            </div>
-            <div class="text-controls">
-            <label for="tax_amount">Tax Amount <span class="fieldMandate">*</span></label>
-            <input type="number" [(ngModel)]="serviceBill.tax_amount" name="tax_amount" class="form-control"/>
-            
-            </div>
-            
-            
-          </div>
-          <div class="col-6">
-            
-            
-            
-            <div class="text-controls">
-              <label for="prepaid_amount">Prepaid Amount <span class="fieldMandate">*</span></label>
-              <input [(ngModel)]="serviceBill.prepaid_amount" name="prepaid_amount" type="number" class="form-control"/>
-            
-            </div>
-            <div class="text-controls">
-                <label for="grand_total">Grand Total <span class="fieldMandate">*</span></label>
-                <input [(ngModel)]="serviceBill.grand_total" name="grand_total" type="number" class="form-control"/>
-              
+<div id="reservation-root" class="nk-content ">
+  <div class="container-fluid">
+     <div class="nk-content-inner">
+        <div class="nk-content-body">
+           <div class="nk-block-head nk-block-head-sm">
+              <div class="nk-block-between">
+                 <div class="nk-block-head-content">
+                    <h3 class="nk-block-title page-title">New Invoice</h3>
+                 </div>
+                 <div class="nk-block-head-content"><a href="/root/service-usage/invoice-list" class="btn btn-outline-light bg-white d-none d-sm-inline-flex"><em class="icon ni ni-arrow-right"></em><span>Invoices</span></a><a href="/root/service-usage/invoice-list" class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none"><em class="icon ni ni-arrow-left"></em></a></div>
               </div>
-              <div class="text-controls">
-                <label class="spinner-label form-label"><span class="zc-label-text">Contact (optional but advised)</span></label>
-                    <select  [(ngModel)] ="serviceBill.contact" name="contact" id="contact" class="form-select col-6">
-                      <option value="{{contact.id}}" *ngFor="let contact of contacts;">{{contact.firstname}} {{contact.middlename}} {{contact.lastname}}</option>
-                    </select>
-             </div> 
+           </div>
+              <div class="nk-block">
+                 <div class="card card-bordered">
+                    <div class="card-inner">
+                       <form (ngSubmit)="onSubmit()" #invoiceForm="ngForm" novalidate>
+                          <div class="row gy-4">
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                                <div class="form-group">
+                                  <label for="check_in">Date <span class="fieldMandate">*</span></label>
+                                  <input  [(ngModel)] ="serviceBill.bill_date" name="bill_date" autocomplete="off"  class="form-control" type="datetime-local">
+                                   <div class="alert-danger error" *ngIf="requiredErrors('bill_date')" >
+                                      <div class="error">No valid bill_date was entered</div>
+                                    </div>
+                                </div>
+                             </div>
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                                <div class="form-group">
+                                  <label for="room">Room <span class="fieldMandate">*</span></label>
+                                  <select  [(ngModel)]="serviceBill.room" name="room" class="form-select">
+                                    <option  *ngFor="let room of rooms;" value="{{room.id}}">{{room.room_no}}</option>
+                                  </select>
+                                   <div class="alert-danger error" *ngIf="requiredErrors('room')" >
+                                      <div class="error">No valid room was entered</div>
+                                    </div>
+                                </div>
+                             </div>
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                              <div class="form-group">
+                                <label for="room">Contact <span class="fieldMandate">*</span></label>
+                                <select  [(ngModel)] ="serviceBill.contact" name="contact" id="contact" class="form-select col-6">
+                                  <option value="">Select a contact</option>
+                                  <option value="{{contact.id}}" *ngFor="let contact of contacts;">{{contact.firstname}} {{contact.middlename}} {{contact.lastname}}</option>
+                                </select>
+                                  <div class="alert-danger error" *ngIf="requiredErrors('contact')" >
+                                    <div class="error">No valid contact was selected</div>
+                                  </div>
+                              </div>
+                            </div>
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                                <div class="form-group">
+                                  <label for="service">Service <span class="fieldMandate">*</span></label>
+                                   <div class="form-control-wrap">
+                                    <select (change)="loadService($event)" [(ngModel)]="serviceBill.service" name="service" class="form-select">
+                                      <option *ngFor="let service of services;" value="{{service.id}}">{{service.name}}</option>
+                                    </select>
+                                      <div class="alert-danger error" *ngIf="requiredErrors('service')" >
+                                         <div class="error">No valid service was selected</div>
+                                       </div>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                              <div class="form-group">
+                                <label for="qty">Units <span class="fieldMandate">*</span></label>
+                                 <input [(ngModel)]="serviceBill.qty" name="qty" value="1" type="number" class="form-control"/>
+                                  <div class="alert-danger error" *ngIf="requiredErrors('qty')" >
+                                    <div class="error">No valid units was entered</div>
+                                  </div>
+                              </div>
+                            </div>
+                             <div class="col-md-6 col-lg-4 col-xxl-3">
+                              <div class="form-group">
+                                <label for="charge">Rate <span class="fieldMandate">*</span></label>
+                                <input [(ngModel)]="serviceBill.rate" value="{{loadedService.rate}}" name="charge" type="text" class="form-control" />
+                                 <div class="alert-danger error" *ngIf="requiredErrors('rate')" >
+                                    <div class="error">No valid rate was entered</div>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="col-md-6 col-lg-4 col-xxl-3">
+                            <div class="form-group">
+                              <label for="tax_amount">Tax Amount <span class="fieldMandate">*</span></label>
+                            <input type="number" [(ngModel)]="serviceBill.tax_amount" name="tax_amount" class="form-control"/>
+                               <div class="alert-danger error" *ngIf="requiredErrors('tax')" >
+                                  <div class="error">No valid tax was entered</div>
+                                </div>
+                            </div>
+                         </div>
 
-            <div style="margin-bottom: 100px;" class="controls">
-                <label for="details">Details<span class="fieldMandate">*</span></label>
-                <textarea [(ngModel)]="serviceBill.details" style="height: 150px;" name="details"  class="form-control" ></textarea>
-              </div>
-   
-            
-          </div>
+                           <div class="col-md-6 col-lg-4 col-xxl-3">
+                            <div class="form-group">
+                              <label for="grand_total">Grand Total <span class="fieldMandate">*</span></label>
+                              <input [(ngModel)]="serviceBill.grand_total" name="grand_total" type="number" class="form-control"/>
+                               <div class="alert-danger error" *ngIf="requiredErrors('grand_total')" >
+                                  <div class="error">No valid grand_total was entered</div>
+                                </div>
+                            </div>
+                         </div>
+                         <div class="col-md-6 col-lg-4 col-xxl-3">
+                            <div class="form-group">
+                              <label for="prepaid_amount">Prepaid Amount <span class="fieldMandate">*</span></label>
+                               <input [(ngModel)]="serviceBill.prepaid_amount" name="prepaid_amount" type="number" class="form-control"/>
+                                <div class="alert-danger error" *ngIf="requiredErrors('prepaid_amount')" >
+                                  <div class="error">No valid prepaid_amount was entered</div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class="col-12">
+                            <div class="form-group">
+                              <label for="details">Details<span class="fieldMandate">*</span></label>
+                               <textarea [(ngModel)]="serviceBill.details" style="height: 150px;" name="details"  class="form-control" ></textarea>
+                            </div>
+                          </div>
+                             <div class="form-group">
+                                <div class="form-group"><button type="submit" class="btn btn-primary">Submit</button></div>
+                                
+                             </div>
+                             <div class="overlay" *ngIf="showSpinner">
+                                <div class="spinner"></div>
+                            </div>
+                             <p>Note that the rates prefilled are the rates existing on the rooms, edit to specify new rate for this reservation by clicking apply button or click update and apply new rate for this and further reservations</p>
+                             
+                          </div>
+                       </form>
+                    </div>
+                 </div>
+              </div>            
         </div>
-        <div>
-          <button style="padding-left:70px" type="submit" class="btn btn-primary submit">Submit</button>
-        </div>
-      </form>
-      <p class="signup"><b>Already have an staff? <a style="color:rgb(225 31 64);" href="/root/configurations/staff-list">View Staff!</a></b></p>
-    </div>
-    <div class="overlay" *ngIf="showSpinner">
-        <div class="spinner"></div>
-    </div>
+     </div>
   </div>
-
-  
-  
+</div>

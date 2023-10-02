@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenerateServiceBillComponent } from './generate-service-bill.component';
+import { GenerateInvoiceComponent } from './generate-service-bill.component';
 
-describe('GenerateServiceBillComponent', () => {
-  let component: GenerateServiceBillComponent;
-  let fixture: ComponentFixture<GenerateServiceBillComponent>;
+describe('GenerateInvoiceComponent', () => {
+  let component: GenerateInvoiceComponent;
+  let fixture: ComponentFixture<GenerateInvoiceComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GenerateServiceBillComponent]
+      declarations: [GenerateInvoiceComponent]
     });
-    fixture = TestBed.createComponent(GenerateServiceBillComponent);
+    fixture = TestBed.createComponent(GenerateInvoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

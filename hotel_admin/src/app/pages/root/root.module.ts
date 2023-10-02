@@ -54,9 +54,9 @@ import { ActiveCheckInsComponent } from '../frontdesk/active-check-ins/active-ch
 import { ServicesModule } from '../configurations/services/services.module';
 import { ServicesComponent } from '../configurations/services/services.component';
 import { GenerateServiceBillModule } from '../serviceUsage/generate-service-bill/generate-service-bill.module';
-import { GenerateServiceBillComponent } from '../serviceUsage/generate-service-bill/generate-service-bill.component';
+import { GenerateInvoiceComponent } from '../serviceUsage/generate-service-bill/generate-service-bill.component';
 import { ServiceBillsModule } from '../serviceUsage/service-bills/service-bills.module';
-import { ServiceBillsComponent } from '../serviceUsage/service-bills/service-bills.component';
+import { InvoiceListComponent } from '../serviceUsage/service-bills/service-bills.component';
 import { RaisedComplaintsComponent } from '../requesthandling/raised-complaints/raised-complaints.component';
 import { RaisedComplainstsModule } from '../requesthandling/raised-complaints/raised-complaints.module';
 import { RecentCheckoutModule } from '../rooms/recent-checkout/recent-checkout.module';
@@ -91,8 +91,8 @@ const routes: Routes = [{
                           path: 'service-usage', 
                           component: RootComponent,
                           children: [
-                              { path: 'new-service-bill', component: GenerateServiceBillComponent },
-                              { path: 'service-bills-list', component: ServiceBillsComponent },
+                              { path: 'create-invoice', component: GenerateInvoiceComponent },
+                              { path: 'invoice-list', component: InvoiceListComponent },
                               { path: 'invoice-details', component: InvoiceDetailsComponent },
                           ],
                         },

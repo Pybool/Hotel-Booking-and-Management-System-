@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import {  HttpClientModule } from '@angular/common/http';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ServiceBillsComponent } from './service-bills.component';
+import { InvoiceListComponent } from './service-bills.component';
 
 @NgModule({
-  declarations: [ServiceBillsComponent],
+  declarations: [InvoiceListComponent],
   imports: [CommonModule, FormsModule,HttpClientModule, SharedModule],
   
 })

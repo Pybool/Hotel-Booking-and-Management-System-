@@ -99,7 +99,7 @@
                   <div class="nk-block-head-content">
                      <h3 class="nk-block-title page-title">Invoices</h3>
                      <div class="nk-block-des text-soft">
-                        <p>You have total 18 invoices's.</p>
+                        <p>You have total {{serviceBills?.length || '0'}} invoices's.</p>
                      </div>
                   </div>
                   <div class="nk-block-head-content">
@@ -107,17 +107,11 @@
                         <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                         <div class="toggle-expand-content" data-content="pageMenu">
                            <ul class="nk-block-tools g-3">
-                              <li><input style="width:35vh" type="text" placeholder="Search for something" class="form-control"/><div class="search-spinner"></div></li>
+                              <li><input style="width:35vh" type="text" placeholder="Search for something" class="form-control"/><div *ngIf="searching" class="search-spinner"></div></li>
                               <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
                               <li class="nk-block-tools-opt">
                                  <div class="drodown">
-                                    <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-bs-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                       <ul class="link-list-opt no-bdr">
-                                          <li><a href="booking-add.html"><span>Add Booking</span></a></li>
-                                          <li><a href="#"><span>Import Booking</span></a></li>
-                                       </ul>
-                                    </div>
+                                    <a href="/root/service-usage/create-invoice" class="btn btn-icon btn-primary" ><em class="icon ni ni-plus"></em></a>
                                  </div>
                               </li>
                            </ul>

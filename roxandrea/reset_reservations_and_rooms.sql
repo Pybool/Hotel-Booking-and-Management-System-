@@ -1,5 +1,6 @@
 delete from reservations_reservations_rooms;
 delete from reservations_reservations;
+delete from reservations_reservations_bills;
 update rooms_rooms set no_children=NULL;
 update rooms_rooms set no_occupants=NULL;
 update rooms_rooms set dead_reservation_token=NULL;

@@ -7,3 +7,9 @@ Cypress.Commands.add('login', (username, password) => {
         cy.url().should('contain', '/dashboard')
     })
 });
+
+Cypress.Commands.add('boltType',{ prevSubject: 'element' },
+    (subject, text) => {
+      cy.wrap(subject).type(text, { delay: 0 })
+    }
+)

@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from contacts.models import Contacts
 from finance.models import Rates
 from rooms.models import Rooms
+from billing.models import Bill
 
 class Reservations(models.Model):
     """Reservations model."""
@@ -28,6 +29,7 @@ class Reservations(models.Model):
     is_fully_paid = models.BooleanField(default=False)
     is_history = models.BooleanField(default=False)
     history_rooms = models.JSONField(default=list())
+    bills = models.ManyToManyField(Bill,default=list())
     addons = models.JSONField(default=list())
 
 
