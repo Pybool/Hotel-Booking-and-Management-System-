@@ -50,7 +50,7 @@ class Commonpage {
     if (this.role === 'administrator') {
       return metadata.navlinks;
     }
-    // You can add more roles here with their respective links if needed.
+    
     return {};
   }
 }
