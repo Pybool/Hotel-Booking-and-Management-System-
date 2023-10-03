@@ -20,7 +20,6 @@ def get_authorization_token(request,auth):
             return auth[1].decode('utf-8')
         if auth is True:
             pass
-            # raise exceptions.AuthenticationFailed('Unauthenticated')
         return False
     
 # Authentication MIDDLEWARE CLASS 
@@ -38,5 +37,4 @@ class JWTAuthenticationMiddleWare(BaseAuthentication):
         token = get_authorization_token(request,auth)
         _id = decode_access_token(token)
         user = User.objects.get(pk=_id)
-        print("\n\n\n[LOGGED IN ] : ",user)
         return (user, None)

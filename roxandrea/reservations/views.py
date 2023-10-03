@@ -10,7 +10,6 @@ import time
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from mail_helper import Mailservice
-from rest_framework import status
 from django.db.models import Q
 from django.conf import settings
 from django.db import transaction
@@ -18,7 +17,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from contacts.models import Contacts
 from contacts.models import ContactType
-from django.core.paginator import Paginator
 from rest_framework.pagination import LimitOffsetPagination
 from middlewares.middleware import JWTAuthenticationMiddleWare
 from rooms.models import Rooms
@@ -275,7 +273,6 @@ class CheckAvailableAPIView(APIView):
         
         data['no_rooms'] = rooms_instance_object.count() 
         is_reservation_valid_errors = self.reservation_valid.is_reservation_valid(_filter,data,rooms_instance_object)
-        print(is_reservation_valid_errors)
         msg = is_reservation_valid_errors[0] if len(is_reservation_valid_errors) > 0 else msg
         response = {"status":True,"message":msg,'data':RoomSerializer(rooms_instance_object,many=True).data} if status and len(is_reservation_valid_errors) == 0 else {"status":False,"message":msg}      
         return operation_ok_response(response)

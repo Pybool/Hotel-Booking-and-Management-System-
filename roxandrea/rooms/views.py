@@ -163,7 +163,6 @@ class RoomAPIView(APIView):
             else:
                 return Response({'message': 'Rooms fetched successfully.','status':True}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(str(e))
             return Response({'status':False,'message':'Something went wrong'})
            
            
@@ -242,7 +241,6 @@ class RecentlyCheckedOutRoomsAPIView(APIView):
 
             return Response({'message': 'Room has now been marked as ready and can be booked','status':True}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(str(e))
             return Response({'status':False,'message':'Something went wrong'})
            
            

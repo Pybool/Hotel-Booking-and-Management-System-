@@ -1,15 +1,8 @@
-import json
 import time
-from django.contrib.auth import get_user_model
-# from mail_helper import Mailservice
 from rest_framework import status
-from django.db.models import Q
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from contacts.models import Contacts
-from contacts.models import ContactType
-from rooms.models import Amenities
 from middlewares.middleware import JWTAuthenticationMiddleWare
 from rooms.models import RoomType
 from rooms.models import Rooms

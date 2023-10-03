@@ -14,7 +14,6 @@ from middlewares.middleware import JWTAuthenticationMiddleWare
 from contacts.serializers import ContactSerializer
 
 class BlogsAPIView(APIView):
-    """Creates a new client contact type"""
     authentication_classes = [JWTAuthenticationMiddleWare]
     def get(self,request):
         pass
