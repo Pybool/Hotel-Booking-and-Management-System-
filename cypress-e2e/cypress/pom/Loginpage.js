@@ -9,8 +9,8 @@ class LoginPage{
     }
 
     signIn(data){
-        this.elements.loginCredential('email').boltType(data.email)
-        this.elements.loginCredential('password').boltType(data.password)
+        this.elements.loginCredential('email').typeFast(data.email)
+        this.elements.loginCredential('password').typeFast(data.password)
         this.elements.loginButton(data.button).click()
     }
 }

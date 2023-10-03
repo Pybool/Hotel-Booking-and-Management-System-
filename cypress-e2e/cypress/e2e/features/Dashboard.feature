@@ -3,8 +3,8 @@ Feature: Hotel Admin Dashboard validation
 
     @automated @validatepage
     Scenario Outline: On Roxandrea staff module i validate that i am redirected to the login page when not logged in
-    Given I am not logged in on the Roxandrea Admin Module
-    When I navigate to the "<page>" page on the Roxandrea Admin Module
+    Given I am not logged in on the Roxandrea Staff Module
+    When I navigate to the "<page>" page on the Roxandrea Staff Module
     Then I should be redirected to the "Login" page when not logged in
 
     Examples:
@@ -16,15 +16,15 @@ Feature: Hotel Admin Dashboard validation
 
     @automated @validatepage
     Scenario: On Roxandrea staff module i validate that i can reach the dashboard page when logged in
-    Given I am a logged in user on the Roxandrea Admin Module
-    When I navigate to the "dashboard" page on the Roxandrea Admin Module
+    Given I am a logged in user on the Roxandrea Staff Module
+    When I navigate to the "dashboard" page on the Roxandrea Staff Module
     Then I should see the "dashboard" page rendered with the correct url and the correct page header "Roxandrea Dashboard"
 
 
     @automated @validatepage
     Scenario: On Roxandrea staff module i validate that all navigation links are present
-    Given I am a logged in user on the Roxandrea Admin Module
-    When I navigate to the "dashboard" page on the Roxandrea Admin Module
+    Given I am a logged in user on the Roxandrea Staff Module as an Administrator
+    When I navigate to the "dashboard" page on the Roxandrea Staff Module
     Then I should see that all navlinks are present
 
 

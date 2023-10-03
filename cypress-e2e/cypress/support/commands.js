@@ -8,11 +8,13 @@ Cypress.Commands.add('login', (username, password) => {
     })
 });
 
-Cypress.Commands.add('silentlogin', () => {
-    cy.request('POST','http://127.0.0.1:8000/api/v1/login-user',{
-        email:Cypress.env('USERNAME'),
-        password:Cypress.env('PASSWORD')
-    })
+Cypress.Commands.add('silentlogin', (isAdmin=false) => {
+    const data = {
+        email: isAdmin ? Cypress.env('ADMIN_USERNAME') : Cypress.env('USERNAME'),
+        password: isAdmin ? Cypress.env('ADMIN_PASSWORD') : Cypress.env('PASSWORD'),
+    };
+      
+    cy.request('POST','http://127.0.0.1:8000/api/v1/login-user',data)
     .then((response)=>{
         expect(response.status).to.eq(200)
         expect(response.body.status).to.eq(true)
@@ -29,7 +31,7 @@ Cypress.Commands.add('deauthenticate', () => {
 });
 
 
-Cypress.Commands.add('boltType',{ prevSubject: 'element' },
+Cypress.Commands.add('typeFast',{ prevSubject: 'element' },
     (subject, text) => {
       cy.wrap(subject).type(text, { delay: 0 })
     }

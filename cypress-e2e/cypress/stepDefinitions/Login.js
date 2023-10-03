@@ -48,12 +48,12 @@ Then('I should see a {string} Button with background color {string} and color {s
 })
 
 Then('I enter my credentials and sign in', () => {
-    const data = {email:Cypress.env('USERNAME'),password:Cypress.env('PASSWORD'),button:'Login'}
+    const data = {email:Cypress.env('ADMIN_USERNAME'),password:Cypress.env('ADMIN_PASSWORD'),button:'Login'}
     loginPage.signIn(data)
 })
 
 Then('I enter my wrong credentials and sign in', () => {
-    const data = {email:Cypress.env('WRONG_USERNAME'),password:Cypress.env('PASSWORD'),button:'Login'}
+    const data = {email:Cypress.env('WRONG_USERNAME'),password:Cypress.env('ADMIN_PASSWORD'),button:'Login'}
     loginPage.signIn(data)
 })
 
