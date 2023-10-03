@@ -59,7 +59,6 @@ class StaffAPIView(APIView):
                 metadata['_filter'] = (Q(status__iexact=q))
 
             response = custom_paginate(self,metadata)
-            print("Paginator response ====> ", response)
             if response:
                 return Response(response)
             else:
@@ -257,7 +256,6 @@ class UploadProfilePictureView(APIView):
 
         if serializer.is_valid():
             image = serializer.validated_data['image']
-            print("IMAGE ====> ", image )
             image_instance, created = Users.objects.get_or_create(id=request.user.id)
             image_instance.profile_pics = image
             image_instance.save()
@@ -265,10 +263,7 @@ class UploadProfilePictureView(APIView):
             user = Users.objects.filter(id=request.user.id)
             user.update(profile_pics=f'{image}')
             
-            # Construct the full URL of the uploaded image
-            print(user.values().first())
             image_url = f"http://127.0.0.42:8080/profile_pics/{user.values().first()['profile_pics']}"
-            print(image_url)
             return Response({'message': 'Image uploaded successfully','profile_pic':image_url}, status=201)
         else:
             return Response(serializer.errors, status=400)
@@ -331,7 +326,6 @@ class StaffPropertyView(APIView):
             property = request.GET.get('property')
             staff_with_proprty = Users.objects.filter(**{property:True})
             serialized_staff = StaffSerializer(staff_with_proprty, many=True).data
-            print(serialized_staff)
             staffs_list_of_dicts = [dict(ordered_dict) for ordered_dict in serialized_staff]
             return Response({"status":True,"message":'Fetched staff successfully','data':staffs_list_of_dicts})
         except Exception as e:
