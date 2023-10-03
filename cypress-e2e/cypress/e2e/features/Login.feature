@@ -1,4 +1,4 @@
-Feature: Hotel Staff Login
+Feature: Hotel Admin Staff Login
     As a tester i want to validate the login page to ensure it displays correctly
 
     @automated @validatepage
@@ -13,8 +13,14 @@ Feature: Hotel Staff Login
     Then I should see a "Login" Button with background color "rgb(225, 31, 64)" and color "rgb(255, 255, 255)"
 
     @automated @functional
-    Scenario: On Roxandrea staff module i proceed to enter my credentials and login
+    Scenario: On Roxandrea staff module i proceed to enter incorrerct credentials and unable to login
     When I navigate to the "login" page on the Roxandrea Admin Module
-    Then I type in my "USERNAME" in the input field
-    Then I type in my "PASSWORD" in the input field
-    # When I click the login button
+    Then I enter my wrong credentials and sign in
+    # Then I should be remain on the login page 
+    # and see an alert with text "Wrong credentials supplied" having background color 'red'
+
+    @automated @functional
+    Scenario: On Roxandrea staff module i proceed to enter my correct credentials and login successfully
+    When I navigate to the "login" page on the Roxandrea Admin Module
+    Then I enter my credentials and sign in
+    Then I should be redirected to the "dashboard" page

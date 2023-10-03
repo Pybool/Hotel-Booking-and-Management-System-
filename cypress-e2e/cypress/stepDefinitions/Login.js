@@ -1,53 +1,69 @@
 
 import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
-    
-When('I navigate to the {string} page on the Roxandrea Admin Module', (page) => {
-    cy.visit(`/${page}`)
-})
+import LoginPage from '../pom/Loginpage'
+import metadata from '../validations/loginpage.meta'
 
-Then('I should see the {string} page rendered with the correct url and the page header {string} with color {string}', (page,header,color) => {
-    cy.url().should('eq',`${Cypress.config('baseUrl')}${page}`)
-    cy.get('h4').contains(header).should('have.css','color',color)
+const loginPage = LoginPage
+
+Then('I should see the {string} page rendered with the correct url and the page header {string} with color {string}', (page,header) => {
+    cy.isUrlMatch(metadata.urls[page])
+    loginPage.elements
+    .loginHeader(header)
+    .should('have.css','color',metadata.css.loginpage.pageheader.color)
 })
 
 Then('I should see a label {string}', (label) => {
-    cy.get('form').find('label')
-    .contains(label)
+    loginPage.elements
+    .InputLabel(label)
     .should('exist')
     .and('be.visible')
 })
 
 Then('I should see the {string} input field', (field) => {
-    cy.get(`#${field}`)
+    loginPage.elements
+    .loginCredential(field)
     .should('exist')
     .and('be.visible')
 })
 
-Then('I should see a {string} link with color {string}', (linkText,color) => {
-    cy.get(`a`)
-    .contains(linkText).as('forgotPwd')
+Then('I should see a {string} link with color {string}', (linkText) => {
+    loginPage.elements
+    .forgotPassword(linkText)
     .should('exist')
     .and('be.visible')
-    
     cy.get('@forgotPwd')
-    .should('have.css','color',color)
+    .should('have.css','color',metadata.css.loginpage.forgotpassword.color)
 })
 
-Then('I should see a {string} Button with background color {string} and color {string}', (btnText,bgColor,color) => {
-    cy.get(`button`)
-    .contains(btnText).as('loginButton')
+Then('I should see a {string} Button with background color {string} and color {string}', (btnText) => {
+    loginPage.elements
+    .loginButton(btnText)
     .should('exist')
     .and('be.visible')
 
-    cy.get('@loginButton')
-    .should('have.css','background-color',bgColor)
-    .and('have.css','color',color)
+    loginPage.elements
+    .loginButton(btnText)
+    .should('have.css','background-color',metadata.css.loginpage.loginbutton.bgcolor)
+    .and('have.css','color',metadata.css.loginpage.loginbutton.color)
 })
 
-Then('I type in my {string} in the input field', (credential) => {
-    cy.get(`#${field}`)
-    .boltType(Cypress.env(credential))
+Then('I enter my credentials and sign in', () => {
+    const data = {email:Cypress.env('USERNAME'),password:Cypress.env('PASSWORD'),button:'Login'}
+    loginPage.signIn(data)
 })
+
+Then('I enter my wrong credentials and sign in', () => {
+    const data = {email:Cypress.env('WRONG_USERNAME'),password:Cypress.env('PASSWORD'),button:'Login'}
+    loginPage.signIn(data)
+})
+
+Then('I should be redirected to the {string} page', (page) => {
+    cy.isUrlMatch(metadata.urls[page])
+})
+
+
+
+
 
 
 

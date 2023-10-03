@@ -12,7 +12,7 @@ import { MonthlyComponent } from './pages/progress/monthly/monthly.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/common/auth.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.inteceptor';
 import { FooterComponent } from './common/footer/footer.component';
 import { PaginationService } from './services/common/pagination.service';
@@ -43,6 +43,7 @@ import { RoomShiftComponent } from './pages/requesthandling/room-shift/room-shif
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [AuthService,PaginationService,SalaryAllowanceService,HotelService,AmenitiesService,RoomXService,{

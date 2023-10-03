@@ -73,6 +73,7 @@ import { AllReservationsComponent } from '../frontdesk/all-reservations/all-rese
 import { RecordService } from 'src/app/services/common/filtering.service';
 import { InvoiceDetailsModule } from '../serviceUsage/invoice-details/invoice-details.module';
 import { InvoiceDetailsComponent } from '../serviceUsage/invoice-details/invoice-details.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 // import { FeatureCardModule } from '../configurations/featurecard/featurecard.module';
 
 const routes: Routes = [{
@@ -84,7 +85,7 @@ const routes: Routes = [{
                               { path: 'awaiting-confirmation', component: AwaitingConfirmationComponent },
                               { path: 'upcoming-checkins', component: UpcomingCheckInsComponent },
                               { path: 'active-checkins', component: ActiveCheckInsComponent },
-                              { path: 'dashboard', component: DashboardComponent },
+                              { path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent },
                           ],
                         },
                         {

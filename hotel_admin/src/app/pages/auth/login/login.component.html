@@ -1,14 +1,14 @@
   <div style="width:500px" class="parent container mx-auto flex-row-wrap-gap-10">
     <h4>Login</h4>
     <div class="form-container">
-        <form>
+        <form (ngSubmit)="onSubmit()" #roomForm="ngForm" novalidate>
             <div class="email-controls">
                 <label for="email">Email Address</label>
-                <input id="email" type="email" class="form-control"/>
+                <input [(ngModel)]="credentials.email" name="email" id="email" type="email" class="form-control"/>
             </div>
             <div class="password-controls">
                 <label for="password">Password</label>
-                <input id="password" type="password" class="form-control"/>
+                <input [(ngModel)]="credentials.password" name="password" id="password" type="password" class="form-control"/>
                 <p class="forgot"><a class="forgot-pass" href="">Forgot password?</a></p>
             </div>
             <button  type="submit" class="btn btn-primary submit">Login</button>

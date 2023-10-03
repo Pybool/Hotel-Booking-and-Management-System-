@@ -27,7 +27,14 @@ export class AuthService {
   }
 
   login(credentials: any) {
-    return this.http.post(`${environment.api}/login`, credentials);
+    return this.http.post(`${environment.api}/login-user`, credentials)
+    .pipe(
+      timeout(20000), // Timeout after 30 seconds
+      catchError((error) => {
+        // Handle errors here
+        return throwError('An error occurred while making the request.');
+      })
+    );
   }
 
   createStaff(staff: any) {
@@ -147,10 +154,6 @@ export class AuthService {
       );
     }
   }
-
-
-
-
 
   storeToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
