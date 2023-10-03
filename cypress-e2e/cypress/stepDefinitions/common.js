@@ -10,7 +10,7 @@ Given('I am a logged in user on the Roxandrea Staff Module', () => {
 })
 
 Given('I am a logged in user on the Roxandrea Staff Module as an Administrator', () => {
-    cy.silentlogin(isAdmin=true)
+    cy.silentlogin(true)
 })
 
 Given('I am not logged in on the Roxandrea Staff Module', () => {

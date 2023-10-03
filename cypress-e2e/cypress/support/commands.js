@@ -10,9 +10,11 @@ Cypress.Commands.add('login', (username, password) => {
 
 Cypress.Commands.add('silentlogin', (isAdmin=false) => {
     const data = {
-        email: isAdmin ? Cypress.env('ADMIN_USERNAME') : Cypress.env('USERNAME'),
-        password: isAdmin ? Cypress.env('ADMIN_PASSWORD') : Cypress.env('PASSWORD'),
+        email: isAdmin ? Cypress.env('USERNAME') : Cypress.env('ADMIN_USERNAME'),
+        password: isAdmin ? Cypress.env('PASSWORD') : Cypress.env('ADMIN_PASSWORD'),
     };
+
+    console.log(isAdmin,data)
       
     cy.request('POST','http://127.0.0.1:8000/api/v1/login-user',data)
     .then((response)=>{
