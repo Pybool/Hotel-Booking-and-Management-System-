@@ -169,7 +169,6 @@ class RoomAPIView(APIView):
     def post(self, request):
         time.sleep(2)
         data_object = dict(request.data)
-        print("Room form data ===> ", request.data, type(request.data))
         serializer = ImageUploadSerializer(data=request.data)
         if serializer.is_valid():
             with transaction.atomic():
