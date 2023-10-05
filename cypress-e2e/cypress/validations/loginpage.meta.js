@@ -1,9 +1,9 @@
-export default metadata = {
+export default loginMetaData = {
     urls:{
         login:'login',
         register:'register',
         dashboard:'root/frontdesk/dashboard',
-        upcoming_checkins:'root/frontdesk/upcoming-checkins',
+        pending_bookings:'root/frontdesk/upcoming-checkins',
         active_checkins: 'root/frontdesk/active-checkins'
     },
 

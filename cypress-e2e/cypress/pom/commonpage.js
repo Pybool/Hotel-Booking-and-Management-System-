@@ -1,8 +1,11 @@
 import metadata from '../validations/common.meta';
 
 class Commonpage {
+
   elements = {
     navsection: () => cy.get('ul.nk-menu'),
+    navBar:() => cy.get('[data-content="sidebarMenu"]'),
+    navHamburger:() => cy.get('.nk-nav-compact')
   };
 
   validateLinks(role) {
@@ -10,21 +13,23 @@ class Commonpage {
     const links = this.getLinksByRole();
 
     this.elements.navsection()
-      .should('exist')
-      .and('be.visible')
-      .children()
-      .should('have.length', Object.keys(links).length + 3);
+    .should('exist')
+    .and('be.visible')
+    .children()
+    .should('have.length', Object.keys(links).length + 3);
+    
+    cy.ensureScripts()
+    cy.waitStabilizedDom(1)
 
-    cy.wait(1000);
-
-    Object.values(links).forEach((link) => {
+    cy.wrap(Object.values(links)).each((link) => {
       const linkElement = this.elements.navsection().get('li.nk-menu-item > a').contains(link.name);
-
       linkElement.should('have.text', link.name);
 
       if (link.hasSublinks) {
         linkElement
           .parent()
+          .should('exist')
+          .and('be.visible')
           .click();
 
         linkElement
@@ -50,7 +55,6 @@ class Commonpage {
     if (this.role === 'administrator') {
       return metadata.navlinks;
     }
-    
     return {};
   }
 }

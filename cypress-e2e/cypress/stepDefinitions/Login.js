@@ -1,15 +1,15 @@
 
 import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import LoginPage from '../pom/Loginpage'
-import metadata from '../validations/loginpage.meta'
+import loginMetadata from '../validations/loginpage.meta'
 
 const loginPage = LoginPage
 
 Then('I should see the {string} page rendered with the correct url and the page header {string} with color {string}', (page,header) => {
-    cy.isUrlMatch(metadata.urls[page])
+    cy.isUrlMatch(loginMetadata.urls[page])
     loginPage.elements
     .loginHeader(header)
-    .should('have.css','color',metadata.css.loginpage.pageheader.color)
+    .should('have.css','color',loginMetadata.css.loginpage.pageheader.color)
 })
 
 Then('I should see a label {string}', (label) => {
@@ -32,7 +32,7 @@ Then('I should see a {string} link with color {string}', (linkText) => {
     .should('exist')
     .and('be.visible')
     cy.get('@forgotPwd')
-    .should('have.css','color',metadata.css.loginpage.forgotpassword.color)
+    .should('have.css','color',loginMetadata.css.loginpage.forgotpassword.color)
 })
 
 Then('I should see a {string} Button with background color {string} and color {string}', (btnText) => {
@@ -43,8 +43,8 @@ Then('I should see a {string} Button with background color {string} and color {s
 
     loginPage.elements
     .loginButton(btnText)
-    .should('have.css','background-color',metadata.css.loginpage.loginbutton.bgcolor)
-    .and('have.css','color',metadata.css.loginpage.loginbutton.color)
+    .should('have.css','background-color',loginMetadata.css.loginpage.loginbutton.bgcolor)
+    .and('have.css','color',loginMetadata.css.loginpage.loginbutton.color)
 })
 
 Then('I enter my credentials and sign in', () => {
@@ -58,7 +58,7 @@ Then('I enter my wrong credentials and sign in', () => {
 })
 
 Then('I should be redirected to the {string} page', (page) => {
-    cy.isUrlMatch(metadata.urls[page])
+    cy.isUrlMatch(loginMetadata.urls[page])
 })
 
 

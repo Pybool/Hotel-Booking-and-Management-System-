@@ -26,3 +26,7 @@ Feature: Hotel Admin Dashboard validation
     Given I am a logged in user on the Roxandrea Staff Module as an Administrator
     When I navigate to the "dashboard" page on the Roxandrea Staff Module
     Then I should see that all navlinks for "administrator" are present
+    When I click the harburger icon on the top of the navbar to collapse the navbar
+    Then I should see that the navbar is collapsed
+    When I click the harburger icon on the top of the navbar to collapse the navbar
+    Then I should see that the navbar is expanded

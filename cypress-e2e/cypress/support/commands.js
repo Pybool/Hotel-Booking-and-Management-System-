@@ -32,6 +32,23 @@ Cypress.Commands.add('deauthenticate', () => {
     })
 });
 
+Cypress.Commands.add('waitStabilizedDom', (ms) => {
+    cy.wait(ms*1000)
+});
+
+
+
+Cypress.Commands.add('ensureScripts', () => {
+    // Assuming you have loaded your webpage and want to select a div with a specific selector
+    cy.get('div.nk-app-root').should('exist').within(() => {
+        cy.get('script[src="http://localhost:4200/assets/js/bundlee5ca.js?ver=3.2.3"]').should('exist');
+        cy.get('script[src="http://localhost:4200/assets/js/charts/chart-hotele5ca.js?ver=3.2.3"]').should('exist');
+    });
+});
+
+
+
+
 
 Cypress.Commands.add('typeFast',{ prevSubject: 'element' },
     (subject, text) => {

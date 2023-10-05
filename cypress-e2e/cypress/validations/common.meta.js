@@ -1,4 +1,11 @@
-export default metadata = {
+export default commonMetaData = {
+    urls:{
+        login:'login',
+        register:'register',
+        dashboard:'root/frontdesk/dashboard',
+        pending_bookings:'root/frontdesk/upcoming-checkins',
+        active_checkins: 'root/frontdesk/active-checkins'
+    },
 
     roles : {   
                 admin:['*'],
