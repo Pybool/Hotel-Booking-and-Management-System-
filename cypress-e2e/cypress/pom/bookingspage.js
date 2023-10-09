@@ -29,6 +29,23 @@ class BookingsCommon{
             
         })
     }
+
+    validateTableHeaders(dataTable){
+        this.elements.tableHeaders().then((headers)=>{
+            let counter = 0;
+            let headersArray = new Array()
+            
+            cy.wrap(headers).each((header)=>{
+                headersArray.push(Cypress.$(header)[0].textContent)
+            }).then(()=>{
+                cy.wrap(dataTable.hashes()).each((dataItem)=>{
+                    expect(dataItem.Headers).to.eq(headersArray[counter])
+                    counter++
+                })
+            })
+            
+        })
+    }
 }
 
 class PendingBookings{

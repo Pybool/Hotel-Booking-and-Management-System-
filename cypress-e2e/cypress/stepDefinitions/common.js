@@ -78,20 +78,7 @@ Then('I should see a Bookings Table on the page', () => {
 })
 
 Then('All headers must be correctly displayed in the Table:', (dataTable) => {
-    bookingsCommon.elements.tableHeaders().then((headers)=>{
-        let counter = 0;
-        let headersArray = new Array()
-        
-        cy.wrap(headers).each((header)=>{
-            headersArray.push(Cypress.$(header)[0].textContent)
-        }).then(()=>{
-            cy.wrap(dataTable.hashes()).each((dataItem)=>{
-                expect(dataItem.Headers).to.eq(headersArray[counter])
-                counter++
-            })
-        })
-        
-    })
+    bookingsCommon.validateTableHeaders(dataTable)
     
 })
 
