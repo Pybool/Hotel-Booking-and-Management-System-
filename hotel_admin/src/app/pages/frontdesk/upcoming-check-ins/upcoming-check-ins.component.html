@@ -284,10 +284,10 @@
                      <div class="card-inner position-relative card-tools-toggle">
                         <div class="card-title-group">
                            <div class="card-tools">
-                              <div class="form-inline flex-nowrap gx-3">
+                              <div *ngIf="!inTableSearch" class="form-inline flex-nowrap gx-3">
                                  <div class="form-wrap w-150px">
                                     <select (change)="setBulkAction()" [(ngModel)]="bulkAction" class="form-select" data-search="on" data-placeholder="Bulk Action">
-                                       <option value="{{undefined}}">Bulk Action</option>
+                                       <option disabled value="{{undefined}}">Bulk Action</option>
                                        <option value="checkin">Check In</option>
                                        <option value="cancel">Cancel Booking</option>
                                     </select>
@@ -297,7 +297,7 @@
                            </div>
                            <div class="card-tools me-n1">
                               <ul class="btn-toolbar gx-1">
-                                 <li><a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a></li>
+                                 <li><a href="#" (click)="toggleInTableSearch()" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a></li>
                                  <li class="btn-toolbar-sep"></li>
                                  <li>
                                     <div class="toggle-wrap">

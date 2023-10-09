@@ -34,6 +34,7 @@ export class UpcomingCheckInsComponent {
   toCheckInList = []
   bulkAction:any;
   applyButtonActive = true
+  inTableSearch = false;
 
   constructor(
     private reservationService: ReservationService, 
@@ -114,6 +115,11 @@ export class UpcomingCheckInsComponent {
       else{}
     });
   }
+
+  toggleInTableSearch(){
+    this.inTableSearch = !this.inTableSearch
+  }
+
 
   searchbarFilter($event:any){
     this.showSearchSpinner = true
@@ -285,5 +291,6 @@ export class UpcomingCheckInsComponent {
     );
   }
 
+  
 
 }

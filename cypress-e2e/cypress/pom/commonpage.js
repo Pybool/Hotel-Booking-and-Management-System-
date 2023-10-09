@@ -7,7 +7,7 @@ class Commonpage {
     navBar:() => cy.get('[data-content="sidebarMenu"]'),
     navHamburger:() => cy.get('.nk-nav-compact'),
     searchBar:() => cy.get('#search-bar'),
-    exportBtn:() => cy.get('a.btn').contains('Export')
+    exportBtn:() => cy.get('a.btn').contains('Export'),
   };
 
   validateLinks(role) {

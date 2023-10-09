@@ -13,7 +13,6 @@ const dashboardPage = DashboardPage
 const bookingsCommon = BookingsCommon
 
 
-
 Given('I am a logged in user on the Roxandrea Staff Module', () => {
     cy.silentlogin()
 })
@@ -46,9 +45,7 @@ Then('I should see the {string} page rendered with the correct url and the corre
     else if (page == 'Pending Bookings'){
         selectedPage = bookingsCommon
     }
-
     Cypress.env('selectedPage',selectedPage)
-
     selectedPage.elements
     .pageHeader(header)
     .should('have.text',header)
@@ -59,7 +56,6 @@ Then('I should see the {string} page rendered with the correct url and the corre
 When('I click the harburger icon on the top of the navbar to collapse the navbar', () => {
     commonPage.elements.navHamburger().click({force:true})
 })
-
 
 Then('I should see that the navbar is collapsed', () => {
     commonPage.elements.navBar().should('have.class','is-compact')
@@ -77,10 +73,37 @@ Then('I should see a Bookings Table on the page', () => {
     bookingsCommon.elements.bookingsTable().should('exist').and('be.visible')
 })
 
+Then('I should see a spinner while table loads', () => {
+    bookingsCommon.elements.tableSpinner().should('exist').and('be.visible')
+})
+
 Then('All headers must be correctly displayed in the Table:', (dataTable) => {
     bookingsCommon.validateTableHeaders(dataTable)
-    
 })
+
+Then('I should see a select dropdown an Apply button and a Search Icon button above just above the table', () => {
+    bookingsCommon.validateTableBulkActionElements()
+    bookingsCommon.elements.tableSearchIcon().should('exist').and('be.visible')
+})
+
+When('I click the Bulk Action dropdown', () => {
+    bookingsCommon.elements.bulkActionSelect().select(1,{force:true})
+})
+
+Then('I should see options {string} {string} and {string}', (bulkApply,checkIn,cancelBookings) => {
+    const data = {bulkApply:bulkApply,checkIn:checkIn,cancelBookings:cancelBookings}
+    bookingsCommon.validateBulkActionsDropdownOptions(data)
+})
+
+When('I click the table search icon', () => {
+    bookingsCommon.elements.tableSearchIcon().click()
+})
+
+Then('I should no longer see the select dropdown and Apply button', () => {
+    bookingsCommon.validateTableBulkActionElements(-1)
+})
+
+
 
 
 

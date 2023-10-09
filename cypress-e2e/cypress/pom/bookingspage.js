@@ -3,7 +3,11 @@ class BookingsCommon{
     elements = {
         pageHeader : (header) => cy.get('h3').contains(header),
         bookingsTable: () => cy.get('div.nk-tb-list'),
-        tableHeaders: () => cy.get('div.nk-tb-head').find('div > span')
+        tableHeaders: () => cy.get('div.nk-tb-head').find('div > span'),
+        bulkActionSelect: () => cy.get('[data-placeholder="Bulk Action"]'),
+        applyBulkAction: (btnTxt) => cy.get('button').contains(btnTxt),
+        tableSearchIcon : () => cy.get('em.ni-search').eq(0),
+        tableSpinner : () => cy.get('div.spinner')
     }
 
     validateHeaderElements(header,pageObject){
@@ -31,10 +35,9 @@ class BookingsCommon{
     }
 
     validateTableHeaders(dataTable){
+        let counter = 0;
+        let headersArray = new Array()
         this.elements.tableHeaders().then((headers)=>{
-            let counter = 0;
-            let headersArray = new Array()
-            
             cy.wrap(headers).each((header)=>{
                 headersArray.push(Cypress.$(header)[0].textContent)
             }).then(()=>{
@@ -44,6 +47,41 @@ class BookingsCommon{
                 })
             })
             
+        })
+    }
+
+    validateTableBulkActionElements(visible=1){
+        let isvisible = 'be.visible'
+        let isExist = 'exist'
+        if (visible== -1) isvisible = 'not.be.visible';
+        if (visible== -1) isExist = 'not.exist';
+        this.elements.bulkActionSelect().should(isExist).then((el)=>{
+            if(visible == 1){
+                cy.wrap(el).should(isvisible)
+            }
+        })
+        this.elements.applyBulkAction('Apply').should(isExist).then((el)=>{
+            if(visible == 1){
+                cy.wrap(el).should(isvisible)
+            }
+        })
+    }
+
+    validateBulkActionsDropdownOptions(data){
+        let optlst = new Array()
+        this.elements.bulkActionSelect().select(1,{force:true}).then((select)=>{
+            cy.wrap(Cypress.$(select)[0].children).each((child)=>{
+                child = Cypress.$(child)[0]
+                if(child.textContent == 'Bulk Action'){
+                    cy.wrap(Cypress.$(child)).should('have.attr','disabled')
+                }
+                optlst.push(child.textContent)
+            })
+            .then(()=>{
+                [data.bulkApply,data.checkIn,data.cancelBookings].forEach((txt)=>{
+                    expect(optlst.includes(txt)).to.eq(true);
+                })
+            })
         })
     }
 }
