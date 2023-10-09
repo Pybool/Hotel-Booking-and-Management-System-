@@ -1,4 +1,4 @@
-export default metadata = {
+const metadata = {
     urls:{
         dashboard:'root/frontdesk/dashboard',
         upcoming_checkins:'root/frontdesk/upcoming-checkins'
@@ -13,3 +13,5 @@ export default metadata = {
         }
     }
 }
+
+export default metadata

@@ -1,7 +1,7 @@
 class DashboardPage{
 
     elements = {
-        dashboardHeader : (header) => cy.get('h3').contains(header),        
+        pageHeader : (header) => cy.get('h3').contains(header),        
     }
 
     signIn(data){

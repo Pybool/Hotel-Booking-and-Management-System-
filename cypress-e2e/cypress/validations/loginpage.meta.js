@@ -1,4 +1,4 @@
-export default loginMetaData = {
+const loginMetaData  = {
     urls:{
         login:'login',
         register:'register',
@@ -23,3 +23,5 @@ export default loginMetaData = {
         }
     }
 }
+
+export default loginMetaData

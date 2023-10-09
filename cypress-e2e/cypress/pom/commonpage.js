@@ -1,11 +1,13 @@
-import metadata from '../validations/common.meta';
+import commonMetaData from '../validations/common.meta';
 
 class Commonpage {
 
   elements = {
     navsection: () => cy.get('ul.nk-menu'),
     navBar:() => cy.get('[data-content="sidebarMenu"]'),
-    navHamburger:() => cy.get('.nk-nav-compact')
+    navHamburger:() => cy.get('.nk-nav-compact'),
+    searchBar:() => cy.get('#search-bar'),
+    exportBtn:() => cy.get('a.btn').contains('Export')
   };
 
   validateLinks(role) {
@@ -53,7 +55,7 @@ class Commonpage {
 
   getLinksByRole() {
     if (this.role === 'administrator') {
-      return metadata.navlinks;
+      return commonMetaData.navlinks;
     }
     return {};
   }

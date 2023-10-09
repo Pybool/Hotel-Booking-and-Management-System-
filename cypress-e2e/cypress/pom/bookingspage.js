@@ -1,35 +1,38 @@
 class BookingsCommon{
 
     elements = {
-        loginHeader : (header) => cy.get('h4').contains(header),
-        InputLabel : (label) => cy.get('form').find('label').contains(label),
-        loginCredential : (field) => cy.get(`#${field}`),
-        loginButton: (btnText) => cy.get(`button`).contains(btnText).as('loginButton'),
-        forgotPassword: (linkText) => cy.get(`a`).contains(linkText).as('forgotPwd')
+        pageHeader : (header) => cy.get('h3').contains(header),
+        bookingsTable: () => cy.get('div.nk-tb-list'),
+        tableHeaders: () => cy.get('div.nk-tb-head').find('div > span')
     }
 
-    signIn(data){
-        this.elements.loginCredential('email').typeFast(data.email)
-        this.elements.loginCredential('password').typeFast(data.password)
-        this.elements.loginButton(data.button).click()
+    validateHeaderElements(header,pageObject){
+        Cypress.env('selectedPage').elements
+        .pageHeader(header).parent().siblings().last().find('ul > li > input').then((searchBar)=>{
+            pageObject.elements.searchBar().then((chainerEl)=>{
+                expect(Cypress.$(searchBar)[0].id).to.eq(Cypress.$(chainerEl)[0].id)
+                expect(Cypress.$(searchBar)[0].placeholder).to.eq(Cypress.$(chainerEl)[0].placeholder)
+            })
+
+            cy.wrap(Cypress.$(searchBar)).parent().siblings().eq(0).then((exportButton)=>{
+                pageObject.elements.exportBtn().then((chainerEl)=>{
+                    expect(Cypress.$(exportButton)[0].innerText).to.eq(Cypress.$(chainerEl)[0].innerText)
+                })
+            })
+
+            cy.wrap(Cypress.$(searchBar)).parent().siblings().last().find('em').then((plusButton)=>{
+                cy.wrap(plusButton).should('have.class','icon ni ni-plus')
+            })
+
+            pageObject.elements.searchBar().should('exist').and('be.visible')
+            pageObject.elements.exportBtn().should('exist').and('be.visible')
+            
+        })
     }
 }
 
 class PendingBookings{
 
-    elements = {
-        loginHeader : (header) => cy.get('h4').contains(header),
-        InputLabel : (label) => cy.get('form').find('label').contains(label),
-        loginCredential : (field) => cy.get(`#${field}`),
-        loginButton: (btnText) => cy.get(`button`).contains(btnText).as('loginButton'),
-        forgotPassword: (linkText) => cy.get(`a`).contains(linkText).as('forgotPwd')
-    }
-
-    signIn(data){
-        this.elements.loginCredential('email').typeFast(data.email)
-        this.elements.loginCredential('password').typeFast(data.password)
-        this.elements.loginButton(data.button).click()
-    }
 }
 
 

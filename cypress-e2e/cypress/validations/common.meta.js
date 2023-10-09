@@ -1,10 +1,38 @@
-export default commonMetaData = {
+
+const commonMetaData = {
     urls:{
         login:'login',
         register:'register',
         dashboard:'root/frontdesk/dashboard',
         pending_bookings:'root/frontdesk/upcoming-checkins',
-        active_checkins: 'root/frontdesk/active-checkins'
+        active_bookings: 'root/frontdesk/active-checkins'
+    },
+    css:{
+        loginpage:{
+            pageheader:{
+                color:'rgb(225, 31, 64)',
+            },
+            forgotpassword:{
+                color:'rgb(225, 31, 64)',
+            },
+            loginbutton:{
+                color:'rgb(255, 255, 255)',
+                bgcolor:'rgb(225, 31, 64)'
+            }
+
+        },
+        dashboard:{
+            pageheader:{
+                color:'rgb(255, 255, 255)',
+            },
+
+        },
+        'Pending Bookings':{
+            pageheader:{
+                color:'rgb(255, 255, 255)',
+            },
+
+        },
     },
 
     roles : {   
@@ -51,3 +79,5 @@ export default commonMetaData = {
                     },
     }
 }
+
+export default commonMetaData

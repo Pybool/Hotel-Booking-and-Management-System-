@@ -2,7 +2,6 @@
 import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import LoginPage from '../pom/Loginpage'
 import loginMetadata from '../validations/loginpage.meta'
-
 const loginPage = LoginPage
 
 Then('I should see the {string} page rendered with the correct url and the page header {string} with color {string}', (page,header) => {

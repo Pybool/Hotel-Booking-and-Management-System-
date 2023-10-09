@@ -10,8 +10,8 @@ Feature: Hotel Admin Dashboard validation
     Examples:
     | page |
     | dashboard |
-    | upcoming_checkins |
-    | active_checkins |
+    | pending_bookings |
+    | active_bookings |
 
 
     @automated @validatepage

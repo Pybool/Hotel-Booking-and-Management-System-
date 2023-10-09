@@ -1,16 +1,18 @@
 
-import {Given, When, Then, And} from '@badeball/cypress-cucumber-preprocessor';
+import {Given, When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import LoginPage from '../pom/Loginpage'
 import Commonpage from '../pom/commonpage'
-import DashboardPage from '../pom/Dashboardpage'
-import { commonMetaData }   from '../validations/common.meta'
-import { loginMetaData }   from '../validations/loginpage.meta'
-// import metadata from '../validations/dashboardpage.meta'
-
+import DashboardPage from '../pom/dashboardpage'
+import BookingsCommon from '../pom/bookingspage'
+import commonMetaData   from '../validations/common.meta'
+import loginMetaData    from '../validations/loginpage.meta'
 
 const loginPage = LoginPage
 const commonPage = Commonpage
 const dashboardPage = DashboardPage
+const bookingsCommon = BookingsCommon
+
+
 
 Given('I am a logged in user on the Roxandrea Staff Module', () => {
     cy.silentlogin()
@@ -36,11 +38,21 @@ Then('I should be redirected to the {string} page when not logged in', (page) =>
 })
 
 Then('I should see the {string} page rendered with the correct url and the correct page header {string}', (page,header) => {
-    cy.isUrlMatch(commonMetaData.urls[page])
-    dashboardPage.elements
-    .dashboardHeader(header)
+    cy.isUrlMatch(commonMetaData.urls[page.toLowerCase().replaceAll(' ','_')])
+    let selectedPage;
+    if(page=='dashboard'){
+        selectedPage = dashboardPage;
+    }
+    else if (page == 'Pending Bookings'){
+        selectedPage = bookingsCommon
+    }
+
+    Cypress.env('selectedPage',selectedPage)
+
+    selectedPage.elements
+    .pageHeader(header)
     .should('have.text',header)
-    .and('have.css','color',loginMetaData.css.dashboardpage.pageheader.color)
+    .and('have.css','color',commonMetaData.css[`${page}`].pageheader.color)
 })
 
 
@@ -56,6 +68,38 @@ Then('I should see that the navbar is collapsed', () => {
 Then('I should see that the navbar is expanded', () => {
     commonPage.elements.navBar().should('not.have.class','is-compact')
 })
+
+Then('I should see a {string} and {string} and an {string} Button right of the {string} header', (searchbar,exportBtn,addBtn,header) => {
+    bookingsCommon.validateHeaderElements(header,commonPage)
+})
+
+Then('I should see a Bookings Table on the page', () => {
+    bookingsCommon.elements.bookingsTable().should('exist').and('be.visible')
+})
+
+Then('All headers must be correctly displayed in the Table:', (dataTable) => {
+    bookingsCommon.elements.tableHeaders().then((headers)=>{
+        let counter = 0;
+        let headersArray = new Array()
+        
+        cy.wrap(headers).each((header)=>{
+            headersArray.push(Cypress.$(header)[0].textContent)
+        }).then(()=>{
+            cy.wrap(dataTable.hashes()).each((dataItem)=>{
+                expect(dataItem.Headers).to.eq(headersArray[counter])
+                counter++
+            })
+        })
+        
+    })
+    
+})
+
+
+
+
+
+
 
 
 
