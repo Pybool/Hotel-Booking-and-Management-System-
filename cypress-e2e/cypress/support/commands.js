@@ -37,7 +37,6 @@ Cypress.Commands.add('waitStabilizedDom', (ms) => {
 });
 
 
-
 Cypress.Commands.add('ensureScripts', () => {
     // Assuming you have loaded your webpage and want to select a div with a specific selector
     cy.get('div.nk-app-root').should('exist').within(() => {

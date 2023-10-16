@@ -42,6 +42,7 @@ export class ActiveCheckInsComponent {
   bulkAction:any;
   applyButtonActive = true
   srcValues = []
+  inTableSearch = false
 
   constructor(
     private reservationService: ReservationService, 
@@ -298,6 +299,11 @@ export class ActiveCheckInsComponent {
       }
     })
   }
+
+  toggleInTableSearch(){
+    this.inTableSearch = !this.inTableSearch
+  }
+
 
   checkOutContacts(room_no=null){
     // try{room.disable = true}

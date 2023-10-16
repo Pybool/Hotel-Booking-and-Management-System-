@@ -1,3 +1,4 @@
+import configurations from '../validations/addbookings.meta'
 class BookingsCommon{
 
     elements = {
@@ -7,7 +8,9 @@ class BookingsCommon{
         bulkActionSelect: () => cy.get('[data-placeholder="Bulk Action"]'),
         applyBulkAction: (btnTxt) => cy.get('button').contains(btnTxt),
         tableSearchIcon : () => cy.get('em.ni-search').eq(0),
-        tableSpinner : () => cy.get('div.spinner')
+        tableSpinner : () => cy.get('div.spinner'),
+        countHeader:() =>  this.elements.pageHeader(Cypress.env('header')).siblings().last().children().last(),
+        tableRows:() => cy.get('div.nk-tb-item')
     }
 
     validateHeaderElements(header,pageObject){
@@ -46,7 +49,7 @@ class BookingsCommon{
                     counter++
                 })
             })
-            
+
         })
     }
 
@@ -84,11 +87,38 @@ class BookingsCommon{
             })
         })
     }
+
+    validateCountHeaderWithRows(){
+        this.elements.tableRows().its('length').then((length)=>{
+            const rowsCount = length - 1  /* Remove 1 from the length to account for the header which also has the nk-tb-item class */
+            this.elements.countHeader().invoke('text').then((txt)=>{
+                if(length > 1 && rowsCount < configurations.paginationLimit) expect(txt).to.eq(`You have total ${rowsCount} booking\'s.`)
+                if(length == 1) expect(txt).to.eq(`You have no bookings.`)
+            })
+        })
+    }
+
+    ensureAllRowsHaveRoxIDAndLen(len){
+        this.elements.tableRows().then((rows)=>{
+            Array.from(Cypress.$(rows)).forEach((row)=>{
+                console.log(Array.from(row.classList))
+               if(!Array.from(row.classList).includes('nk-tb-head')){
+                 const roxID = row.children[2].children[0].textContent
+                 expect(roxID).to.include('ROX-')
+                 expect(roxID).to.have.length('ROX-'.length + len)
+               }
+            })
+        })
+    }
+
+    createBooking(){
+
+    }
+
+    checkAvailability(){
+        
+    }
+
 }
-
-class PendingBookings{
-
-}
-
 
 module.exports = new BookingsCommon()

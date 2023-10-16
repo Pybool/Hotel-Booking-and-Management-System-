@@ -5,7 +5,9 @@ const commonMetaData = {
         register:'register',
         dashboard:'root/frontdesk/dashboard',
         pending_bookings:'root/frontdesk/upcoming-checkins',
-        active_bookings: 'root/frontdesk/active-checkins'
+        active_bookings: 'root/frontdesk/active-checkins',
+        'checked-in_bookings': 'root/frontdesk/active-checkins',
+        'add_booking':'root/frontdesk/reservation'
     },
     css:{
         loginpage:{
@@ -28,6 +30,18 @@ const commonMetaData = {
 
         },
         'Pending Bookings':{
+            pageheader:{
+                color:'rgb(255, 255, 255)',
+            },
+
+        },
+        'Checked-In Bookings':{
+            pageheader:{
+                color:'rgb(255, 255, 255)',
+            },
+
+        },
+        'Add Booking':{
             pageheader:{
                 color:'rgb(255, 255, 255)',
             },

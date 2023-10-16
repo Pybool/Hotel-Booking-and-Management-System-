@@ -84,7 +84,7 @@ export class ReservationComponent {
       }
       return false;
     }
-    catch(err){console.log(err);return false}
+    catch(err){return false}
   }
 
   requiredRoomsErrors(field:any){

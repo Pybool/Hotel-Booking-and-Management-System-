@@ -349,7 +349,7 @@
                         <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
                         <div class="toggle-expand-content" data-content="pageMenu">
                            <ul class="nk-block-tools g-3">
-                              <li><input style="width:35vh" (keydown.enter)="searchbarFilter($event)" type="text" placeholder="Search for something" class="form-control"/><div *ngIf="showSearchSpinner" class="search-spinner"></div></li>
+                              <li><input id="search-bar" style="width:35vh" (keydown.enter)="searchbarFilter($event)" type="text" placeholder="Search for something" class="form-control"/><div *ngIf="showSearchSpinner" class="search-spinner"></div></li>
                               <li><a href="#" class="btn btn-white btn-outline-light"><em class="icon ni ni-download-cloud"></em><span>Export</span></a></li>
                               <li class="nk-block-tools-opt">
                                  <div class="drodown">
@@ -374,10 +374,10 @@
                      <div class="card-inner position-relative card-tools-toggle">
                         <div class="card-title-group">
                            <div class="card-tools">
-                              <div class="form-inline flex-nowrap gx-3">
+                              <div *ngIf="!inTableSearch" class="form-inline flex-nowrap gx-3">
                                  <div class="form-wrap w-150px">
                                     <select (change)="setBulkAction()" [(ngModel)]="bulkAction" class="form-select" data-search="on" data-placeholder="Bulk Action">
-                                       <option value="{{undefined}}">Bulk Action</option>
+                                       <option disabled value="{{undefined}}">Bulk Action</option>
                                        <option value="checkin">Check Out</option>
                                        <option value="cancel">Cancel Booking</option>
                                     </select>
@@ -387,7 +387,7 @@
                            </div>
                            <div class="card-tools me-n1">
                               <ul class="btn-toolbar gx-1">
-                                 <li><a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a></li>
+                                 <li><a href="#" (click)="toggleInTableSearch()" class="btn btn-icon search-toggle toggle-search" data-target="search"><em class="icon ni ni-search"></em></a></li>
                                  <li class="btn-toolbar-sep"></li>
                                  <li>
                                     <div class="toggle-wrap">
@@ -597,7 +597,7 @@
 
 </div>
 
-<div *ngIf="!showCheckOutModal" class="modal-overlay">
+<div *ngIf="showCheckOutModal" class="modal-overlay">
    <div style="width:100%" class="modal col-12 flex-col dark-mode">
        <div class="col-12 flex-end">
            <h4 class="col-10">Roxandrea Checkout</h4>

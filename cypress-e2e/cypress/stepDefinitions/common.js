@@ -12,6 +12,8 @@ const commonPage = Commonpage
 const dashboardPage = DashboardPage
 const bookingsCommon = BookingsCommon
 
+models = {dashboardPage:dashboardPage,bookingsCommon:bookingsCommon}
+
 
 Given('I am a logged in user on the Roxandrea Staff Module', () => {
     cy.silentlogin()
@@ -37,19 +39,8 @@ Then('I should be redirected to the {string} page when not logged in', (page) =>
 })
 
 Then('I should see the {string} page rendered with the correct url and the correct page header {string}', (page,header) => {
-    cy.isUrlMatch(commonMetaData.urls[page.toLowerCase().replaceAll(' ','_')])
-    let selectedPage;
-    if(page=='dashboard'){
-        selectedPage = dashboardPage;
-    }
-    else if (page == 'Pending Bookings'){
-        selectedPage = bookingsCommon
-    }
-    Cypress.env('selectedPage',selectedPage)
-    selectedPage.elements
-    .pageHeader(header)
-    .should('have.text',header)
-    .and('have.css','color',commonMetaData.css[`${page}`].pageheader.color)
+    models = {dashboardPage:dashboardPage,bookingsCommon:bookingsCommon}
+    commonPage.validatePageAndUrl(page,header,models)
 })
 
 
@@ -102,6 +93,28 @@ When('I click the table search icon', () => {
 Then('I should no longer see the select dropdown and Apply button', () => {
     bookingsCommon.validateTableBulkActionElements(-1)
 })
+
+Then('The Total bookings count header should correctly reflect the total amount of rows in the table', () => {
+    bookingsCommon.validateCountHeaderWithRows()
+})
+
+Then('I ensure all rows in the table have a ROX-ID with length {string}', (len) => {
+    bookingsCommon.ensureAllRowsHaveRoxIDAndLen(parseInt(len))
+})
+
+Then('I verify that in the navigation bar the {string} sub menu is active',(link)=>{
+    cy.get('li.nk-menu-item > a.nk-menu-link > span')
+    .contains(link).as('submenu')
+    .should('be.visible')
+    .and('have.text', link)
+
+    cy.get('@submenu')
+    .parent()
+    .parent()
+    .should('have.class', 'active')
+})
+
+
 
 
 

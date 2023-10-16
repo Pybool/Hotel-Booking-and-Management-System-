@@ -248,7 +248,7 @@
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="phone-no">Phone</label>
-                                    <input [(ngModel)] ="reservation.phone" type="text" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
+                                    <input [(ngModel)] ="reservation.phone" type="telephone" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
                                     <div class="alert-danger error" *ngIf="requiredErrors('phone')" >
                                        <div class="error">No valid phone number was entered</div>
                                      </div>
@@ -263,23 +263,20 @@
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
-                                 <div class="form-group"><label class="form-label" for="address">Adddress</label>
+                                 <div class="form-group"><label class="form-label" for="address">Address</label>
                                     <input [(ngModel)] ="reservation.address1" type="text" class="form-control" id="address1" placeholder="Address">
                                  </div>
                               </div>
                              
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group">
-                                    <label class="form-label">Advance paid</label>
-                                    <div class="form-control-wrap">
-                                       <div class="form-icon form-icon-right"></div>
-                                       <input [(ngModel)] ="reservation.advance_amount" autocomplete="off" name="advance_amount" class="form-control" type="text">
-                                    </div>
+                                    <label class="form-label">Advance Paid</label>
+                                       <input [(ngModel)] ="reservation.advance_amount" autocomplete="off" name="advance_amount" class="form-control" type="number">
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group">
-                                    <label class="form-label">Arrived Date</label>
+                                    <label class="form-label">Arrival</label>
                                     <div class="form-control-wrap">
                                        <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
                                        <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_in" name="check_in" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
@@ -291,7 +288,7 @@
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group">
-                                    <label class="form-label">Depart Date</label>
+                                    <label class="form-label">Departure</label>
                                     <div class="form-control-wrap">
                                        <div class="form-icon form-icon-right"><em class="icon ni ni-calendar"></em></div>
                                        <input (change)="getDifferenceInDays($event)" [(ngModel)] ="reservation.check_out" name="check_out" class="form-control" type="datetime-local" placeholder="yyyy-mm-dd">
@@ -331,7 +328,8 @@
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
-                                 <div class="form-group"><label class="form-label" for="total-person">Total Occupants</label>
+                                 <div class="form-group">
+                                    <label class="form-label" for="total-person">Total Occupants</label>
                                     <input placeholder="The maximum allowed adults for this selection is {{maxAdults}}" (keyup)="isMaxoccupantValid($event)" [(disabled)]="roomChosen" [(ngModel)] ="reservation.no_occupants" name="no_occupants" type="number" class="form-control" id="total-person" placeholder="Total Person">
                                     <div class="alert-danger error" *ngIf="requiredErrors('no_occupants')" >
                                        <div class="error">Please provide the number of occupants </div>
@@ -367,7 +365,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Choose a rate to apply</label>
                                     <div class="form-control-wrap">
-                                       <select style="width:100%" (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" id="rate" class="form-select ">
+                                       <select disabled style="width:100%" (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" id="rate" class="form-select ">
                                           <option value="{{undefined}}">Select Rate</option>
                                           <option value="{{rate.id}}" *ngFor="let rate of rates;">{{rate.rate_name}}</option>
                                        </select>
@@ -377,9 +375,9 @@
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group">
-                                    <label class="form-label">Select an package</label>
+                                    <label class="form-label">Select a package</label>
                                     <div class="form-control-wrap">
-                                       <select [(ngModel)] ="reservation.package" name="package" style="width:100%" class="form-select " data-placeholder="Select multiple options">
+                                       <select disabled [(ngModel)] ="reservation.package" name="package" style="width:100%" class="form-select " data-placeholder="Select multiple options">
                                           <option value="Starter Package">Starter Package</option>
                                           <option value="Honeymoon Package">Honeymoon Package</option>
                                           <option value="Vacation Package">Vacation Package</option>

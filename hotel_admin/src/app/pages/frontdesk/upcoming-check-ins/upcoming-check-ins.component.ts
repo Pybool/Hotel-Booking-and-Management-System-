@@ -131,7 +131,7 @@ export class UpcomingCheckInsComponent {
         this.showSpinner = false;
         if(response.status){
           this.reservations = response.data
-          this.reservationsTotal = response?.count
+          this.reservationsTotal = response?.count || 0
           this.paginationService.setLinks(response.next,response.last,'reservations-list','',this.is_search)
           this.alertDuration = 3000;
           this.alertBackgroundColor = '#423f3f'; 

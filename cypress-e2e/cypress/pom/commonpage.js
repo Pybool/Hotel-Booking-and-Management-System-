@@ -53,6 +53,23 @@ class Commonpage {
     });
   }
 
+  validatePageAndUrl(page,header,models){
+    cy.isUrlMatch(commonMetaData.urls[page.toLowerCase().replaceAll(' ','_')])
+    let selectedPage;
+    if(page=='dashboard'){
+        selectedPage = models.dashboardPage;
+    }
+    else if (page == 'Pending Bookings' || page == 'Checked-In Bookings' || page == 'Add Booking'){
+        selectedPage = models.bookingsCommon
+    }
+ 
+    Cypress.env('selectedPage',selectedPage)
+    Cypress.env('header',header)
+    selectedPage.elements
+    .pageHeader(header)
+    .should('have.text',header)
+    .and('have.css','color',commonMetaData.css[`${page}`].pageheader.color)
+  }
   getLinksByRole() {
     if (this.role === 'administrator') {
       return commonMetaData.navlinks;
