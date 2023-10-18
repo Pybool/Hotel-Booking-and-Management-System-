@@ -6,20 +6,22 @@ class AddBooking{
     elements = {
         firstname: () => cy.get('input#first-name'),
         surname: () => cy.get('input#last-name'),
-        gender: () => cy.get('[name="gender"]'), // Change the selector as needed
-        phone: () => cy.get('input[name="phone"]'),   // Add 'phone' here
+        gender: () => cy.get('select[name="gender"]'), 
+        phone: () => cy.get('input[name="phone"]'),  
         email: () => cy.get('input[name="email"]'),
         address: () => cy.get('input#address1'),
         advance: () => cy.get('input[name="advance_amount"]'),
-        arrivedDate: () => cy.get('input[name="check_in"]'),
-        departDate: () => cy.get('input[name="check_out"]'),
-        roomType: () => cy.get('select[name="room_type"]'),  // Change the selector as needed
-        rooms: () => cy.get('select[name="rooms"]'),        // Change the selector as needed
+        arrival: () => cy.get('input[name="check_in"]'),
+        departure: () => cy.get('input[name="check_out"]'),
+        roomType: () => cy.get('select[name="room_type"]'),  
+        rooms: () => cy.get('select[name="rooms"]'),        
         totalOccupants: () => cy.get('input[name="no_occupants"]'),
         contactType: () => cy.get('select[name="contact_type"]'),
         contact: () => cy.get('select[name="contact"]'),
         rate: () => cy.get('select[name="room_rate"]'),
-        package: () => cy.get('select[name="package"]')
+        package: () => cy.get('select[name="package"]'),
+        errorTile: (field) => cy.get(`div.error-${field}`),
+        addBookingBtn: (btnText) => cy.get('button').contains(btnText)
     }
     
 
@@ -37,7 +39,7 @@ class AddBooking{
                 cy.get("@currentInput").should('have.descendants', 'option').should('have.length',1)
             }
         }
-        /* validateInputFieldTypes must be set to true to run the snippet below */
+        /* validateInputFieldTypes in configurations must be set to true to run the snippet below */
         if(configurations.validateInputFieldTypes){
             cy.get("@currentInput").then((el)=>{
                 if(Cypress.$(el)[0].tagName === 'INPUT'){
@@ -50,6 +52,8 @@ class AddBooking{
             })
         }
     }
+
+    makeBooking(){}
 }
 
 module.exports = new AddBooking()

@@ -155,7 +155,16 @@ h4{
     margin-top: 120px;
     
   }
+
+  /* #multi-select {
+    width: 200px;
+    height: 100px;
+  }
   
+  #multi-select.selected {
+    background-color: lightblue;
+  }
+   */
   /* Button to close the modal */
   .close-modal {
     margin-top: 10px;

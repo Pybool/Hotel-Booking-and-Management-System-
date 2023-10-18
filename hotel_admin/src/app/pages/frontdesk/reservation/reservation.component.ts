@@ -15,6 +15,8 @@ const HOST = 'localhost'
   styleUrls: ['./reservation.component.css']
 })
 export class ReservationComponent {
+  isNaN = isNaN
+  parseInt = parseInt
   public reservation:any = {}
   public showSpinner:Boolean = false;
   public showContactSpinner:Boolean = false;
@@ -126,6 +128,20 @@ export class ReservationComponent {
     })
     this.showSpinner = false
 
+  }
+
+  isValidInput(field){
+    return this.hasNoNumbersOrSpecialChars(this.reservation[field])
+  }
+
+  hasNoNumbersOrSpecialChars(inputString) {
+    var regex = /^[a-zA-Z]+$/;
+    return regex.test(inputString);
+  }
+
+  isValidEmail(email) {
+    var regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    return regex.test(email);
   }
 
  

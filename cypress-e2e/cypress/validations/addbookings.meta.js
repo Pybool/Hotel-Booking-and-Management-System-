@@ -36,12 +36,12 @@
         "Label": "Advance Paid",
         "InitialState": "Enabled"
     },
-    "arrivedDate": {
+    "arrival": {
         "Type": "datetime-local",
         "Label": "Arrival",
         "InitialState": "Enabled"
     },
-    "departDate": {
+    "departure": {
         "Type": "datetime-local",
         "Label": "Departure",
         "InitialState": "Enabled"
@@ -83,4 +83,42 @@
     }
 }
 
-export default fields
+const addbookingsmetadata = {
+    urls:{
+        add_bookings:'root/frontdesk/reservation'
+    },
+
+    css:{
+        addBookingsButton:{
+            background:'rgb(101, 118, 255)',
+            color:'rgb(255, 255, 255)'
+        }
+    },
+
+    addBookingFields:fields,
+
+    validationTexts:{
+        firstname: {
+                    invalid:"Firstname must not contain special characters or numbers",
+                    required:"Firstname is required to proceed"
+                    },
+
+        surname:    {
+                    invalid:"Surname must not contain special characters or numbers",
+                    required:"Surname is required to proceed"
+                    },
+
+        gender:     {invalid:"You must select a valid gender option"},
+
+        phone:      {invalid:"Phone Number must not contain special characters or characters",
+                    required:"Phone number is required to proceed"
+                    },
+
+        email:      {
+                    invalid:'Email address supplied is invalid',
+                    required:'Email address is required to proceed'
+                    }
+    }
+}
+
+export default addbookingsmetadata

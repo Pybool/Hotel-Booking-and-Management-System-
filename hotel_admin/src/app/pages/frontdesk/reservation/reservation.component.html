@@ -219,7 +219,10 @@
                                  <div class="form-group"><label class="form-label" for="first-name">First Name</label>
                                     <input [(ngModel)] ="reservation.firstname" type="text" name="firstname" class="form-control" id="first-name" placeholder="First Name" required>
                                     <div class="alert-danger error" *ngIf="requiredErrors('firstname')" >
-                                       <div class="error">No valid firstname was entered</div>
+                                       <div class="error error-firstname">Firstname is required to proceed</div>
+                                     </div>
+                                     <div class="alert-danger error" *ngIf="!isValidInput('firstname') && reservation.firstname.length !=0" >
+                                       <div class="error error-firstname">Firstname must not contain special characters or numbers</div>
                                      </div>
                                  </div>
                               </div>
@@ -227,7 +230,10 @@
                                  <div class="form-group"><label class="form-label" for="last-name">Last Name</label>
                                     <input [(ngModel)] ="reservation.surname" type="text" name="surname" class="form-control" id="last-name" placeholder="Last Name">
                                     <div class="alert-danger error" *ngIf="requiredErrors('surname')" >
-                                       <div class="error">No valid surname was entered</div>
+                                       <div class="error error-surname">Surname is required to proceed</div>
+                                     </div>
+                                     <div class="alert-danger error" *ngIf="!isValidInput('surname') && reservation.surname.length !=0">
+                                       <div class="error error-surname">Surname must not contain special characters or numbers</div>
                                      </div>
                                  </div>
                               </div>
@@ -241,7 +247,7 @@
                                           <option value="Female">Female</option>
                                        </select>
                                        <div class="alert-danger error" *ngIf="requiredErrors('gender')" >
-                                          <div class="error">No valid gender was selected</div>
+                                          <div class="error error-gender">You must select a valid gender option</div>
                                         </div>
                                     </div>
                                  </div>
@@ -249,17 +255,23 @@
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="phone-no">Phone</label>
                                     <input [(ngModel)] ="reservation.phone" type="telephone" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
-                                    <div class="alert-danger error" *ngIf="requiredErrors('phone')" >
-                                       <div class="error">No valid phone number was entered</div>
+                                    <div class="alert-danger error error-phone" *ngIf="requiredErrors('phone')" >
+                                       <div class="error">Phone number is required to proceed</div>
+                                     </div>
+                                     <div class="alert-danger error" *ngIf="isNaN(reservation.phone) && reservation.phone.length !=0">
+                                       <div class="error error-phone">Phone Number must not contain special characters or characters</div>
                                      </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="email">Email Address</label>
                                     <input [(ngModel)] ="reservation.email" type="email" class="form-control" name="email" placeholder="Email Address">
-                                    <!-- <div class="alert-danger error" *ngIf="requiredErrors('phone')" >
-                                       <div class="error">No valid phone number was entered</div>
-                                     </div> -->
+                                    <div class="alert-danger error error-email" *ngIf="requiredErrors('email')" >
+                                       <div class="error">Email address is required to proceed</div>
+                                     </div>
+                                     <div class="alert-danger error" *ngIf="!isValidEmail(reservation.email) && reservation.email.length !=0">
+                                       <div class="error error-email">Email address supplied is invalid</div>
+                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-4 col-xxl-3">
@@ -315,7 +327,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Select Rooms</label>
                                     <div class="form-control-wrap">
-                                       <select style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
+                                       <select id="multi-select" style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
                                           <option value="default_option">Select Rooms</option>
                                           <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
                                        </select>

@@ -46,9 +46,6 @@ Cypress.Commands.add('ensureScripts', () => {
 });
 
 
-
-
-
 Cypress.Commands.add('typeFast',{ prevSubject: 'element' },
     (subject, text) => {
       cy.wrap(subject).type(text, { delay: 0 })
