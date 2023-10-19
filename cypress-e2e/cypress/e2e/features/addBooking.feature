@@ -34,21 +34,21 @@ Feature: Hotel Admin Add Bookings
         When I clear the "email" field
         Then I should see a validation text below the "email" field with "required" text
 
-    # @automated @validatepage
-    # Scenario: On Roxandrea staff module i validate that interactivity of the add bookings page
-    #     Given I am a logged in user on the Roxandrea Staff Module
-    #     When I navigate to the "Add Booking" page on the Roxandrea Staff Module
-    #     Then I type in a 'firstname' in the 'firstname' input field
-    #     Then I type in a 'surname' in the 'surname' input field
-        # Then I select a 'gender' in the correct field
-        # Then I type in a 'phone' in the correct field
-        # Then I type in a 'email' in the correct field
-        # Then I type in a 'address' in the correct field
-        # Then I type in a 'advance' in the correct field
-        # Then I select an 'arrival' date
-        # Then I select an 'departure' date
-        # Then I select a 'roomType' in the correct field
-        # Then I select a 'rooms' for the reservation
+    @automated @validatepage
+    Scenario: On Roxandrea staff module i validate that interactivity of the add bookings page
+        Given I am a logged in user on the Roxandrea Staff Module
+        When I navigate to the "Add Booking" page on the Roxandrea Staff Module
+        Then I type in a 'firstname' in the 'firstname' input field
+        Then I type in a 'surname' in the 'surname' input field
+        Then I select a 'gender' in the correct field
+        Then I type in a 'phone' in the correct field
+        Then I type in a 'email' in the correct field
+        Then I type in a 'address' in the correct field
+        Then I type in a 'advance' in the correct field
+        Then I select an 'arrival' date
+        Then I select an 'departure' date
+        Then I select a 'roomType' in the correct field
+        Then I select a 'rooms' for the reservation
 
     
 
