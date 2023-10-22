@@ -1,5 +1,5 @@
 
-import {Given, When, Then} from '@badeball/cypress-cucumber-preprocessor';
+import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import addbookingsmetadata from '../validations/addbookings.meta'
 import AddBooking from '../pom/addbookingpage'
 const addBooking = AddBooking

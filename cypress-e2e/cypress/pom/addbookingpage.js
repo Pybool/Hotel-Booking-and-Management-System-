@@ -70,9 +70,7 @@ class AddBooking{
         if(type=='silent'){
             this.elements[field]().clear().type(formattedDateTime)
         }
-        else{
-
-        }
+        else{}
         
     }
     
@@ -97,7 +95,6 @@ class AddBooking{
                         this.elements.rooms().then((roomsEl) => {
                             const rooms = Array.from(Cypress.$(roomsEl)[0].children);
                             if (rooms.length > 1) {
-                                console.log("Room was found");
                                 foundRooms = true;
                                 Cypress.env('roomsLength',rooms.length)
                             }
@@ -109,7 +106,6 @@ class AddBooking{
                     }                    
                     
                 }
-    
                 selectAndCheck.call(this, 0);
             });
         });
