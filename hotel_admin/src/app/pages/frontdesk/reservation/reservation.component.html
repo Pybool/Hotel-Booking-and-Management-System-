@@ -315,8 +315,8 @@
                                  <div class="form-group">
                                     <label class="form-label">Select Room Type</label>
                                     <div class="form-control-wrap">
-                                       <select style="width:100%" [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type"  class="form-select">
-                                          <option value="default_option">Select Room Type</option>
+                                       <select id="select-{{reservation.room_type}}" style="width:100%" [(ngModel)] ="reservation.room_type" (change)="filterRoomByType($event)" name="room_type"  class="form-select">
+                                          <!-- <option value="default_option">Select Room Type</option> -->
                                           <option value="{{roomType.id}}" *ngFor="let roomType of roomTypes;">{{roomType.name}}</option>
                                        </select>
                                        <div *ngIf="showRoomTypeSpinner" class="tiny-spinner"></div>
@@ -327,7 +327,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Select Rooms</label>
                                     <div class="form-control-wrap">
-                                       <select id="multi-select" style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
+                                       <select disabled id="multi-select" style="width:100%" (change)="choseRooms()" multiple [(disabled)]="roomSelectDisabled"  [(ngModel)]="reservation.rooms" style="height: 100px;" name="rooms"  class="form-select sel">
                                           <option value="default_option">Select Rooms</option>
                                           <option value="{{stringify(room.room_no)}}" *ngFor="let room of rooms;">{{room.room_no}}</option>
                                        </select>
@@ -365,7 +365,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Select Contact</label>
                                     <div class="form-control-wrap">
-                                       <select style="width:100%" [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" name="contact" id="contact" class="form-select ">
+                                       <select style="width:100%" disabled [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" name="contact" id="contact" class="form-select ">
                                           <option value="default_option">Select Contact</option>
                                           <option value="{{contact.email}}" *ngFor="let contact of contacts;">{{contact.email}}</option>
                                        </select>
@@ -377,7 +377,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Choose a rate to apply</label>
                                     <div class="form-control-wrap">
-                                       <select disabled style="width:100%" (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" id="rate" class="form-select ">
+                                       <select  style="width:100%" (change)="calculateSelectedRate($event)" [(ngModel)] ="reservation.room_rate" name ="room_rate" id="rate" class="form-select ">
                                           <option value="{{undefined}}">Select Rate</option>
                                           <option value="{{rate.id}}" *ngFor="let rate of rates;">{{rate.rate_name}}</option>
                                        </select>
@@ -389,7 +389,7 @@
                                  <div class="form-group">
                                     <label class="form-label">Select a package</label>
                                     <div class="form-control-wrap">
-                                       <select disabled [(ngModel)] ="reservation.package" name="package" style="width:100%" class="form-select " data-placeholder="Select multiple options">
+                                       <select [(ngModel)] ="reservation.package" name="package" style="width:100%" class="form-select " data-placeholder="Select multiple options">
                                           <option value="Starter Package">Starter Package</option>
                                           <option value="Honeymoon Package">Honeymoon Package</option>
                                           <option value="Vacation Package">Vacation Package</option>

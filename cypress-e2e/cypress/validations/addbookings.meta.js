@@ -59,7 +59,7 @@
     "totalOccupants": {
         "Type": "number--field",
         "Label": "Total Occupants",
-        "InitialState": "Disabled"
+        "InitialState": "Enabled"
     },
     "contactType": {
         "Type": "select-single",
@@ -74,12 +74,12 @@
     "rate": {
         "Type": "select-single",
         "Label": "Choose a rate to apply",
-        "InitialState": "Disabled"
+        "InitialState": "Enabled"
     },
     "package": {
         "Type": "select-single",
         "Label": "Select a package",
-        "InitialState": "Disabled"
+        "InitialState": "Enabled"
     }
 }
 
@@ -91,6 +91,11 @@ const addbookingsmetadata = {
     css:{
         addBookingsButton:{
             background:'rgb(101, 118, 255)',
+            color:'rgb(255, 255, 255)'
+        },
+        pill:{
+            background: 'rgb(236, 166, 177)',
+            borderRadius: '40px',
             color:'rgb(255, 255, 255)'
         }
     },
@@ -118,7 +123,24 @@ const addbookingsmetadata = {
                     invalid:'Email address supplied is invalid',
                     required:'Email address is required to proceed'
                     }
-    }
+    },
+
+    addBookingData:{
+                    firstname: ["John", "Alice", "Michael", "Emily", "David", "Sophia", "William", "Olivia", "James", "Emma"],
+                    surname: ["Smith", "Johnson", "Brown", "Davis", "Lee", "Martinez", "Taylor", "Wilson", "Harris", "Anderson"],
+                    gender: ["Male", "Female"],
+                    phone: ["1234567890", "5551234567", "9876543210", "5555555555", "8888888888", "1112223333"],
+                    email: ["john@example.com", "alice@email.com", "michael@domain.com", "user123@gmail.com", "test@example.org", "yourname@hotmail.com"],
+                    address: ["123 Main St, City, Country", "456 Elm Rd, Town, Nation", "789 Oak Ave, Village, State", "567 Pine Ln, County, Region", "987 Maple Dr, Suburb, Territory", "111 Cedar Blvd, Hamlet, Province"],
+                    advance: ["1000", "1200", "1300", "1400", "1500", "1600", "1700", "1800", "1900", "2000"],
+                    arrival:{times:[19,20,21,22,23],numDaysFromToday:[2,3,4]},
+                    departure:{times:[19,20,21,22,23],numDaysFromToday:[7,8,9]},
+                    contactType:['Individual','Corporate'],
+                    rate:['Generic'],
+                    package:['Honeymoon Package','Spring Package','Starter Package','Vacation Package']
+
+                }
+      
 }
 
 export default addbookingsmetadata

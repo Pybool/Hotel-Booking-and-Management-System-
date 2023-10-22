@@ -49,6 +49,7 @@ export class ReservationComponent {
   alertDuration: number = 5000; // 5 seconds
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
   private srcValues:string[] = []
+  public rateDisabled = true
 
   constructor
             (private roomsXService: RoomXService,
@@ -374,6 +375,7 @@ export class ReservationComponent {
     this.maxAdults = this.calculateMaxAllowed(selectedRooms,'no_occupants')
     this.recalculate()
     this.updatePill(roomTypeId)
+    this.rateDisabled = false
   }
 
   updatePill(roomTypeId){

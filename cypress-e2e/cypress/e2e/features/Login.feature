@@ -16,8 +16,8 @@ Feature: Hotel Admin Staff Login
     Scenario: On Roxandrea staff module i proceed to enter incorrerct credentials and unable to login
     When I navigate to the "login" page on the Roxandrea Staff Module
     Then I enter my wrong credentials and sign in
-    # Then I should be remain on the login page 
-    # and see an alert with text "Wrong credentials supplied" having background color 'red'
+    Then I should be remain on the login page 
+    and see an alert with text "Wrong credentials supplied" having background color 'red'
 
     @automated @functional
     Scenario: On Roxandrea staff module i proceed to enter my correct credentials and login successfully

@@ -40,6 +40,63 @@ When('I select an invalid {string} in the form', (field) => {
     addBooking.elements[field]().select(0)
 })
 
+Then('I type in a {string} in the {string} input field', (value,field) => {
+    value = addBooking.getRandomOption(addbookingsmetadata.addBookingData[field])
+    addBooking.elements[field]().typeFast(value)
+})
+
+Then('I select a {string} in the correct field', (field) => {
+    value = addBooking.getRandomOption(addbookingsmetadata.addBookingData[field])
+    addBooking.elements[field]().select(value)
+})
+
+Then('I select an {string} date', (field) => {
+    const timeArr = addbookingsmetadata.addBookingData[field].times
+    const numDaysArr = addbookingsmetadata.addBookingData[field].numDaysFromToday
+    addBooking.selectDateTime(timeArr,numDaysArr,Cypress.env('INTERACTION_MODE'),field)
+})
+
+Then('I select a room type', () => {
+    addBooking.selectAvailableRoomType()
+})
+
+Then('I select rooms for the reservation', () => {
+    addBooking.selectRooms()
+})
+
+Then('I should see pills below the page matching the rooms selected with the correct css properties', () => {
+    addBooking.checksPillsMatchSelectedRooms(addbookingsmetadata)
+})
+
+Then('I type in the number of occupants', () => {
+    addBooking.extractMaxAndTypeOccupants()
+})
+
+Then('I select a {string} in the dropdown', (field) => {
+    const value = addBooking.getRandomOption(addbookingsmetadata.addBookingData[field])
+    addBooking.elements[field]().select(value)
+})
+
+Then('I select a {string} mail in the dropdown', (field) => {
+    addBooking.elements[field]().select(1)
+})
+
+Then('I select a {string} in the {string} dropdown', (field) => {
+    const value = addBooking.getRandomOption(addbookingsmetadata.addBookingData[field])
+    addBooking.elements[field]().select(value)
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
