@@ -301,7 +301,7 @@ class AddonsAPIView(APIView):
 class SponsorAPIView(APIView):
 
     authentication_classes = [JWTAuthenticationMiddleWare]
-    get_err_response = {"status":False,"message":"Could not get sponsorat the moment"}
+    get_err_response = {"status":False,"message":"Could not get sponsor at the moment"}
     
     @requests_sweet_error_handler(default=get_err_response)
     def get(self,request):

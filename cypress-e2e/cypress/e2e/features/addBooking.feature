@@ -55,6 +55,8 @@ Feature: Hotel Admin Add Bookings
         And I select a 'contact' mail in the dropdown
         Then I select a 'rate' in the 'rates' dropdown
         Then I select a 'package' in the 'package' dropdown
+        When I click the 'Add Booking' button
+        # Then I should see that
 
     
 
