@@ -216,6 +216,30 @@
                         <form (ngSubmit)="onSubmit()" #reservationForm="ngForm" novalidate>
                            <div class="row gy-4">
                               <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Contact Type</label>
+                                    <div class="form-control-wrap">
+                                       <select style="width:100%" (change)="filterContactByType($event)" [(ngModel)] ="reservation.contact_type" style="width:100%;" name="contact_type" class="form-select">
+                                          <option value="default_option">Select Contact Type</option>
+                                          <option value="{{contactType.id}}" *ngFor="let contactType of contactTypes;">{{contactType.name}}</option>
+                                       </select>
+                                       <div *ngIf="showContactTypeSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
+                                 <div class="form-group">
+                                    <label class="form-label">Select Contact &nbsp;&nbsp;&nbsp;&nbsp; <span><input (change)="markedAsSponsor=!markedAsSponsor" [(ngModel)]="markedAsSponsor" style="padding-top:10px" class="form-radio" type="checkbox"/>&nbsp;&nbsp;Mark as Sponsor</span></label>
+                                    <div class="form-control-wrap">
+                                       <select (change)="selectContact($event.target.value)" style="width:100%" disabled [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" name="contact" id="contact" class="form-select ">
+                                          <option value="default_option">Select Contact</option>
+                                          <option value="{{contact.email}}" *ngFor="let contact of contacts;">{{contact.email}}</option>
+                                       </select>
+                                       <div *ngIf="showContactSpinner" class="tiny-spinner"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="first-name">First Name</label>
                                     <input [(ngModel)] ="reservation.firstname" type="text" name="firstname" class="form-control" id="first-name" placeholder="First Name" required>
                                     <div class="alert-danger error" *ngIf="requiredErrors('firstname')" >
@@ -255,7 +279,7 @@
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="phone-no">Phone</label>
                                     <input [(ngModel)] ="reservation.phone" type="telephone" class="form-control" name="phone" id="phone-no" placeholder="Phone no">
-                                    <div class="alert-danger error error-phone" *ngIf="requiredErrors('phone')" >
+                                    <div class="alert-danger error error-phone" *ngIf="requiredErrors('phone') && reservation.phone.length !=0" >
                                        <div class="error">Phone number is required to proceed</div>
                                      </div>
                                      <div class="alert-danger error" *ngIf="isNaN(reservation.phone) && reservation.phone.length !=0">
@@ -266,7 +290,7 @@
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group"><label class="form-label" for="email">Email Address</label>
                                     <input [(ngModel)] ="reservation.email" type="email" class="form-control" name="email" placeholder="Email Address">
-                                    <div class="alert-danger error error-email" *ngIf="requiredErrors('email')" >
+                                    <div class="alert-danger error error-email" *ngIf="requiredErrors('email') && reservation.email.length !=0" >
                                        <div class="error">Email address is required to proceed</div>
                                      </div>
                                      <div class="alert-danger error" *ngIf="!isValidEmail(reservation.email) && reservation.email.length !=0">
@@ -349,30 +373,7 @@
                                     <span *ngIf="formErrors.maxExceeded.includes(maxExceeded.type)" class="alert-danger error">{{maxExceeded.text}}</span>
                                  </div>
                               </div>
-                              <div class="col-md-6 col-lg-4 col-xxl-3">
-                                 <div class="form-group">
-                                    <label class="form-label">Select Contact Type</label>
-                                    <div class="form-control-wrap">
-                                       <select style="width:100%" (change)="filterContactByType($event)" [(ngModel)] ="reservation.contact_type" style="width:100%;" name="contact_type" class="form-select">
-                                          <option value="default_option">Select Contact Type</option>
-                                          <option value="{{contactType.id}}" *ngFor="let contactType of contactTypes;">{{contactType.name}}</option>
-                                       </select>
-                                       <div *ngIf="showContactTypeSpinner" class="tiny-spinner"></div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-md-6 col-lg-4 col-xxl-3">
-                                 <div class="form-group">
-                                    <label class="form-label">Select Contact</label>
-                                    <div class="form-control-wrap">
-                                       <select style="width:100%" disabled [(disabled)]="contactChosen" [(ngModel)] ="reservation.contact" name="contact" id="contact" class="form-select ">
-                                          <option value="default_option">Select Contact</option>
-                                          <option value="{{contact.email}}" *ngFor="let contact of contacts;">{{contact.email}}</option>
-                                       </select>
-                                       <div *ngIf="showContactSpinner" class="tiny-spinner"></div>
-                                    </div>
-                                 </div>
-                              </div>
+                              
                               <div class="col-md-6 col-lg-4 col-xxl-3">
                                  <div class="form-group">
                                     <label class="form-label">Choose a rate to apply</label>
@@ -416,6 +417,7 @@
                               </div>
                               <div class="form-group">
                                  <div class="form-group"><button type="submit" class="btn btn-primary">Add Booking</button></div>
+                                 <label><span class="pointer"><input (change)="saveContactDetails=!saveContactDetails" [(ngModel)]="saveContactDetails" style="padding-top:10px" class="form-radio" type="checkbox"/>&nbsp;&nbsp;Save Booking Details to Contact</span></label>
                                  
                               </div>
                               <div class="overlay" *ngIf="showSpinner">

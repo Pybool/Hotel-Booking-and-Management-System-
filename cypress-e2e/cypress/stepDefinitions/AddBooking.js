@@ -2,7 +2,9 @@
 import {When, Then} from '@badeball/cypress-cucumber-preprocessor';
 import addbookingsmetadata from '../validations/addbookings.meta'
 import AddBooking from '../pom/addbookingpage'
+import BookingsCommon from '../pom/bookingspage'
 const addBooking = AddBooking
+const bookingsCommon = BookingsCommon
 
 Then('I ensure that all the needed input fields are present', () => {
     const fields = addbookingsmetadata.addBookingFields
@@ -85,6 +87,47 @@ Then('I select a {string} in the {string} dropdown', (field) => {
     const value = addBooking.getRandomOption(addbookingsmetadata.addBookingData[field])
     addBooking.elements[field]().select(value)
 })
+
+When('I click the {string} button', (btnText) => {
+    cy.intercept(`http://127.0.0.1:8000/api/v1/reservation*`).as('makeReservation');
+    addBooking.elements.addBookingBtn(btnText).click();
+})
+
+Then('The booking should be sucessfully created and displays an alert on the page', () => {
+    cy.wait('@makeReservation',{timeout:60000}).as('resp').its('response.statusCode').should('eq', 201)
+    addBooking.storeResponse(addbookingsmetadata)
+})
+
+Then('I should see that the a reservation with reservation token of the last created order exists', () => {
+    bookingsCommon.checkLastCreatedOrderExists()
+})
+
+Then('I should see that the other details in the table match the last created order', () => {
+    bookingsCommon.checkLastCreatedOrderMatches()
+})
+
+Then('I check the {string} checkbox', (checkBoxLabel) => {
+    addBooking.elements.checkBox(checkBoxLabel).check()
+})
+
+
+
+
+
+
+
+after(() => {
+    if(Cypress.env('clearReservationsPerTest')){
+       return  cy.request({
+            method: 'GET',
+            url: 'http://127.0.0.1:8000/api/v1/reset-reservations',
+          }).then((response) => {
+            console.log(response)
+        });
+    }
+    cy.log("Reservations reset per test is not enabled")
+  });
+
 
 
 

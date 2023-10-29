@@ -1,6 +1,5 @@
 import configurations from '../../settings.js'
 
-
 class AddBooking{
 
     elements = {
@@ -23,7 +22,8 @@ class AddBooking{
         errorTile: (field) => cy.get(`div.error-${field}`),
         addBookingBtn: (btnText) => cy.get('button').contains(btnText),
         roomsAndRatesLabel:() => cy.get('label').contains('Rooms and Rates'),
-        pill:(pillText) => cy.get('div.pill').find('p').contains(pillText)
+        pill:(pillText) => cy.get('div.pill').find('p').contains(pillText),
+        checkBox:(checkBoxLabel) => cy.get('span').contains(checkBoxLabel).find('input')
     }
     
 
@@ -56,6 +56,7 @@ class AddBooking{
     }
 
     getRandomOption(nameArray) {
+        console.log(nameArray)
         const randomIndex = Math.floor(Math.random() * nameArray.length);
         return nameArray[randomIndex];
     }
@@ -87,9 +88,9 @@ class AddBooking{
                         return;
                     }
                     const roomTypeName = roomTypes[index].innerText;
-                    cy.intercept(`http://127.0.0.1:8000/api/v1/hotel-room*`).as('hotelRoomRequest');
+                    cy.intercept(`http://127.0.0.1:8000/api/v1/hotel-room*`).as(`hotelRoomRequest${index}`);
                     this.elements.roomType().select(roomTypeName);
-                    cy.wait('@hotelRoomRequest',{timeout:15000}).its('response.statusCode').should('eq', 200);
+                    cy.wait(`@hotelRoomRequest${index}`,{timeout:15000}).its('response.statusCode').should('eq', 200);
 
                     if(roomTypeName != "Select Room Type"){
                         this.elements.rooms().then((roomsEl) => {
@@ -152,7 +153,67 @@ class AddBooking{
         })
     }
 
-    makeBooking(){}
+    storeResponse(addbookingsmetadata){
+        cy.get('@resp').then((serverResponse)=>{
+            const responseBody = serverResponse.response.body
+            expect(responseBody.status).to.eq(addbookingsmetadata.createdBookingResponse.status)
+            expect(responseBody.message).to.eq(addbookingsmetadata.createdBookingResponse.message)
+            expect(responseBody.reservation_token).to.include(addbookingsmetadata.createdBookingResponse.tokenPrefix)
+            Cypress.env('lastReservationToken',responseBody.reservation_token)
+            let partialPayload = {}
+            const fields = addbookingsmetadata.createdBookingPayloadFields
+            cy.wrap(fields).each((field)=>{
+                this.elements[field]().then((el)=>{
+                    partialPayload[field] = Cypress.$(el)[0].value
+                })
+            }).then(()=>{
+                Cypress.env('lastReservationPayload',partialPayload)
+                console.log("Booking payload ===> ", partialPayload)
+            }) 
+        })
+    }
+
+    makeBooking(addbookingsmetadata){
+        console.log("Make booking ===> ", addbookingsmetadata)
+        /* This method is for creating bookings on a single call without feature steps */
+        const timeArr = addbookingsmetadata.addBookingData['arrival'].times
+        const timeArrDeparture = addbookingsmetadata.addBookingData['departure'].times
+        const numDaysArr = addbookingsmetadata.addBookingData['arrival'].numDaysFromToday
+        const numDaysArrDeparture = addbookingsmetadata.addBookingData['departure'].numDaysFromToday
+        let value = this.getRandomOption(addbookingsmetadata.addBookingData['firstname'])
+        this.elements['firstname']().typeFast(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['surname'])
+        this.elements['surname']().typeFast(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['gender'])
+        this.elements['gender']().select(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['phone'])
+        this.elements['phone']().typeFast(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['email'])
+        this.elements['email']().typeFast(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['address'])
+        this.elements['address']().typeFast(value)
+        value = this.getRandomOption(addbookingsmetadata.addBookingData['advance'])
+        this.elements['advance']().typeFast(value)
+        this.selectDateTime(timeArr,numDaysArr,Cypress.env('INTERACTION_MODE'),'arrival')
+        this.selectDateTime(timeArrDeparture,numDaysArrDeparture,Cypress.env('INTERACTION_MODE'),'departure')
+        this.selectAvailableRoomType().then(()=>{
+            this.selectRooms()
+            this.checksPillsMatchSelectedRooms(addbookingsmetadata)
+            this.extractMaxAndTypeOccupants()
+            value = this.getRandomOption(addbookingsmetadata.addBookingData['contactType'])
+            this.elements['contactType']().select(value)
+            this.elements['contact']().select(1)
+            value = this.getRandomOption(addbookingsmetadata.addBookingData['rate'])
+            this.elements['rate']().select(value)
+            value = this.getRandomOption(addbookingsmetadata.addBookingData['package'])
+            this.elements['package']().select(value)
+            cy.intercept(`http://127.0.0.1:8000/api/v1/reservation*`).as('makeReservation');
+            this.elements.addBookingBtn('Add Booking').click();
+            cy.wait('@makeReservation',{timeout:60000}).as('resp').its('response.statusCode').should('eq', 201)
+            this.storeResponse(addbookingsmetadata)
+        })
+        
+    }
 }
 
 module.exports = new AddBooking()

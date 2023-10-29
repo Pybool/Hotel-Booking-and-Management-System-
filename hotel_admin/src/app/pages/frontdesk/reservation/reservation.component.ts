@@ -50,6 +50,8 @@ export class ReservationComponent {
   alertBackgroundColor: string = '#ffc107'; // Alert yellow color
   private srcValues:string[] = []
   public rateDisabled = true
+  public markedAsSponsor = false
+  public saveContactDetails = false
 
   constructor
             (private roomsXService: RoomXService,
@@ -61,6 +63,9 @@ export class ReservationComponent {
                   `http://${HOST}:${PORT}/assets/js/bundlee5ca.js?ver=3.2.3`,
                   `http://${HOST}:${PORT}/assets/js/scriptse5ca.js?ver=3.2.3`,
                 ]
+
+                this.reservation.email = ''
+                this.reservation.phone = ''
               }
 
               
@@ -112,6 +117,7 @@ export class ReservationComponent {
       (response: any) => {
         if(response.status){
           this.contactTypes = response.data
+          console.log(this.contactTypes)
           this.showContactTypeSpinner = false
         }
     })
@@ -151,6 +157,8 @@ export class ReservationComponent {
     console.log(this.reservation)
     this.reservation.payment_ref = "T158244198704828" //Mock payment
     this.reservation.total_amount = this.amountTotal
+    this.reservation['contact-sponsored'] = this.markedAsSponsor
+    this.reservation['save-contact-details'] = this.saveContactDetails
     this.reservationService.makeReservation(this.reservation).pipe(
       take(1)
     ).subscribe(
@@ -184,8 +192,32 @@ export class ReservationComponent {
     this.rooms = []
   }
 
+  public selectContact(email:string){
+    const contact:any = this.getContactFromArrayByEmail(this.contacts,email)
+    if(!this.markedAsSponsor){
+      this.reservation.firstname = contact.firstname
+      this.reservation.surname = contact?.surname || contact.lastname
+      this.reservation.address = contact?.address1 || contact?.address2
+      this.reservation.phone = contact.phone
+      this.reservation.email = contact.email
+      this.reservation.gender = contact.gender
+      return
+    }
+    this.reservation.firstname = ''
+    this.reservation.surname = ''
+    this.reservation.address = ''
+    this.reservation.phone = ''
+    this.reservation.email = ''
+    this.reservation.gender = ''
+  }
+
   private getObjectFromArrayById(arr:any[],id:number){
     const obj:any = arr.find(x => x.id === id);
+    return obj
+  }
+
+  private getContactFromArrayByEmail(arr:any[],email:string){
+    const obj:any = arr.find(x => x.email === email);
     return obj
   }
 
@@ -397,9 +429,7 @@ export class ReservationComponent {
           maxOccupants.push(roomObj.room_type[type])
         }
       }
-      else{
-          maxOccupants.push(roomObj[type])
-      }
+      else{maxOccupants.push(roomObj[type])}
     });
     const maxAllowedForSelectedRooms = this.sumArray(maxOccupants)
     return maxAllowedForSelectedRooms

@@ -111,6 +111,29 @@ class BookingsCommon{
         })
     }
 
+    checkLastCreatedOrderExists(){
+        cy.wait(5000)
+        this.elements.tableRows().then((rows)=>{
+            const lastRow = Array.from(Cypress.$(rows))[1]
+            console.log("lastRow",lastRow, Array.from(Cypress.$(rows)))
+            if(!Array.from(lastRow.classList).includes('nk-tb-head')){
+                const roxID = lastRow.children[3].children[0].textContent
+                expect(roxID).to.eq(Cypress.env('lastReservationToken'))
+            }
+        })
+    }
+
+    checkLastCreatedOrderMatches(){
+        this.elements.tableRows().then((rows)=>{
+            const lastRow = Array.from(Cypress.$(rows))[1]
+            console.log("lastRow",lastRow)
+            if(!Array.from(lastRow.classList).includes('nk-tb-head')){
+                const cells = Array.from(lastRow.children)
+                console.log(cells)
+            }
+        })
+    }
+
     createBooking(){
 
     }

@@ -4,6 +4,8 @@ import LoginPage from '../pom/Loginpage'
 import Commonpage from '../pom/commonpage'
 import DashboardPage from '../pom/dashboardpage'
 import BookingsCommon from '../pom/bookingspage'
+import addbookingsmetadata from '../validations/addbookings.meta'
+import AddBooking from '../pom/addbookingpage'
 import commonMetaData   from '../validations/common.meta'
 import loginMetaData    from '../validations/loginpage.meta'
 
@@ -11,6 +13,8 @@ const loginPage = LoginPage
 const commonPage = Commonpage
 const dashboardPage = DashboardPage
 const bookingsCommon = BookingsCommon
+const addBooking = AddBooking
+
 
 models = {dashboardPage:dashboardPage,bookingsCommon:bookingsCommon}
 
@@ -25,6 +29,11 @@ Given('I am a logged in user on the Roxandrea Staff Module as an Administrator',
 
 Given('I am not logged in on the Roxandrea Staff Module', () => {
     cy.deauthenticate()
+})
+
+Given('I have created a new booking', () => {
+    cy.visit(`/${commonMetaData.urls["Add Booking".toLowerCase().replaceAll(' ','_')]}`)
+    addBooking.makeBooking(addbookingsmetadata)
 })
     
 When('I navigate to the {string} page on the Roxandrea Staff Module', (page) => {

@@ -125,6 +125,14 @@ const addbookingsmetadata = {
                     }
     },
 
+    createdBookingResponse:{
+        message: "Booking was successfull!.",
+        tokenPrefix: "ROX-",
+        status: true
+    },
+
+    createdBookingPayloadFields:['firstname','surname','gender','phone','email','advance','arrival','departure','rooms','totalOccupants','contact','package'],
+
     addBookingData:{
                     firstname: ["John", "Alice", "Michael", "Emily", "David", "Sophia", "William", "Olivia", "James", "Emma"],
                     surname: ["Smith", "Johnson", "Brown", "Davis", "Lee", "Martinez", "Taylor", "Wilson", "Harris", "Anderson"],

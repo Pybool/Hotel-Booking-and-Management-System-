@@ -5,8 +5,15 @@ from finance.models import Rates
 from rooms.models import Rooms
 from billing.models import Bill
 
+
 class Reservations(models.Model):
     """Reservations model."""
+    firstname = models.CharField(max_length=255,null=True,blank=True ,default='')
+    surname = models.CharField(max_length=255,null=True,blank=True ,default='')
+    email = models.CharField(max_length=255,null=True,blank=True ,default='')
+    gender = models.CharField(max_length=255,null=True,blank=True ,default='')
+    phone= models.CharField(max_length=255,null=True,blank=True ,default='')
+    address = models.CharField(max_length=255,null=True,blank=True ,default='')
     check_in = models.DateTimeField(null=False,blank=False )
     check_out = models.DateTimeField(null=False,blank=False )
     no_rooms = models.IntegerField(null=False,blank=False)

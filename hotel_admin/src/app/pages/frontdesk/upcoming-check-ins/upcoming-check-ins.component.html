@@ -328,10 +328,12 @@
                               <div class="nk-tb-col nk-tb-col-check">
                                  <div class="custom-control custom-control-sm custom-checkbox notext"><input type="checkbox" class="custom-control-input" id="uid"><label class="custom-control-label" for="uid"></label></div>
                               </div>
-                              <div class="nk-tb-col"><span class="sub-text">Customer</span></div>
+                              <div class="nk-tb-col"><span class="sub-text">Contact</span></div>
+                              <div class="nk-tb-col"><span class="sub-text">Occupant</span></div>
                               <div class="nk-tb-col tb-col-md"><span class="sub-text">Booking ID</span></div>
                               <div class="nk-tb-col tb-col-mb"><span class="sub-text">Package</span></div>
                               <div class="nk-tb-col tb-col-mb"><span class="sub-text">Mobile</span></div>
+                              <div class="nk-tb-col tb-col-mb"><span class="sub-text">Mobile (Occupant)</span></div>
                               <div class="nk-tb-col tb-col-lg"><span class="sub-text">Arrive</span></div>
                               <div class="nk-tb-col tb-col-lg"><span class="sub-text">Depart</span></div>
                               <div class="nk-tb-col tb-col-md"><span class="sub-text">Payment</span></div>
@@ -361,6 +363,7 @@
                                     <div class="custom-control custom-control-sm custom-checkbox notext"><input (change)="addToCheckInList($event)" type="checkbox" class="custom-control-input" id="{{reservation.id}}"><label class="custom-control-label" for="{{reservation.id}}"></label></div>
                                  </div>
                                  
+                                 
                                  <div class="nk-tb-col">
                                     <a href="#">
                                        <div class="user-card">
@@ -369,9 +372,13 @@
                                        </div>
                                     </a>
                                  </div>
+                                 <div class="nk-tb-col">
+                                    <div class="user-info"><span class="tb-lead">{{reservation.firstname}} {{reservation.lastname || 'N/A'}}<span class="dot dot-success d-md-none ms-1"></span></span><span>{{reservation.email}}</span></div>
+                                 </div>
                                  <div class="nk-tb-col tb-col-md"><span id="{{reservation.id}}" (click)="showResrvationDetails($event)" style="text-decoration: underline;" class="tb-status text-success pointer ">{{reservation.reservation_token}}</span></div>
                                  <div class="nk-tb-col tb-col-mb"><span>{{reservation.package}}</span></div>
                                  <div class="nk-tb-col tb-col-md"><span class="tb-status text-primary">{{reservation.contact.phone}}</span></div>
+                                 <div class="nk-tb-col tb-col-md"><span class="tb-status text-primary">{{reservation.phone}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_in}}</span></div>
                                  <div class="nk-tb-col tb-col-lg"><span>{{reservation.check_out}}</span></div>
                                  <div *ngIf="reservation.advance_amount !=reservation.total_amount" class="nk-tb-col tb-col-md"><span class="tb-status text-warning">Partial</span></div>

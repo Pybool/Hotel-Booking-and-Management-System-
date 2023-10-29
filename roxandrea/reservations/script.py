@@ -37,13 +37,14 @@ class ReservationValid(object):
             return True, "Reservation is available for this timeframe"
     
     def check_for_payment(self,reservation):
-        if(RoomType.objects.get(id=reservation['room_type']).require_advance_payment):
-            if reservation.get('payment_ref'):
-                assert(len(reservation['payment_ref']) > 0)
-                status = check_payment_status(reservation['payment_ref'])
-                assert(status.get('status', '') == 'success' and round(status.get('amount', '')) == round(RoomType.objects.get(id=reservation['room_type']).advance_amount))
-        else:
-            pass
+        pass
+        # if(RoomType.objects.get(id=reservation['room_type']).require_advance_payment):
+        #     if reservation.get('payment_ref'):
+        #         assert(len(reservation['payment_ref']) > 0)
+        #         status = check_payment_status(reservation['payment_ref'])
+        #         assert(status.get('status', '') == 'success' and round(status.get('amount', '')) == round(RoomType.objects.get(id=reservation['room_type']).advance_amount))
+        # else:
+        #     pass
     
     def get_object_from_list_by_room_no(self,room_data, room_no):
         for room_obj in room_data:

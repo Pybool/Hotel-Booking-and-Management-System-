@@ -29,4 +29,5 @@ urlpatterns = [
     path('api/v1/',include('billing.urls')),
     path('api/v1/',include('uiconfig.urls')),
     path('api/v1/',include('filters.urls')),
+    path('api/v1/',include('tasks.urls')),
 ]

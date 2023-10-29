@@ -59,83 +59,86 @@ class ReservationAPIView(APIView):
             rooms_instance_object.append(room_instance)
         return rooms_instance_object
     
-    @requests_sweet_error_handler(default=post_err_response)
+    # @requests_sweet_error_handler(default=post_err_response)
     def post(self, request):
-        try:
-            """If the is_reservation_valid method returns an empty list then reservation is valid """
-            print("Reservation data ===> ", request.data)
-            reservation = request.data
+        """If the is_reservation_valid method returns an empty list then reservation is valid """
+        print("Reservation data ===> ", request.data)
+        reservation = request.data
+        if request.data.get('contact-sponsored'):
             contact = reservation.get('contact',reservation.get('email'))
-            contact_type = reservation.get('contact_type')
-            rooms = reservation.get('rooms')
-            rooms_instance_object = self.get_rooms_objects(rooms)
-            self.reservation_valid = ReservationValid(True,rooms_instance_object)
-            _filter = {'is_available':True,'maintenance_block':False,'is_ready':True}
-            available_status, msg = self.reservation_valid.is_date_available(request.data['check_in'].replace('T',' '),request.data['check_out'].replace('T',' '))
-            if available_status:
-                is_reservation_valid_errors = self.reservation_valid.is_reservation_valid(_filter,request.data,rooms_instance_object)
-            else:
-                return bad_request_error_response({"status":False,"message":msg})
-            
-            if len(is_reservation_valid_errors)==0:
-                with transaction.atomic():
-                    
-                    for key in ['rooms','room_type','no_xtra_adults']:
-                        reservation.pop(key) if reservation.get(key) else None
-                    if reservation.get('room_rate') and reservation.get('room_rate') != '':
-                        reservation['room_rate'] = Rates.objects.get(id=int(reservation['room_rate']))
-                    else:
-                        reservation.pop('room_rate') if reservation.get('room_rate') else None
+        else:
+            contact = reservation.get('email',reservation.get('contact'))
+        contact_type = reservation.get('contact_type')
+        rooms = reservation.get('rooms')
+        rooms_instance_object = self.get_rooms_objects(rooms)
+        self.reservation_valid = ReservationValid(True,rooms_instance_object)
+        _filter = {'is_available':True,'maintenance_block':False,'is_ready':True}
+        available_status, msg = self.reservation_valid.is_date_available(request.data['check_in'].replace('T',' '),request.data['check_out'].replace('T',' '))
+        if available_status:
+            is_reservation_valid_errors = self.reservation_valid.is_reservation_valid(_filter,request.data,rooms_instance_object)
+        else:
+            print(msg)
+            return operation_ok_response({"status":False,"message":msg})
+        
+        print(is_reservation_valid_errors)
+        if len(is_reservation_valid_errors)==0:
+            with transaction.atomic():
+                
+                for key in ['rooms','room_type','no_xtra_adults']:
+                    reservation.pop(key) if reservation.get(key) else None
+                if reservation.get('room_rate') and reservation.get('room_rate') != '':
+                    reservation['room_rate'] = Rates.objects.get(id=int(reservation['room_rate']))
+                else:
+                    reservation.pop('room_rate') if reservation.get('room_rate') else None
 
-                    reservation['contact'],created = Contacts.objects.get_or_create(email=contact)
+                reservation['contact'],created = Contacts.objects.get_or_create(email=contact)
+                if request.data.get('save-contact-details'):
+                    
                     if (reservation.get('phone') or reservation.get('firstname') or reservation.get('surname') or reservation.get('gender') or reservation.get('address1')) and created:
                         reservation['contact'].phone = reservation.get('phone')
                         reservation['contact'].firstname = reservation.get('firstname')
                         reservation['contact'].surname = reservation.get('surname')
                         reservation['contact'].gender = reservation.get('gender')
-                        reservation['contact'].address1 = reservation.get('address1')
+                        reservation['contact'].address1 = reservation.get('address1') or reservation.get('address')
                         reservation['contact'].contact_type = ContactType.objects.get(name='Individual')
                         reservation['contact'].save()
-                        
-                    keys_to_remove = ['phone', 'email', 'firstname', 'surname', 'gender','address1']
-                    [reservation.pop(key, None) for key in keys_to_remove]
+                        print("saved contact")
                     
-                    try:
-                        reservation['contact_type'] = ContactType.objects.get(id=int(contact_type)).name
-                    except:
-                        pass
+                keys_to_remove = ['contact-sponsored', 'save-contact-details']
+                [reservation.pop(key, None) for key in keys_to_remove]
+                
+                try:
+                    reservation['contact_type'] = ContactType.objects.get(id=int(contact_type)).name
+                except:
+                    pass
+                
+                reservation['no_rooms'] = len(rooms_instance_object)
+                reservation_instance = Reservations(**reservation)
+                reservation_token = generate_reservation_id()
+                reservation_instance.reservation_token = reservation_token
+                reservation_instance.save()                    
+                reservation_instance.rooms.add(*rooms_instance_object)
+                
+                mail_data = {"subject":"Roxandrea Hotel Reservation","recipient":[reservation_instance.contact.email],"room_no":rooms,"reservation_token":reservation_token,"ir_template":"new_reservation_template"}
+                """Set room to unavailable and tie reservation_token to the room"""
+                for room in rooms_instance_object:
+                    room.is_available = False
+                    room.active_reservation_token = reservation_token
+                    room.check_in_date = reservation_instance.check_in
+                    room.check_out_date = reservation_instance.check_out
+                    room.save()
                     
-                    reservation['no_rooms'] = len(rooms_instance_object)
-                    reservation_instance = Reservations(**reservation)
-                    reservation_token = generate_reservation_id()
-                    reservation_instance.reservation_token = reservation_token
-                    reservation_instance.save()                    
-                    reservation_instance.rooms.add(*rooms_instance_object)
-                    
-                    mail_data = {"subject":"Roxandrea Hotel Reservation","recipient":[reservation_instance.contact.email],"room_no":rooms,"reservation_token":reservation_token,"ir_template":"new_reservation_template"}
-                    """Set room to unavailable and tie reservation_token to the room"""
-                    for room in rooms_instance_object:
-                        room.is_available = False
-                        room.active_reservation_token = reservation_token
-                        room.check_in_date = reservation_instance.check_in
-                        room.check_out_date = reservation_instance.check_out
-                        room.save()
-                        
-                    """Delegate the Email and SMS tasks below later to celery to run in background"""
-                    Mailservice.send_outwards_mail(mail_data) 
-                    sms_data = {'from': 'Roxandrea', 'to': Contacts.objects.get(email=reservation_instance.contact.email).phone, 'text': f'New Roxandrea Hotel reservation with token {reservation_token} and room number {rooms} was made with you as a occupant'}
-                    send_sms(sms_data)
-                    response_payload = {'message': 'Booking was successfull!.',"reservation_token":reservation_token,'status':True}
-                    return record_created_response(response_payload)
-            else:
-                response_payload = {"status":False,"message":"This reservation is invalid","errors":is_reservation_valid_errors}
-                return bad_request_error_response(response_payload)
+                """Delegate the Email and SMS tasks below later to celery to run in background"""
+                Mailservice.send_outwards_mail(mail_data) 
+                sms_data = {'from': 'Roxandrea', 'to': Contacts.objects.get(email=reservation_instance.contact.email).phone, 'text': f'New Roxandrea Hotel reservation with token {reservation_token} and room number {rooms} was made with you as a occupant'}
+                send_sms(sms_data)
+                response_payload = {'message': 'Booking was successfull!.',"reservation_token":reservation_token,'status':True}
+                return record_created_response(response_payload)
+        else:
+            print(is_reservation_valid_errors)
+            response_payload = {"status":False,"message":"This reservation is invalid","errors":is_reservation_valid_errors}
+            return bad_request_error_response(response_payload)
             
-        except TypeError as e:
-            return bad_request_error_response({'status':False,"message":'Missing keys in request'}) 
-        except KeyError:
-            return bad_request_error_response({'status':False,"message":'Missing keys in request'})   
-    
     @requests_sweet_error_handler(default=get_err_response)
     def get(self,request):
         
@@ -313,5 +316,6 @@ class SponsorAPIView(APIView):
         else:
             response = {'status':False,'message':'Sponsor was not found'}
         return operation_ok_response(response)
+    
         
         

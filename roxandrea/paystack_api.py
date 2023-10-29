@@ -10,9 +10,9 @@ def check_payment_status(transaction_reference):
     })
 
     # Extract the status from the API response
+    print('patstack status code ',response.status_code, PAYSTACK_SECRET_KEY)
     if response.status_code == 200:
         data = response.json()
         return data.get('data', {})
     else:
-        # Handle API request errors appropriately
-        return 'error'
+        return {}
